@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.wrap {
+	display: flex;
+}
+
+.twoUl {
+	margin: 0 0 0 1rem;
+}
+
+.ckWrap {
+	margin: 0 0 0 .3rem;
+}
+
+.radioWrap {
+	margin: 0 0 0 3rem;
+}
+
+.position {
+	margin: 0 0 0 2rem;
+}

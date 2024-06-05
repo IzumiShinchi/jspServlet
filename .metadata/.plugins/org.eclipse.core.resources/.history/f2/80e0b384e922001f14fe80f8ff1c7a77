@@ -1,0 +1,24 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>글 자세히 보기</title>
+</head>
+<body>
+	<h1>글 자세히 보기</h1>
+	<form action="update.do" method="post">
+		<input type="text" name="num" value="${retrieve.num}">
+		글 번호 :
+		조회수 : 
+		제목 : 
+		작성자 : 
+		내용 : 
+		<input type="submit" value="수정">
+	</form>
+	
+	<a href="list.do">목록</a>
+	<a href="#">삭제</a>
+	<a href="#">답변달기</a>
+</body>
+</html>
