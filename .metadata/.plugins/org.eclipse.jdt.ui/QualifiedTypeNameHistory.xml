@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="jakarta.servlet.jsp.tagext.TryCatchFinally"/>
+    <fullyQualifiedTypeName name="org.big.service.BoardWriteService"/>
+    <fullyQualifiedTypeName name="org.big.service.BoardRetrieveService"/>
+    <fullyQualifiedTypeName name="org.big.service.BoardUpdateService"/>
+    <fullyQualifiedTypeName name="java.sql.Connection"/>
+    <fullyQualifiedTypeName name="org.big.service.BoardDeleteService"/>
+    <fullyQualifiedTypeName name="java.sql.ResultSet"/>
+    <fullyQualifiedTypeName name="org.big.service.BoardService"/>
+    <fullyQualifiedTypeName name="org.big.dao.BoardDAO"/>
+    <fullyQualifiedTypeName name="org.big.service.BoardSearchService"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="org.big.entity.BoardDTO"/>
+    <fullyQualifiedTypeName name="java.sql.PreparedStatement"/>
+    <fullyQualifiedTypeName name="java.lang.Integer"/>
+</qualifiedTypeNameHistroy>

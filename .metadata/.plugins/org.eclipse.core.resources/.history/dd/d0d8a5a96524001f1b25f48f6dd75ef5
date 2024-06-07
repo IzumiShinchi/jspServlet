@@ -1,0 +1,22 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Validation01</title>
+</head>
+<script type="text/javascript">
+	function checkForm() {
+		alert(document.getElementById("id").value + "\n" + document.getElementById("passwd").value);
+	}
+</script>
+<body>
+	<h3>LOGIN</h3>
+	<form action="validation_process.jsp">
+		아이디 : <input type="text" id="id"> <br>
+		비밀번호 : <input type="text" id="passwd"> <br>
+		<input type="button" value="전송" onclick="checkForm()">
+	</form>
+</body>
+</html>
