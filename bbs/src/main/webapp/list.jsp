@@ -39,7 +39,13 @@
 	<c:forEach items="${list}" var="dto" step="1" >
 		<tr>
 			<td>${dto.num}</td>
-			<td><a href="retrieve.do?num=${dto.num}">${dto.title}</a></td>
+			<td>
+				<c:forEach begin="1" end="${dto.repindent}">
+					<%="&nbsp;&nbsp;" %>
+				</c:forEach>
+				<a href="retrieve.do?num=${dto.num}">${dto.title}</a>
+			</td>
+			<%-- <td><a href="retrieve.do?num=${dto.num}">${dto.title}</a></td> --%>
 			<%-- <td>${dto.title}</td> --%>
 			<td>${dto.author}</td>
 			<td>${dto.writeday}</td>

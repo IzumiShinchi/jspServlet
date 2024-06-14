@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.big.prj.mapper.BoardMapper">
+	<select id="selectBoardList">	<!-- 메소드 이름과 id는 같아야 한다. -->
+		<![CDATA[
+			SELECT 
+				board_idx, 
+				title, 
+				hit_cnt, 
+				created_datetime 
+			FROM 
+				t_board 
+			WHERE 
+				deleted_yn='N' 
+			ORDER BY board_idx DESC
+		]]>
+	</select>
+	<insert id="insertBoard" parameterType="org.big.prj.dto.BoardDTO">
+		<![CDATA[
+			INSERT INTO t_board
+			(
+				board_idx,
+				title,
+				contents,
+				created_datetime,
+				creator_id
+			)
+			VALUES
+			(
+				tboard_seq.nextval,
+				#{title},
+				#{contents},
+				sysdate,
+				'admin'
+			)
+		]]>
+	</insert>
+	<update id="updateHitCount" parameterType="int">
+		<![CDATA[
+			UPDATE 
+				t_board
+			SET 
+				hit_cnt = hit_cnt + 1
+			WHERE
+				board_idx = #{boardIdx}
+		]]>
+	</update>
+	<select id="selectBoardDetail" parameterType="int" resultType="org.big.prj.dto.BoardDTO">
+		<![CDATA[
+			SELECT
+				board_idx, title, contents, hit_cnt,
+				created_datetime,
+				creator_id
+			FROM
+				t_board
+			WHERE
+				board_idx = #{boardIdx} AND deleted_yn = 'N'
+		]]>
+	</select>
+	<update id="updateBoard" parameterType="org.big.prj.dto.BoardDTO">
+		<![CDATA[
+			UPDATE
+				t_board
+			SET
+				title = #{title},
+				contents = #{contents},
+				updated_datetime = sysdate,
+				updater_id = 'admin'
+			WHERE
+				board_idx = #{boardIdx}
+		]]>
+	</update>
+	<update id="deleteBoard" parameterType="int">
+		<![CDATA[
+			UPDATE
+				t_board
+			SET
+				deleted_yn = 'Y',
+				updated_datetime = sysdate,
+				updater_id = 'admin'
+			WHERE
+				board_idx = #{boardIdx}
+		]]>
+	</update>
+</mapper>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SPRING TEST</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$.ajax({
+		type:"GET", 
+		url:"/sampleValue",
+		success:(sampleValue)=>{
+			console.log(sampleValue);
+			$('#sampleValue').html(sampleValue);
+		}
+	})
+</script>
+</head>
+<body>
+	<h1>SPRING TEST</h1>
+	<p>이 페이지는 인덱스 페이지입니다.</p>
+	<p>SpringBoot는 resource/static 폴더를 기본으로 인식합니다.</p>
+	<div id="sampleValue">
+	
+	</div>
+</body>
+</html>
