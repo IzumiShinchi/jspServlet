@@ -1,6 +1,7 @@
 package org.big.prj.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -13,5 +14,6 @@ public class BoardDTO {
 	private Date createdDatetime;
 	private String creatorId;
 	private Date updatedDatetime;
-	private String updaterId;	
+	private String updaterId;
+	private List<BoardFileDTO> fileList;
 }

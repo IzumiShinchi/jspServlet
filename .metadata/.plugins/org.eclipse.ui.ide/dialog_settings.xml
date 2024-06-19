@@ -7,6 +7,8 @@
 		<item key="WizardProjectsImportPage.STORE_CLOSE_CREATED_PROJECTS_ID" value="false"/>
 		<item key="WizardProjectsImportPage.STORE_HIDE_CONFLICTING_PROJECTS_ID" value="false"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="D:\JSP\board"/>
+			<item value="D:\JSP\board2"/>
 			<item value="D:\JSP\testController"/>
 			<item value="D:\JSP\servletEx2"/>
 			<item value="D:\JSP\servletEx1"/>
