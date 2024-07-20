@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.big.mapper.CommunityMapper">
+	<select id="CommuList" resultType="org.big.dto.CommunityDTO">		<!-- 메소드 이름과 id는 같아야 한다. -->
+		<![CDATA[
+			SELECT
+				b_code,
+				b_title,
+				u_id,
+				b_readcnt,
+				b_created
+			FROM
+				community
+			ORDER BY b_code DESC
+		]]>
+	</select>
+	
+	<insert id="insertCommu" parameterType="org.big.dto.CommunityDTO" useGeneratedKeys="true">
+	<selectKey keyProperty="commuCode" resultType="int" order="AFTER">
+		SELECT commu_seq.currval FROM dual
+	</selectKey>
+		<![CDATA[
+			INSERT INTO community
+			(
+				b_code,
+				b_title,
+				b_content,
+				b_created,
+				u_id
+			)
+			VALUES
+			(
+				commu_seq.nextval,
+				#{b_title},
+				#{b_content},
+				sysdate,
+				#{u_id}
+			)
+		]]>
+	</insert>
+	
+	<update id="updateReadCnt" parameterType="int">
+		<![CDATA[
+			UPDATE
+				community
+			SET
+				b_readcnt = b_readcnt + 1
+			WHERE
+				b_code = #{commuCode} 
+		]]>
+	</update>
+	
+	<select id="selectCommuDetail" parameterType="int" resultType="org.big.dto.CommunityDTO">
+		<![CDATA[
+			SELECT
+				b_code, b_title, b_content, b_readcnt,
+				b_created, u_id
+			FROM
+				community
+			WHERE
+				b_code = #{commuCode}
+		]]>
+	</select>
+	
+	<update id="updateCommu" parameterType="org.big.dto.CommunityDTO">
+		<![CDATA[
+			UPDATE
+				community
+			SET
+				b_title = #{commuTitle},
+				b_content = #{commuContent},
+				b_created = sysdate,
+				u_id = #{userId}
+			WHERE
+				b_code = #{commuCode}
+		]]>
+	</update>
+	
+	<update id="deleteCommu" parameterType="int">
+		<![CDATA[
+			DELETE FROM community
+			WHERE
+				b_code = #{commuCode}
+		]]>
+	</update>
+</mapper>

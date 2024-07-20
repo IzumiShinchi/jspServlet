@@ -1,0 +1,119 @@
+@charset "utf-8";
+
+/* widget list */
+.w_list .list_icon	{display: inline-block; width: 16px; height: 16px; border-radius: 5px; text-align: center;}
+.w_list .cmt_num	{margin-left: 2px;}
+.w_list .box_rank .list_rank	{display: inline-block; width: 24px; height: 24px; line-height: 24px; border-radius: 5px; text-align: center;}
+.w_list .n_rank	{position: absolute; left: 0; top: 0; width: 17px; padding-top: 2px; font-size: 11px; color: #FFF; text-align: center; z-index: 5;}
+.w_list .n_rank::after	{content: ''; position: absolute; left: 0; top: 0; border: 15px solid transparent; border-top: 15px solid #222; border-left: 15px solid #222; z-index: -1;}
+.w_list	.big_rank	{padding-left: 3px; padding-top: 3px; font-size: 14px;}
+.w_list	.big_rank::after	{border-width: 20px;}
+.w_list .new_atcG	{position: absolute; left: 0; top: 0; width: 30px; height: 30px; padding-left: 7px; box-sizing: border-box; font: 10px/20px "Arial"; color: #FFF; z-index: 5;}
+.w_list .new_atcG::after	{content: ''; position: absolute; left: 0; top; 0; border: 17px solid transparent; z-index: -1;}
+.w_list .list_link	{display: inline-block; position: absolute; left: 0; top: 0; width: 100%; height: 100%; text-indent: -9999px; z-index: 3;}
+.w_list .board_nameS .inner	{position: relative; height: 20px; line-height: 20px;}
+.w_list .board_nameS .inner:first-of-type	{border-radius: 10px 0 0 10px;}
+.w_list .board_nameS .inner:last-of-type	{border-radius: 0 10px 10px 0;}
+.w_list .board_nameS .inner:only-of-type	{border-radius: 10px;}
+.w_list .board_nameS .inner::after	{content: ''; position: absolute; right: 0; top: 0; width: 1px; height: 100%; opacity: 0.3;}
+.w_list .board_nameS .inner:last-of-type::after	{content: none;}
+.darkmode .w_list .board_nameS .inner	{margin-right: -1px;}
+.w_list .list_thumb .no_thumb	{display: inline-block; width: 100%; height: 100%; text-align: center; font-size: 24px;}
+
+/* list - normal */
+.wn .list_ctg	{margin-right: 3px;}
+
+/* list - webzine */
+.ww .list_unit>li	{display: table; width: 100%; border-collapse: collapse;}
+.ww .list_unit>li:last-child	{margin-bottom: 0;}
+.ww .list_thumb	{display: table-cell; position: relative; width: 1%; vertical-align: top;}
+.ww .list_thumb>a	{display: inline-block; overflow: hidden;}
+.ww .list_thumb.round>a	{position: relative; border-radius: 50%;}
+.ww .n_rank .list_rank	{position: absolute; left: 0; top: 0; text-align: center; z-index: 2;}
+.ww .o_rank	{position: absolute; left: 0; top: 0; width: 100%; height: 100%; font-size: 28px; opacity: 0.8; text-align: center; color: #000; z-index: 2;}
+.ww .list_body	{display: table-cell; vertical-align: middle;}
+
+/* list - gallery */
+.wg .list_vote	{display: inline-block; position: absolute; margin-left: 5px; background-color: rgba(0,0,0,0.3); border-radius: 15px; color: #FFF; z-index: 5;}
+
+.wg .hided_info .list_thumb	{float: left; background-position: center center;}
+.wg .hided_info .list_thumb::after	{content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; background: url(../images/bg_news.png) repeat-x left bottom; z-index: 1;}
+.wg .hided_info .list_body	{position: absolute; left: 0; bottom: 0; width: 100%; box-sizing: border-box; z-index: 2;}
+.wg .hided_info .board_nameS .inner	{color: #222 !important;}
+.wg .hided_info .title_link	{color: #FFF;}
+.wg .hided_info .list_summary,
+.wg .hided_info .list_info,
+.wg .hided_info .list_info a	{color: #CCC;}
+
+/* list - gallery(news) */
+.wg_news .list_thumb::after	{content: ''; position: absolute; width: 100%; height: 100%; left: 0; top: 0; background-color: #000; opacity: 0.3; z-index: 1;}
+.wg_news .round_thumb .list_thumb	{border-radius: 50%;}
+.wg_news .list_body	{position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 100%; text-align: center; z-index: 2;}
+.wg_news .board_nameS .inner	{color: #222 !important;}
+.wg_news .title_link	{color: #FFF;}
+.wg_news .list_info,
+.wg_news .list_info a	{color: #DDD !important;}
+.wg_news .list_vote	{display: inline-block; margin-top: 7px; background-color: rgba(0,0,0,0.3); border-radius: 15px; color: #FFF; z-index: 5;}
+.wg_news .list_vote i	{margin-right: 3px;}
+
+/* list - line */
+.wl .nickname	{color: #FFF;}
+
+/* swiper */
+.swiper_ctn,
+.swiper_ctn2,
+.swiper-con {
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	overflow: hidden;
+	/* Fix of Webkit flickering */
+	z-index: 1;
+}
+.swiper-wrapper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-transition-property: -webkit-transform;
+	-moz-transition-property: -moz-transform;
+	-o-transition-property: -o-transform;
+	-ms-transition-property: -ms-transform;
+	transition-property: transform;
+	-webkit-box-sizing: content-box;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+}
+.swiper-slide	{
+	-webkit-flex-shrink: 0;
+	-ms-flex: 0 0 auto;
+	flex-shrink: 0;
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+/* list slide */
+.ws.w_list	{padding-top: 0 !important; position: relative;}
+.ws	{overflow: hidden;}
+.ws .list_board .inner	{color: #222 !important;}
+.ws .swiper-slide	{background-size: cover; background-position: center center;}
+.ws .slide_info	{position: absolute; left: 0; bottom: 0; width: 100%; box-sizing: border-box; z-index: 1;}
+.ws .slide_info::after	{content: ''; position: absolute; left: 0; top: 0; width: 100%; height: 100%; background-color: #000; opacity: 0.4; z-index: -1;}
+.ws .list_title	{color: #FFF;}
+.ws .list_info	{color: #FFF !important;}
+.ws .list_info>span,
+.ws .list_vote_text	{opacity: 0.5;}
+.ws .list_vote	{display: inline-block;}
+.ink_widget .ws .swiper-pagination	{position: absolute; right: 15px; bottom: 15px; z-index: 10;}
+.ink_widget .ws .swiper-pagination-bullet	{display: inline-block; background-color: #FFF; opacity: 0.5; cursor: pointer; transition-property: width; transition-duration: 0.3s;}
+.ink_widget .ws .swiper-pagination-bullet-active	{opacity: 1; background-color: #FFF !important;}
+.ws.no_info .swiper-pagination	{right: 0; width: 100%; text-align: center;}
+.w_page_nav:focus	{outline: none;}
+
+.ws_text .inner img	{max-width: 100%; height: auto; border-radius: 10px;}

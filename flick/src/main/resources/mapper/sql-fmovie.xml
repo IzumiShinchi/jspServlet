@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.big.prj.mapper.FmovieMapper">
+	<select id="selectFmovieList" resultType="org.big.prj.dto.FmovieDTO">	<!-- 메소드 이름과 id는 같아야 한다. -->
+		<![CDATA[
+			SELECT 
+				C_CODE as contentsCode, 
+				C_TITLE as contentsTitle
+			FROM 
+				contents 
+			WHERE 
+				C_CODE LIKE 'F%'
+		]]>
+	</select>
+	<select id="selectFmovieDetail" parameterType="String" resultType="org.big.prj.dto.FmovieDTO">
+	    <![CDATA[
+	        SELECT
+	            C_CODE as contentsCode, 
+	            C_TITLE as contentsTitle
+	        FROM
+	            contents 
+	        WHERE
+	            C_CODE = #{contentsCode} 
+	    ]]>
+	</select>
+</mapper>

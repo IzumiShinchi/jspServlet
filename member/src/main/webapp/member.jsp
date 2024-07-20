@@ -5,11 +5,26 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
+<script language="javascript">
+function goPopup(){
+	var pop = window.open("jusoPopup.jsp","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
+}
+
+function jusoCallBack(roadAddrPart1,addrDetail, zipNo){
+		document.member.roadAddrPart1.value = roadAddrPart1;
+		document.member.addrDetail.value = addrDetail;
+		document.member.zipNo.value = zipNo;
+}
+
+function idCheck(){
+	var pop = window.open("idCheck.jsp","pop","width=570,height=220, scrollbars=yes, resizable=yes"); 
+}
+</script>
 </head>
 <body>
 	<h2>회원가입</h2>
 	<form name="member" action="member_ok.jsp" method="post">
-		아이디 : <input type="text" name="mId"><input type="button" value="아이디중복조회" name="idbtn"><br>
+		아이디 : <input type="text" name="mId" readonly><input type="button" value="아이디중복조회" name="idbtn" onclick="idCheck()"><br>
 		<p></p>
 		비밀번호 : <input type="password" name="mPasswd"><br>
 		<p></p> 
@@ -35,11 +50,11 @@
 				<option value="naver.com">naver.com</option>
 		</select><br>
 		<p></p>
-		우편번호 : <input type="text" name="zipNo"> <input type="button" value="우편번호검색" name="zipbtn"><br>
+		우편번호 : <input type="text" name="zipNo" readonly onclick="goPopup()"> <input type="button" value="우편번호검색" name="zipbtn" onClick="goPopup();"><br>
 		<p></p>
-		주소 : <input type="text" name="roadAddrPart1" ><br>
+		주소 : <input type="text" name="roadAddrPart1" readonly onclick="goPopup()"><br>
 		<p></p>
-		상세주소 : <input type="text" name="addrDetail" ><br>
+		상세주소 : <input type="text" name="addrDetail" readonly onclick="goPopup()"><br>
 		<p></p>
 		생년월일 : <input type="date" name="mDate"><br>
 		<p></p>

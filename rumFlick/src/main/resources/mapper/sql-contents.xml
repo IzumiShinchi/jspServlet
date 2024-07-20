@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.big.mapper.ContentsMapper">
+	<select id="contentsList" resultType="org.big.dto.ContentsDTO">
+		<![CDATA[
+			SELECT
+
+				c_title
+			FROM
+				contents
+			ORDER BY
+				c_code DESC
+		]]>
+	</select>
+	<select id="kMovieList" resultType="org.big.dto.ContentsDTO">
+		<![CDATA[
+			SELECT
+				
+				c_title
+			FROM
+				contents
+			WHERE
+				c_code like 'F%' and c_nation='korea' and c_category = '영화'
+			ORDER BY c_code DESC
+		]]>
+	</select>
+	<select id="fMovieList" resultType="org.big.dto.ContentsDTO">
+		<![CDATA[
+			SELECT
+			
+				c_title
+			FROM
+				contents
+			WHERE
+				c_code like 'F%' and c_nation!='korea' and c_category = '영화'
+			ORDER BY c_code DESC
+		]]>
+	</select>
+	<select id="tAniList" resultType="org.big.dto.ContentsDTO">
+		<![CDATA[
+			SELECT
+
+				c_title
+			FROM
+				contents
+			WHERE
+				c_code like 'F%' and c_category!='animation' and c_category = '애니메이션'
+			ORDER BY c_code DESC
+		]]>
+	</select>
+	<select id="kDramaList" resultType="org.big.dto.ContentsDTO">
+		<![CDATA[
+			SELECT
+
+				c_title
+			FROM
+				contents
+			WHERE
+				c_code like 'D%' and c_nation='korea' and c_category = '드라마'
+			ORDER BY c_code DESC
+		]]>
+	</select>
+	<select id="fDramaList" resultType="org.big.dto.ContentsDTO">
+		<![CDATA[
+			SELECT
+				
+				c_title
+			FROM
+				contents
+			WHERE
+				c_code like 'D%' and c_nation!='korea' and c_category = '드라마'
+			ORDER BY c_code DESC
+		]]>
+	</select>
+	<select id="aniList" resultType="org.big.dto.ContentsDTO">
+		<![CDATA[
+			SELECT
+				
+				c_title
+			FROM
+				contents
+			WHERE
+				c_code like 'A%'
+			ORDER BY c_code DESC
+		]]>
+	</select>
+	<select id="contentDetail" parameterType="String" resultType="org.big.dto.ContentsDTO">
+		<![CDATA[
+			SELECT
+				
+				c_title,
+				c_director,
+				c_genre,
+				c_nation,
+				c_rate,
+				c_synopsis
+			FROM
+				contents
+			WHERE
+				c_code = #{contentsCode}
+		]]>
+	</select>
+	<select id="contentsFileList" parameterType="String" resultType="org.big.dto.ContentsFileDTO">
+	<![CDATA[
+		SELECT
+			f_index, c_code, original_file_name, round(file_size/1024, 0) as file_size
+		FROM
+			contentsfile
+		WHERE
+			c_code = #{contentsCode}
+	]]>
+	</select>
+	<insert id="registContent" parameterType="org.big.dto.ContentsDTO" useGeneratedKeys="true">
+		<![CDATA[
+			INSERT INTO contents
+			(
+				c_code,
+				c_category,
+				c_title,
+				c_director,
+				c_genre,
+				c_nation,
+				c_rate,
+				c_synopsis
+			)
+			VALUES
+			(
+				#{contentsCode},
+				#{contentsCategory},
+				#{contentsTitle},
+				#{contentsDirector},
+				#{contentsGenre},
+				#{contentsNation},
+				#{contentsRate},
+				#{contentsSynopsis}
+			)
+		]]>	
+	</insert>
+	<insert id="registContentFileList" parameterType="org.big.dto.ContentsFileDTO">
+		INSERT ALL
+  		<foreach collection="list" item="item" index="index"  open="" separator=" " close="SELECT * FROM DUAL">
+	    INTO contentsfile
+	        (
+	        f_index,
+	        c_code,
+	        original_file_name,
+	        stored_file_path,
+	        file_size,
+	        created_datetime
+	         )
+	    VALUES
+	        (
+	        extractvalue(dbms_xmlgen.getxmltype('select cfile_seq.nextval - 1 from dual'),'//text()'),
+	        #{item.contentsCode},
+	        #{item.originalFileName},
+	        #{item.storedFilePath},
+	        #{item.fileSize},
+	        sysdate
+	        )    
+	    </foreach> 
+	</insert>
+	<update id="updateContent" parameterType="org.big.dto.ContentsDTO">
+		<![CDATA[
+			UPDATE contents
+			(
+				c_category,
+				c_title,
+				c_director,
+				c_genre,
+				c_nation,
+				c_rate,
+				c_synopsis
+			)
+			SET
+			(
+				#{contentsCategory},
+				#{contentsTitle},
+				#{contentsDirector},
+				#{contentsGenre},
+				#{contetnsNation},
+				#{contentsRate},
+				#{contentsSynopsis}
+			)
+			WHERE
+				c_code = #{contentsCode}
+		]]>
+	</update>
+	<delete id="deleteContent" parameterType="String">
+		<![CDATA[
+			DELETE FROM
+				contents
+			WHERE
+				c_code = #{contentsCode}
+		]]>
+	</delete>
+</mapper>

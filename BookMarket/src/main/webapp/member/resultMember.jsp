@@ -33,9 +33,9 @@
 
 			if (msg != null) {
 				if (msg.equals("0"))
-					out.println(" <h2 class='alert alert-danger'>회원정보가 수정되었습니다.</h2>");
+					out.println(" <h2 class='alert alert-danger'>회원정보를 수정하셨습니다.</h2>");
 				else if (msg.equals("1"))
-					out.println(" <h2 class='alert alert-danger'>회원가입을 축하드립니다.</h2>");
+					out.println(" <h2 class='alert alert-danger'>드디어 회원으로 가입하셨습니다.</h2>");
 				else if (msg.equals("2")) {
 					String loginId = (String) session.getAttribute("sessionId");
 					out.println(" <h2 class='alert alert-danger'>" + loginId + "님 환영합니다</h2>");

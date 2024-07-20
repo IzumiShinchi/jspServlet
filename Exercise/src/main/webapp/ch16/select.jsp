@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*"%>                   
+<%@ include file="dbconn.jsp" %>
 <html>
 <head>
 <title>Database SQL</title>
 </head>
 <body>
-<%@ include file="dbconn.jsp" %>				
 	<table width="100%" border="1">
 		<tr>
 			<th>학번</th>
@@ -14,12 +14,12 @@
 			<th>주소</th>
 			<th>연락처</th>
 		</tr>
-		<%
-			ResultSet rs = null;			
+		<%			
 			PreparedStatement pstmt = null;
+			ResultSet rs = null;
 
 			try {
-				String sql = "select * from student";
+				String sql = "SELECT * FROM STUDENT";
 				pstmt = conn.prepareStatement(sql);
 				rs = pstmt.executeQuery();
 

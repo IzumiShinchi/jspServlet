@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../resources/css/bootstrap.min.css" />
+    <title>회원 정보</title>
+</head>
+<body>
+	<div class="container py-4">
+	    <div th:include="thymeleaf/main/header :: header"></div>
+	
+	    <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+	        <div class="container-fluid py-5">
+	            <h1 class="display-5 fw-bold" th:text="${msg == '1' ? '회원 가입' : '회원 정보'}"></h1>
+	            <p class="col-md-8 fs-4" th:text="${msg == '1' ? 'Membership Joining' : 'Membership Info'}"></p>
+	        </div>
+	    </div>
+	
+	    <div class="row align-items-md-stretch text-center">
+	        <div th:if="${msg != null}">
+	            <h2 class="alert alert-danger" th:if="${msg == '0'}">회원정보를 수정하셨습니다.</h2>
+	            <h2 class="alert alert-danger" th:if="${msg == '1'}">드디어 회원으로 가입하셨습니다.</h2>
+	            <h2 class="alert alert-danger" th:if="${msg == '2'}" th:text="${loginId} + '님 환영합니다'"></h2>
+	        </div>
+	        <div th:if="${msg == null}">
+	            <h2 class="alert alert-danger">회원정보가 삭제되었습니다.</h2>
+	        </div>
+	    </div>
+	    
+	    <div th:include="thymeleaf/main/footer :: footer"></div>
+	</div>
+</body>
+</html>

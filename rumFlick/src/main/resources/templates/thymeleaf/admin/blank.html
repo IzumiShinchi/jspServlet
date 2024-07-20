@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<!-- 로그인 및 회원가입 링크 (세션이 없는 경우) -->
+	<div th:if="${sessionId == null}" class="member-action">
+	    <a class="nav-link" th:href="@{/member/loginMember}">로그인</a>
+	    <a class="nav-link" th:href="@{/member/addMember}">회원가입</a>
+	</div>
+	
+	<!-- 로그아웃 및 회원정보 수정 링크 (세션이 있으며, 사용자가 admin이 아닌 경우) -->
+	<div th:if="${sessionId != null && userId != 'admin'}" class="member-action">
+	    <a class="nav-link" th:href="@{/member/logoutMember}">로그아웃</a>
+	    <a class="nav-link" th:href="@{/member/updateMember}">회원정보 수정</a>
+	</div>
+	
+	<!-- 로그아웃, 회원정보 수정, 콘텐츠 등록 링크 (세션이 있고 사용자가 admin인 경우) -->
+	<div th:if="${sessionId != null && userId == 'admin'}" class="member-action">
+	    <a class="nav-link" th:href="@{/member/logoutMember}">로그아웃</a>
+	    <a class="nav-link" th:href="@{/member/updateMember}">회원정보 수정</a>
+	    <a class="nav-link" th:href="@{/addBook}">콘텐츠 등록</a>
+	</div>
+
+    
+    
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/books}">도서 목록</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/addBook}">도서 등록</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/editBook(edit='update')}">도서 수정</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" th:href="@{/editBook(edit='delete')}">도서 삭제</a>
+    </li>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div class="other-pages">
+    <div class="lor-header">
+        <a href="/images/logo/RumFlickLogo.png" class="lor-logo">
+            <h1>떠들어제껴BOJA</h1>
+        </a>
+    </div>
+    <div class="lor-content">
+        <form id="loginForm" th:action="@{/board/loginuser.do}">
+            <div class="input-enter">
+                <input type="text" name="userId" id="login_id" size="20" maxlength="20" placeholder="아이디를 입력해주세요">
+            </div>
+            <div class="input-enter">
+                <input type="password" name="userPw" id="login_pw" placeholder="비밀번호를 입력해주세요">
+            </div>
+            <div class="option-zone">
+                <div class="auto-login">
+                    <label class="checkbox is-outlined is-primary">
+                        <input type="checkbox" name="auto_login">
+                        <span></span>
+                        자동로그인
+                    </label>
+                </div>
+                <a href="/board/signup.do" class="reg-direction" rel="nofollow">회원가입</a>
+            </div>
+            <div class="btn-res">
+                <button type="submit">
+                    로그인
+                    <i class="far fa-spinner-third fa-spin" id="loading_lor"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
