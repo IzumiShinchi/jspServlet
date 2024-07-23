@@ -19,7 +19,7 @@
             <th>상세주소</th>
             <th>회원정보수정/회원탈퇴</th>
         </tr>
-        <tr th:each="users : ${users}">
+        <tr th:each="user : ${users}">
             <td th:text="${users.userId}"></td>
             <td th:text="${users.userPw}"></td>
             <td th:text="${users.userName}"></td>

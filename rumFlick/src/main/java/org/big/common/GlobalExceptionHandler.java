@@ -17,10 +17,11 @@ public class GlobalExceptionHandler {
         return "redirect:/error"; // 예외 처리 페이지로 리다이렉트 등
     }
 	
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handlesException(Exception e, Model model) {
+    public String handleRuntimeException(Exception e, Model model) {
         model.addAttribute("errorMessage", e.getMessage());
         return "errorPage"; // 오류 페이지로 리다이렉트
     }
+    
 }

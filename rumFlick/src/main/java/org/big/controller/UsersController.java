@@ -1,6 +1,7 @@
 package org.big.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.big.dto.UsersDTO;
 import org.big.service.UsersService;
@@ -9,9 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
@@ -61,13 +63,21 @@ public class UsersController {
     }
 	
 	@RequestMapping("/rum/idCheck.do")
-	public String idCheck() throws Exception {
-		return "thymeleaf/users//idCheck";
+	public String idCheck(@RequestParam(value = "userId", required = false) String userId, Model model) throws Exception {
+		model.addAttribute("userId", userId);
+        if (userId != null) {
+            boolean idCheck = usersService.idCheck(userId);
+            model.addAttribute("isAvailable", idCheck);
+        }
+		return "thymeleaf/users/idCheck";
 	}
 	
-	@RequestMapping("/rum/idsearch.do")
-	public String idSearch() throws Exception {
-		return "thymeleaf/users//idSearch";
+	@RequestMapping("/rum/idSearch.do")
+	public String idSearch(@RequestParam("userId") String userId, Model model) throws Exception {
+		boolean idCheck = usersService.idCheck(userId);
+        model.addAttribute("userId", userId);
+        model.addAttribute("isAvailable", idCheck);
+		return "thymeleaf/users/idSearch";
 	}
 	
 	@RequestMapping("/rum/jusopopup.do")
@@ -80,7 +90,7 @@ public class UsersController {
         String loginId = (String) session.getAttribute("sessionId");
         model.addAttribute("msg", msg);
         model.addAttribute("loginId", loginId);
-        return "signupComplete";
+        return "thymeleaf/users/signUpComplete";
     }
 	
 	@RequestMapping("/rum/login.do")
@@ -106,34 +116,72 @@ public class UsersController {
             return "login";
         }
 	}
+	
+	@GetMapping("/rum/users.do")
+    public String getUsers(Model model) throws Exception {
+        List<UsersDTO> users = usersService.getUsersDetail();
+        model.addAttribute("users", users);
+        return "usersDetail";
+    }
 
 	@RequestMapping("/rum/userDetail.do")
-	public ModelAndView userDetail(@RequestParam("userId") String userId) throws Exception {
-		ModelAndView mv = new ModelAndView("thymeleaf/users/userDetail");
-		UsersDTO users = usersService.usersDetail(userId);
-		mv.addObject("userId", userId);
-		return mv;
-	}
+	public String userDetail(@RequestParam("userId") String userId, Model model) throws Exception {
+        UsersDTO users = usersService.usersDetail(userId);
+        model.addAttribute("user", users);
+        return "thymeleaf/users/userDetail";
+    }
 	
 	
 	@GetMapping("/rum/updateUsers.do")
-    public String showUpdateUsersForm(HttpSession session, Model model) {
+    public String showUpdateUsersForm(HttpSession session, Model model) throws Exception {
         String sessionId = (String) session.getAttribute("sessionId");
         if (sessionId == null) {
             return "redirect:/rum/login.do";
         }
         
-        UsersDTO users = usersService.getUserById(sessionId);
+        UsersDTO users = usersService.getUsersById(sessionId);
         model.addAttribute("user", users);
 
         return "updateUsers";
     }
 
     @PostMapping("/rum/updateUsers.do")
-    public String updateUsers(UsersDTO users, HttpSession session) {
-        usersService.updateUsers(users);
-        session.setAttribute("sessionId", users.getuserId());
-        return "redirect:/rum/signupComplete?msg=2";
+    public String updateUsers(
+            @RequestParam("id") String userId,
+            @RequestParam("password") String userPw,
+            @RequestParam("name") String userName,
+            @RequestParam("gender") String userGender,
+            @RequestParam("birthyy") String birthYear,
+            @RequestParam("birthmm") String birthMonth,
+            @RequestParam("birthdd") String birthDay,
+            @RequestParam("phone") String userPhone,
+    		@RequestParam("nick") String userNick,
+            @RequestParam("addr") String userAddr,
+            @RequestParam("addrDetail") String userAddrDetail,
+            RedirectAttributes redirectAttributes) throws Exception {
+    	
+    	String userBirth = birthYear + "/" + birthMonth + "/" + birthDay;
+    	
+    	UsersDTO users = new UsersDTO();
+        users.setUserId(userId);
+        users.setUserPw(userPw);
+        users.setUserName(userName);
+        users.setUserBirth(userGender);
+        users.setUserGender(userBirth); // Assume userBirth is already in the correct format
+        users.setUserPhone(userPhone);
+        users.setUserNick(userNick);
+        users.setUserAddr(userAddr);
+        users.setUserAddrDetail(userAddrDetail);
+        
+        boolean isUpdated = usersService.updateUsers(users);
+
+        if (isUpdated) {
+            redirectAttributes.addFlashAttribute("message", "회원정보가 성공적으로 업데이트되었습니다.");
+            return "redirect:/rum/signUpComplete.do?msg=0";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "회원정보 업데이트에 실패했습니다.");
+            return "redirect:/rum/updateUser.do";
+        }
     }
 	
 //	@RequestMapping("/rum/updateUsers.do")
@@ -143,9 +191,24 @@ public class UsersController {
 //	}
 	
 	@RequestMapping("/rum/deleteUsers.do")
-	public String deleteUsers(UsersDTO users) throws Exception {
-		usersService.deleteUsers(users);
-		return "redirect:/rum/main.do";
+	public String deleteUsers(HttpSession session, RedirectAttributes redirectAttributes) throws Exception {
+        String sessionId = (String) session.getAttribute("sessionId");
+
+        if (sessionId == null) {
+            redirectAttributes.addFlashAttribute("error", "로그인이 필요합니다.");
+            return "redirect:/rum/login.do";
+        }
+
+        boolean isDeleted = usersService.deleteUsers(sessionId);
+
+        if (isDeleted) {
+            session.invalidate(); // 세션 무효화
+            redirectAttributes.addFlashAttribute("message", "회원탈퇴가 성공적으로 처리되었습니다.");
+            return "redirect:/rum/signUpComplete.do";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "회원탈퇴에 실패했습니다.");
+            return "redirect:/rum/users.do";
+        }
 	}
 	
 	@RequestMapping("/rum/logout.do")

@@ -25,7 +25,7 @@
 </head>
 <body>
 	<div id="app">
-		<div th:include="thymeleaf/main/header :: header"></div>
+		<div th:include="~{thymeleaf/main/header :: header}"></div>
 		<div id="container" class="ink_container header_typeB3 containerN">
 			<div id="ink_wrapper" class="ink_wrapper clearfix">
 				<div id="slideShow">
@@ -271,7 +271,7 @@
 						</div>
 					</div>
 				</div>
-				<div th:include="thymeleaf/main/footer :: footer"></div>
+				<div th:include="~{thymeleaf/main/footer :: footer}"></div>
 				</div>
 			</div>	
 

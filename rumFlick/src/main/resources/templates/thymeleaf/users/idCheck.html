@@ -10,11 +10,15 @@
                 document.getElementById("idInput").focus();
                 return false;
             }
-            location.href = "/rum/idsearch.do?id=" + userId;
+            //encodeURIComponent(userId)는 아이디 값에 특수 문자가 포함된 경우에도 URL에서 안전하게 사용할 수 있도록 인코딩하는 역할
+            location.href = "/rum/idSearch.do?userId=" + encodeURIComponent(userId);
+//             location.href = "/rum/idsearch.do?userId=" + userId;
         }
         
         function closewin() {
-            opener.document.getElementsByName("userId")[0].value = /*[[${id}]]*/ "";
+            if (window.opener && !window.opener.closed) {
+                window.opener.document.getElementsByName("userId")[0].value = /*[[${userId}]]*/ "";
+            }
             window.close();
         }
     </script>

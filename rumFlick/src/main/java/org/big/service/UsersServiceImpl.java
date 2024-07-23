@@ -1,6 +1,7 @@
 package org.big.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.big.dto.UsersDTO;
 import org.big.mapper.UsersMapper;
@@ -27,11 +28,23 @@ public class UsersServiceImpl implements UsersService {
 		usersMapper.insertUsers(users);
 	}
 	
+	// 사용자 ID의 중복 여부를 확인하는 메서드
+    public boolean idCheck(String userId) throws Exception {
+        // 실제 로직으로 DB에서 사용자 ID의 중복 여부를 확인
+        return usersMapper.idSearch(userId) == 0;	// 아이디가 없으면 true, 있으면 false
+    }
+	
 	@Override
 	public UsersDTO usersDetail(String userId) throws Exception {
 		UsersDTO users = usersMapper.usersDetail(userId);
 		return users;
+//		return usersMapper.usersDetail(userId);
 	}
+	
+	@Override
+    public List<UsersDTO> getUsersDetail() throws Exception {
+        return usersMapper.getUsersDetail();
+    }
 	
 	@Override
 	public UsersDTO getUsersById(String userId) throws Exception {
@@ -39,13 +52,13 @@ public class UsersServiceImpl implements UsersService {
 	}
 	
 	@Override
-	public void updateUsers(UsersDTO users) throws Exception {
-		usersMapper.updateUsers(users);
+	public boolean updateUsers(UsersDTO users) throws Exception {
+		return usersMapper.updateUsers(users) > 0;
 	}
 	
 	@Override
-	public void deleteUsers(UsersDTO users) throws Exception {
-		usersMapper.deleteUsers(users);
+	public boolean deleteUsers(String userId) throws Exception {
+		return usersMapper.deleteUsers(userId) > 0;
 	}
 	
 	@Override
@@ -62,7 +75,7 @@ public class UsersServiceImpl implements UsersService {
 	}
 	
 	@Override
-	public void logout(HttpSession session) {
+	public void logout(HttpSession session) throws Exception {
 		session.invalidate();	//세션 초기화
 	}
 

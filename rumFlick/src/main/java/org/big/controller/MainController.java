@@ -32,12 +32,12 @@ public class MainController {
 		return "thymeleaf/users/vefifyAge";
 	}
 	
-	@RequestMapping("/rum/login.do")
-    public String pageLogin(HttpSession session, Model model) {
-        String sessionId = (String) session.getAttribute("sessionId");
-        model.addAttribute("sessionId", sessionId);
-        return "example"; // Thymeleaf 템플릿 이름
-    }
+//	@RequestMapping("/rum/login.do")
+//    public String pageLogin(HttpSession session, Model model) {
+//        String sessionId = (String) session.getAttribute("sessionId");
+//        model.addAttribute("sessionId", sessionId);
+//        return "example"; // Thymeleaf 템플릿 이름
+//    }
 //	
 //	@RequestMapping("/openIndex.do")
 //	public ModelAndView openBoardList() throws Exception {					//	Model==DTO | View==구현한 Page(.html 등)

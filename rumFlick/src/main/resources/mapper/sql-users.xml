@@ -45,6 +45,14 @@
 				u_id = #{userId}
 		]]>
 	</select>
+		<!-- 사용자 ID 존재 여부 확인 쿼리 -->
+    <select id="idSearch" parameterType="String" resultType="int">
+		<![CDATA[
+			SELECT CASE WHEN EXISTS (
+			    SELECT 1 FROM users WHERE u_id = #{userId}
+			) THEN 1 ELSE 0 END FROM DUAL
+		]]>
+    </select>
 		<!-- 회원 가입 버튼 클릭 시 id, nickname, phone 중복 체크 -->
 	<select id="signUpCheck" resultType="String">
 		<![CDATA[
@@ -63,7 +71,7 @@
 			SELECT * FROM users WHERE u_id = #{userId}
 		]]>
 	</select>
-	<select id="getUsersById" parameterType="String" resultType="Users">
+	<select id="getUsersById" parameterType="String" resultType="org.big.dto.UsersDTO">
 		<![CDATA[
 			SELECT * FROM users WHERE u_id = #{userId}
 		]]>
