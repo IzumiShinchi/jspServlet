@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.big.prj.mapper.ReviewMapper">
+
+    <!-- 리뷰 작성 -->
+    <insert id="insertReview" parameterType="org.big.prj.dto.ReviewDTO">
+        INSERT INTO review (review_id, user_id, order_no, review_title, review_content, created_at)
+        VALUES (review_seq.NEXTVAL, #{userId}, #{orderNo}, #{reviewTitle}, #{reviewContent}, SYSDATE)
+    </insert>
+
+    <!-- 전체 Review 페이징 및 검색 기능 -->
+    <select id="getAllReviews" resultType="org.big.prj.dto.ReviewDTO">
+        SELECT * FROM (
+            SELECT r.*, ROW_NUMBER() OVER (ORDER BY r.review_id) AS rn
+            FROM review r
+            WHERE r.user_id LIKE '%' || #{search} || '%'
+            OR r.review_title LIKE '%' || #{search} || '%'
+            OR r.review_content LIKE '%' || #{search} || '%'
+        ) WHERE rn BETWEEN #{offset} + 1 AND #{offset} + #{limit}
+       		ORDER BY created_at DESC
+    </select>
+
+    <!-- 전체 Review 수를 계산 -->
+    <select id="countReviews" resultType="int">
+        SELECT COUNT(*)
+        FROM review
+        WHERE user_id LIKE '%' || #{search} || '%'
+        OR review_title LIKE '%' || #{search} || '%'
+        OR review_content LIKE '%' || #{search} || '%'
+    </select>
+
+    <!-- 리뷰 상세 조회 -->
+    <select id="getReviewById" parameterType="long" resultType="org.big.prj.dto.ReviewDTO">
+        SELECT review_id, user_id, order_no, review_title, review_content, created_at
+        FROM review
+        WHERE review_id = #{reviewId}
+    </select>
+
+    <!-- 리뷰 수정 (작성자만) -->
+    <update id="updateReview" parameterType="org.big.prj.dto.ReviewDTO">
+        UPDATE review
+        SET review_title = #{reviewTitle}, review_content = #{reviewContent}, created_at = SYSDATE
+        WHERE review_id = #{reviewId} AND user_id = #{userId}
+    </update>
+
+ <!-- 리뷰 삭제 (작성자만) -->
+    <delete id="deleteReview" parameterType="map">
+        DELETE FROM review WHERE review_id = #{reviewId} AND user_id = #{userId}
+    </delete>
+    <!-- 댓글 삽입 -->
+    <insert id="insertComment" parameterType="org.big.prj.dto.ReviewDTO">
+        INSERT INTO review (
+            review_id, 
+            user_id, 
+            review_title, 
+            review_content, 
+            created_at,
+            comment_user_id, 
+            comment_content, 
+            comment_date, 
+            comment_review, 
+            comment_level
+        )
+        VALUES (
+            review_seq.NEXTVAL, 
+            #{userId, jdbcType=VARCHAR}, 
+            'Comment Title', 
+            'Comment Content', 
+            SYSDATE,
+            #{commentUserId, jdbcType=VARCHAR}, 
+            #{commentContent, jdbcType=VARCHAR}, 
+            SYSDATE, 
+            #{commentReview, jdbcType=NUMERIC}, 
+            #{commentLevel, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <select id="getCommentsByReviewId" parameterType="long" resultType="org.big.prj.dto.ReviewDTO">
+        SELECT review_id, 
+               comment_user_id AS commentUserId, 
+               comment_content AS commentContent, 
+               comment_date AS commentDate, 
+               comment_review AS commentReview, 
+               comment_level AS commentLevel
+        FROM review
+        WHERE comment_review = #{reviewId}
+        ORDER BY comment_date ASC
+    </select>
+
+    <!-- 댓글 수정 (댓글 작성자만) -->
+    <update id="updateComment" parameterType="org.big.prj.dto.ReviewDTO">
+        UPDATE review
+        SET comment_content = #{commentContent, jdbcType=VARCHAR}, comment_date = SYSDATE
+        WHERE review_id = #{commentId} AND comment_user_id = #{commentUserId}
+    </update>
+
+    <!-- 댓글 삭제 -->
+    <delete id="deleteComment" parameterType="map">
+        DELETE FROM review
+        WHERE review_id = #{commentId} AND comment_user_id = #{commentUserId}
+    </delete>
+
+    <!-- 댓글 ID로 댓글 조회 -->
+    <select id="getCommentById" parameterType="Long" resultType="org.big.prj.dto.ReviewDTO">
+        SELECT review_id, user_id, review_title, review_content, created_at,
+               comment_user_id, comment_content, comment_date, comment_review, comment_level
+        FROM review
+        WHERE review_id = #{commentId}
+    </select>
+
+    <select id="getCommentLevel" resultType="Integer">
+        SELECT comment_level 
+        FROM review 
+        WHERE review_id = #{commentReview}
+    </select>
+
+   <!-- 관리자용 리뷰 삭제 -->
+    <delete id="adminDeleteReview" parameterType="long">
+        DELETE FROM review WHERE review_id = #{reviewId}
+    </delete>
+
+    <!-- 관리자용 댓글 삭제 -->
+    <delete id="adminDeleteComment" parameterType="long">
+        DELETE FROM review WHERE review_id = #{commentId}
+    </delete>
+
+    <!-- 리뷰와 관련된 댓글 조회 -->
+    <select id="selectReviewAndCommentsById" parameterType="long" resultType="org.big.prj.dto.ReviewDTO">
+        SELECT review_id, user_id, order_no, review_title, review_content, created_at,
+               comment_user_id, comment_content, comment_date, comment_review, comment_level
+        FROM review
+        WHERE review_id = #{reviewId} OR comment_review = #{reviewId}
+        ORDER BY comment_date DESC
+    </select>
+
+</mapper>

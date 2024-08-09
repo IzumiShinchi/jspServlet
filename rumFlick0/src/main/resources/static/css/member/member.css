@@ -1,0 +1,135 @@
+@charset "utf-8";
+
+.mb_header .bt_back svg	{margin-right: 3px;}
+
+/* mb profile */
+.mb_profile_title	{padding: 15px; text-transform: uppercase; text-align: center;}
+.mb_set	{position: relative;}
+
+/* mb wrap */
+
+/* mb content */
+.mb_content	{position: relative; background-color: #FFF;}
+
+/* mb info */
+.mb_info_table	{width: 100%; border-collapse: collapse;}
+.mb_info_table tr:last-child	{border-bottom: none;}
+.mb_info_table th	{text-align: left;}
+
+/* mb scrapped */
+.scrap_folder	{position: relative; text-align: right;}
+.scrap_folder svg	{margin-right: 3px; margin-bottom: 2px; vertical-align: middle; font-size: 16px;}
+
+.scrap_folder_ctrl	{display: inline-block; margin-left: 10px; vertical-align: top;}
+
+.scrap_folder_create .ip_bs,
+.scrap_folder_rename .ip_bs	{width: 100%;}
+
+.mb_scrapped .list_info>ul	{display: inline-block;}
+.scrap_folder_move	{display: inline-block; margin-right: 10px;}
+
+/* mb list */
+.mb_list .list_thumb,
+.mb_list .list_body {display: inline-block; vertical-align: top;}
+.mb_list>ul>li .bt_delete	{position: absolute; top: 50%; width: 40px; height: 40px; margin-top: -20px; border-radius: 50%; font-size: 16px;}
+
+.hg_mb .no_list	{padding: 50px 0; text-align: center;}
+
+/* mb_saved */
+.saved_con	{display: none; border-radius: 10px;}
+
+/* mb_document */
+.mb_document .list_browser a	{display: inline-block;}
+
+/* mb message */
+.mb_message	{margin: 0 auto; padding: 25px; box-sizing: border-box; background-color: #FFF; text-align: center;}
+.mb_message p	{margin-bottom: 25px;}
+.mb_message .ip_bs	{margin-bottom: 25px;}
+.mb_message .input_wrap	{margin-bottom: 15px;}
+.mb_message .input_wrap .ip_bs	{margin-bottom: 10px;}
+.mb_message>svg	{margin-bottom: 25px; font-size: 32px;}
+
+/* mb login */
+.mb_login .input_wrap	{margin-bottom: 5px;}
+.mb_login .input_wrap .ip_bs	{width: 100%;}
+.mb_login .ex	{position: relative; margin-bottom: 25px; text-align: left;}
+.mb_login .ex a	{position: absolute; right: 0; top: 0;}
+.mb_login .ex .keep_msg	{display: none; padding: 12px 15px; text-align: left;}
+
+/* mb signup */
+.mb_signup>h3	{padding: 15px; text-align: center;}
+
+.mb_signup .agreement_box	{height: 200px;}
+.mb_signup .agreement_box .inner	{padding: 15px;}
+.mb_signup .agreement_check	{margin-top: 15px;}
+
+.mb_signup .agreement_box h1,
+.mb_signup .agreement_box h2,
+.mb_signup .agreement_box h3	{margin-bottom: 15px;}
+.mb_signup .agreement_box p	{margin: 15px 0;}
+.mb_signup .agreement_box .module	{margin-bottom: 25px;}
+
+.mb_signup .agreement_box ol	{counter-reset: p-counter;}
+.mb_signup .agreement_box ol>li	{position: relative; counter-increment: p-counter;}
+.mb_signup .agreement_box ol>li::after	{position: absolute; left: 0; content: counter(p-counter, decimal-leading-zero);}
+
+.mb_signup .agreement .agreement_title	{padding: 10px 15px; border-bottom: none !important; font-weight: bold;}
+.mb_signup .agreement>div>ul>li:last-child	{margin-bottom: 0;}
+
+#profile_imagetag	{display: block; margin-bottom: 10px;}
+#profile_imagetag img	{margin-right: 8px; vertical-align: bottom;}
+#profile_imagetag img + .bt_bs	{vertical-align: baseline;}
+.mb_signup .ip_bs.tel	{width: 60px !important;}
+.mb_signup .i_check	{margin-right: 10px;}
+.mb_signup .i_check>span	{margin-right: 2px;}
+
+/* mb findpass */
+.mb_findpass	{text-align: center;}
+.mb_findpass form	{padding-top: 25px;}
+.mb_findpass form:last-of-type	{border-bottom: none;}
+.mb_findpass .desc	{max-width: 340px; margin: 25px auto; padding: 15px; line-height: 160%;}
+.mb_findpass .by_question ul	{margin-top: -10px;}
+.mb_findpass .by_question .ip_bs	{margin-top: 10px;}
+.mb_findpass .sbSelector	{margin-top: 10px; width: 200px;}
+.mb_findpass .ip_bs	{width: 200px;}
+
+/* mb letter */
+.top_bt_area	{position: relative;}
+.mb_letter .message_allow .bt_bs	{margin-left: 5px;}
+
+.letter_list>ul>li	{min-height: 40px;}
+.letter_list .letter_check	{display: inline-block; width: 0px; transition-property: width; transition-duration: 0.2s; vertical-align: middle; overflow: hidden;}
+.letter_list .has_check .letter_check	{width: 32px;}
+.letter_list .letter_wrap	{display: inline-block; position: relative; width: 100%; box-sizing: border-box; transition-property: width; transition-duration: 0.2s; vertical-align: middle;}
+.letter_list .has_check .letter_wrap	{width: calc(100% - 32px);}
+.letter_list .letter_title	{display: inline-block;}
+.letter_list .pf	{position: absolute !important; left: 0; top: 0;}
+.letter_list .date	{position: absolute; right: 0; top: 0;}
+.letter_list .readed	{display: inline-block; position: absolute; right: 0; top: 18px; padding: 5px; border-radius: 12px; line-height: 1.0em; color: #FFF;}
+.letter_list .bt_area	{padding-top: 15px; margin: 0 -1px -1px;}
+.letter_list .bt_area .bt_bs,
+.letter_list .bt_area .i_check	{margin-right: 5px;}
+.letter_list .bt_area .modify_list	{display: none;}
+
+.letter_header	{position: relative; min-height: 40px;}
+.letter_header h1	{font-weight: normal;}
+.letter_header .pf	{position: absolute !important;}
+.letter_header .letter_info span	{margin-right: 10px;}
+.letter_header .reply_text	{display: none;}
+.letter_ctrl	{position: relative;}
+.letter_ctrl button	{margin-right: 5px;}
+.letter_ctrl .bt_list	{position: absolute;}
+
+/* mb freind */
+.friend_list .friend_info	{margin-top: 5px;}
+.friend_list .friend_info>span	{margin-right: 10px;}
+
+/* paging */
+.paging	{position: relative; height: 50px; padding: 0 36px; margin-top: 15px; background-color: #FFF; box-sizing: border-box; text-align: center;}
+.paging .page_num	{display: inline-block; margin: 0 3px;}
+.paging .page_num.on	{border-radius: 2px;}
+.paging .bt_last	{margin-left: 5px;}
+.paging .bt_first	{margin-right: 5px;}
+.paging .bt_prev	{display: inline-block; position: absolute; top: 0; left: 0; height: 50px; line-height: 50px; padding: 0 10px; text-align: center;}
+.paging .bt_prev svg	{height: 15px; padding-bottom: 3px; vertical-align: middle;}
+.paging .bt_next	{left: auto; right: 0; border-right: none !important;}

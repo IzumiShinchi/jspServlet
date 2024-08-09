@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Notice Detail</title>
+<link rel="stylesheet" th:href="@{/css/commu/noticeStyle.css}"></link>
+</head>
+<body>
+	<h2>공지하겠습니다.</h2>
+	<input type="hidden" name="sessionId" value=sessionId>
+	<form id="frm" method="post">
+		<table class="notice_detail">
+			<tbody>
+				<tr>
+					<th scope="row">글 번호</th>
+					<td th:text="${notice.nCode}"></td>
+					<th scope="row">조회수</th>
+					<td th:text="${notice.nReadCnt}"></td>
+				</tr>
+				<tr>
+					<th scope="row">작성자</th>
+					<td th:text="${notice.uId}"></td>
+					<th scope="row">작성일</th>
+					<td th:text="${#dates.format(notice.nCreated, 'yyyy-MM-dd HH:mm:ss')}"></td>
+				</tr>
+				<tr>
+					<th scope="row">제목</th>
+						<td colspan="3">
+							<input type="text" id="title" name="title"
+									th:value="${notice.nTitle}">
+						</td>
+				</tr>
+				<tr>
+					<td colspan="4" class="view_text">
+						<textarea title="내용" id="content" name="content"
+									th:text="${notice.nContent}"></textarea>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<input type="hidden" name="noticeCode" th:value="${notice.nCode}">
+	</form>
+	
+	<a href="#this" id="list" class="btn">목록으로</a>
+<!-- 	<input type="button" id="list" value="목록으로" class="btn"> -->
+	<input type="button" id="edit" value="수정하기" class="btn">
+	<input type="button" id="delete" value="삭제하기" class="btn">
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#list").on("click", function() {
+				location.href = "/notice/openNotice.do";
+			});
+			$("#edit").on("click", function() {
+				var frm = $("#frm")[0];
+				frm.action = "/notice/updateNotice.do";
+				frm.submit();
+			});
+			$("#delete").on("click", function() {
+				var frm = $("#frm")[0];
+				frm.action = "/notice/deleteNotice.do";
+				frm.submit();
+			});
+		});
+	</script>
+</body>
+</html>

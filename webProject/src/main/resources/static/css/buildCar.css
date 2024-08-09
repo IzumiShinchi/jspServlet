@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Gothic+A1&display=swap');
+
+body {
+    background-color: black;
+    color: white;
+    text-align: center;
+   font-family: 'Gothic A1', sans-serif;
+}
+
+.intro-text {
+    font-size: 2rem;
+    margin: 30px 0;
+}
+
+.car-options, .color-options, .option-options {
+    margin: 20px 0;
+}
+
+.car-option img, .color-option img, .option-option img {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+
+.selected-image {
+    width: 300px;
+    height: 200px;
+    margin: 20px 0;
+}
+
+#fixedLeft {
+    position: sticky;
+    top: 0;
+}
+
+.modal-body img {
+    margin-bottom: 20px;
+}

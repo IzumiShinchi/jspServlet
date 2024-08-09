@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Notice</title>
+<link rel="stylesheet" th:href="@{/css/commu/noticeStyle.css}"></link>
+<script>
+// 	var mNo = "";
+// 	var mId = "";
+// 	if(mId != null) {
+// 		mNo = session.getAttribute("mNo");
+// 		mId = session.getAttribute("mId");
+// 		sesstionId = session.getId();
+// 		alert("1111111111111111");
+// 	}
+</script>
+</head>
+<body>
+	<div class="container">
+		<h2>공지글 등록</h2>
+		<form id="frm" name="frm" method="post" th:action="@{/notice/insertNotice.do}">
+			<table class="notice_detail">
+				<tr>
+					<td>제목</td>
+					<td><input type="text" id="nTitle" name="nTitle"></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<textarea id="nContent" name="nContent"></textarea>
+					</td>
+				</tr>
+			</table>
+			<input type="hidden" id="uId" name="uId" value=rich>
+			<input type="submit" id="submit" value="저장" class="btn">
+		</form>
+	</div>
+</body>
+</html>

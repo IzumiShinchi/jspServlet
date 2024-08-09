@@ -50,13 +50,13 @@ function idCheck(){
 <!-- 		<p></p> -->
 		우편번호 : <input type="text" name="zipNo" readonly onclick="goPopup()"> <input type="button" value="우편번호검색" name="zipbtn" onClick="goPopup();"><br>
 		<p></p>
-		주소 : <input type="text" name="userAddr" readonly onclick="goPopup()"><br>
+		주소 : <input type="text" name="roadAddrPart1" readonly onclick="goPopup()"><br>
 		<p></p>
-		상세주소 : <input type="text" name="userAddrDetail" readonly onclick="goPopup()"><br>
+		상세주소 : <input type="text" name="addrDetail" readonly onclick="goPopup()"><br>
 		<p></p>
 		<input type="hidden" name="userIp" value="<%=request.getRemoteAddr()%>">
 		<input type="submit" value="가입하기">
-		<input type="reset" value="취소">
+		<input type="reset" value="취소" onclick="history.back()">
 	</form>
 </body>
 </html>

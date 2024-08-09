@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" sizes="192x192" href="/images/logo/RumFlickTapLogo.png" type="image/jpeg">
+<link rel="stylesheet" href="/css/util.css">
+<link rel="stylesheet" href="https://unpkg.com/minibarjs@latest/dist/minibar.min.css" type="text/css">
+<link rel="stylesheet" href="/css/default.css">
+<link rel="stylesheet" href="/css/ext/layout.css">
+<link rel="stylesheet" href="/css/ext/layout_pc.css">
+<link rel="stylesheet" href="/css/ext/widget.css">
+<link rel="stylesheet" href="/css/ext/widget_pc.css">
+<link rel="stylesheet" href="/css/css_color/b_grey.css">
+<link rel="stylesheet" href="/css/css_color/b_grey_pc.css">
+<link rel="stylesheet" href="/css/css_color/c_redBlack.css">
+<link rel="stylesheet" href="/css/css_color/c_redBlack_pc.css">
+<link rel="stylesheet" href="/css/layoutline.css">
+<title>Contents Detail</title>
+</head>
+<body>
+<div id="app">
+	<div th:insert="~{thymeleaf/index/header :: header}"></div>
+	<div id="container">
+		<div class="view-content" >
+	        <div class="content">
+	        	<div>
+	        		<img th:src="${#strings.substring(storedFilePath, 6)}"/>
+	        	</div>
+	            <div class="player-header">
+	                <div class="share-title">
+		                <h2 id="title" name="contentTitle" th:text="${content.cTitle}"></h2>
+		                <div class="datetime-hit">
+		                    <span id="rate" name="contentRate" th:text="${content.cRate  + '세 미만 시청 가능등급'}"></span>
+	                        <span class="liner" id="director" name="contentDirector" th:text="${content.cDirector}"></span>
+	                        <span class="liner" id="genre" name="contentGenre" th:text="${content.cGenre}"></span>
+	                        <span class="liner">
+	                        	<i class="fal fa-star vote-grade" id="nation" name="contentNation" th:text="${content.cNation}"></i>
+							</span>
+		                </div>
+		            </div>
+		            <div class="utility-button">
+	<!-- 	                <a href="#" id="good_button" rel="nofollow"> -->
+	<!-- 	                    <i class="fal fa-heart"></i> -->
+	<!-- 	                    <span>좋아요 -->
+	<!-- 	                        <em>169</em> -->
+	<!-- 	                    </span> -->
+	<!-- 	                </a> -->
+		                <a href="#" rel="modal:open nofollow" id="video_sns_share">
+		                    <i class="fal fa-share"></i>
+		                    <span>공유</span>
+		                </a>
+		                <a href="#" rel="modal:open nofollow">
+		                    <i class="fal fa-siren-on"></i>
+		                    <span>신고</span>
+						</a>
+		                <a href="javascript:void(0);" onclick="view_scrap('kr_movie' , 28836,1017163,0)" rel="nofollow">
+		                    <i class="fal fa-bookmark"></i>
+		                    <span>스크랩</span>
+						</a>
+	                </div>
+	            </div>
+	            <div class="player-posted">
+	                <div class="posted-content">
+	                    <div class="summary">
+	                        <span class="title">줄거리</span>
+	                    </div>
+	                    <div class="overview">
+	                        <p id="synopsis" name="contentSynopsis" th:text="${content.cSynopsis}"></p>
+	                    </div>
+	                </div>
+	            </div>
+				<div class="view-comment-area">
+	                <div class="comment-header">
+		                <span class="title">
+		                    댓글<em></em>
+		                </span>
+					</div>
+		            <div class="comment-write-item">
+		                <div id="view_comment_write_wrap">
+		                    <form name="fviewcomment" id="fviewcomment" action="https://tv48.wiki/bbs/write_comment_update.php" onsubmit="return fviewcomment_submit(this);" method="post" autocomplete="off">
+		                        <input type="hidden" name="w" value="c" id="w">
+		                        <input type="hidden" name="bo_table" value="kr_movie">
+		                        <input type="hidden" name="wr_id" value="28836">
+		                        <input type="hidden" name="comment_id" value="" id="comment_id">
+		                        <input type="hidden" name="comment_url" value="https://tv48.wiki/bbs/view_comment.php?bo_table=kr_movie&amp;wr_id=28836&amp;crows=200" id="comment_url">
+		                        <input type="hidden" name="crows" value="200">
+		                        <input type="hidden" name="c_page" value="" id="comment_page">
+		                        <input type="hidden" name="sca" value="">
+		                        <input type="hidden" name="sfl" value="">
+		                        <input type="hidden" name="stx" value="">
+		                        <input type="hidden" name="spt" value="">
+		                        <input type="hidden" name="is_good" value="">
+		                        <input type="hidden" name="wr_rate" id="wr_rate" value="0">
+		                        <script src="https://assets.request-support.com/js/now.rate.js"></script>
+	                            <div class="write-form">
+	                                <div class="comment-profile-images-rows">
+	                                    <img src="https://assets.request-support.com/images/no_profile.gif?ver=1" width="40" height="40" alt="profile_image">
+	                                </div>                
+	                                <div class="write-input">
+	                                    <textarea id="comment_write_content" name="wr_content" title="댓글내용 입력" maxlength="10000" placeholder="댓글을 입력해주세요
+	                                    스포성 댓글은 규정 위반이며 무통보 삭제 처리 될 수 있습니다
+	                                    자료요청은 사이트 하단 메뉴를 통해 확인 바라며 타인에게 욕설은 가이드라인 위반에 의거 차단 조치 될 수 있습니다">
+	                                    </textarea>
+	                                </div>
+	                            </div>
+	                            <div class="cmt-rw" style="justify-content:flex-end">
+	                                <div class="comment-write-btn">
+	                                    <button type="button" id="comment_submit_button" class="write-proceed" onclick="ajax_submit_comment('viewcomment');">댓글등록</button>
+	                                    <div id="comment_submit_loading">
+	                                        <i class="far fa-spinner-third fa-spin" id="comment_loading"></i>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <script>
+	                            $(document).on("keyup change", "textarea#comment_write_content[maxlength]", function() {
+	                                var str = $(this).val()
+	                                var mx = parseInt($(this).attr("maxlength"))
+	                                if (str.length > mx) {
+	                                    $(this).val(str.substr(0, mx));
+	                                    return false;
+	                                }
+	                            });
+	                            </script>
+	                        </form>
+	                    </div>
+	                </div>
+	                <div id="viewcomment" class="comment-content">
+	                    <div id="c_29260" class="cmt-rows ">
+	                        <div class="comment-profile-images-rows">
+	                            <img src="https://assets.request-support.com/images/no_profile.gif?ver=1" width="40" height="40" alt="profile_image">
+	                        </div>
+	                        <div class="ncname">
+	                            <div class="nick-date">
+	                                <span>닉퓨리</span>
+	                                <span>2일 전</span>
+	                            </div>
+	                            <div class="mentioned">
+	                                <p>
+	                                <br>Bleeding, Breeding, Feeding. 
+	                                </p>
+	                            </div>
+	                            <div class="other-comment-like">
+	                                <a href="#" onclick="comment_good('kr_movie', '28836', 'good', 'c_good29260', '29260'); return false;">
+	                                    <span>
+	                                        <i class="fal fa-heart"></i>
+	                                        좋아요 <em id="c_good29260" class="good-count">0</em>
+	                                    </span>
+	                                </a>
+	                                <a href="http://tv48.wiki/kr_movie/28836?rewrite=1&amp;c_id=29260&amp;w=c#view_comment_write_wrap" onclick="comment_box('29260', 'c'); return false;">답변</a>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <div id="pagination" class="xs-pt-40">
+	                        <div class="prev">
+	                        	<a href="javascript:;" onclick="ajax_comment_page('viewcomment', 'https://tv48.wiki/bbs/view_comment.php?bo_table=kr_movie&amp;wr_id=28836&amp;crows=200&amp;c_page=1', '1');">
+	                            	<i class="fal fa-angle-double-left"></i>
+	                            </a>
+	                            <a class="previously">
+	                                <i class="fal fa-angle-left"></i>
+								</a>
+							</div>
+<!-- 							<div class="page-number"> -->
+<!-- 								<a href="javascript:;" onclick="ajax_comment_page('viewcomment', 'https://tv48.wiki/bbs/view_comment.php?bo_table=kr_movie&amp;wr_id=28836&amp;crows=200&amp;c_page=1', '1');">1</a> -->
+<!-- 								<a href="javascript:;" class="active">2</a> -->
+<!-- 	                        </div> -->
+	                        <div class="next">
+	                            <a class="nexton">
+	                                <i class="fal fa-angle-right"></i>
+	                            </a>
+	                            <a class="pageing-item-link">
+	                                <i class="fal fa-angle-double-right"></i>
+	                            </a>
+	                        </div>
+	                    </div>
+					</div>
+					<script>
+					    var save_before = '';
+					    var save_html = document.getElementById('view_comment_write_wrap').innerHTML;
+					
+					
+					   function good_and_write()
+					   {
+					    var f = document.fviewcomment;
+					    if (fviewcomment_submit(f)) {
+					        f.is_good.value = 1;
+					        f.submit();
+					    } else {
+					        f.is_good.value = 0;
+					    }
+					}
+					
+					function fviewcomment_submit(f)
+					{
+					
+					    var pattern = /(^\s*)|(\s*$)/g; // \s 공백 문자
+					
+					    f.is_good.value = 0;
+					
+					    var subject = "";
+					    var content = "";
+					    $.ajax({
+					        url: base_ajax+"/ajax.filter.php",
+					        type: "POST",
+					        data: {
+					            "subject": "",
+					            "content": f.comment_write_content.value
+					        },
+					        dataType: "json",
+					        async: false,
+					        cache: false,
+					        success: function(data, textStatus) {
+					            subject = data.subject;
+					            content = data.content;
+					        }
+					    });
+					
+					    if (content) {
+					        alert("알수 없는 오류가 발생하였습니다 : Code2 ( 관리자문의 )");
+					        f.comment_write_content.focus();
+					        return false;
+					    }
+					
+					    // 양쪽 공백 없애기
+					    var pattern = /(^\s*)|(\s*$)/g; // \s 공백 문자
+					    document.getElementById('comment_write_content').value = document.getElementById('comment_write_content').value.replace(pattern, "");
+					    if (!document.getElementById("comment_write_content").value) {
+					        alertify.error("댓글 내용을 입력해주세요.");
+					        return false;
+					    } 
+					    set_comment_token(f);
+					    //document.getElementById("comment_submit_button").disabled = "disabled";
+					    
+					
+					    return true;
+					}
+					
+					function comment_box(comment_id, work)
+					{
+					    var el_id,
+					    form_el = 'fviewcomment',
+					    respond = document.getElementById(form_el);
+					
+					    // 댓글 아이디가 넘어오면 답변, 수정
+					    if (comment_id)
+					    {
+					        if (work == 'c')
+					            el_id = 'reply_' + comment_id;
+					        else
+					            el_id = 'edit_' + comment_id;
+					    }
+					    else
+					        el_id = 'view_comment_write_wrap';
+					
+					    if (save_before != el_id)
+					    {
+					        if (save_before)
+					        {
+					            document.getElementById(save_before).style.display = 'none';
+					        }
+					
+					        document.getElementById(el_id).style.display = '';
+					        document.getElementById(el_id).appendChild(respond);
+					        //입력값 초기화
+					        document.getElementById('comment_write_content').value = '';
+					        
+					        // 댓글 수정
+					        if (work == 'cu')
+					        {
+					            document.getElementById('comment_write_content').value = document.getElementById('save_comment_' + comment_id).value;
+					        }
+					        document.getElementById('comment_id').value = comment_id;
+					        document.getElementById('w').value = work;
+					
+					        // 페이지
+					        if (comment_id) {
+					            document.getElementById('comment_page').value = document.getElementById('comment_page_'+comment_id).value;
+					            document.getElementById('comment_url').value = document.getElementById('comment_url_'+comment_id).value;
+					        } else {
+					            document.getElementById('comment_page').value = '';
+					            document.getElementById('comment_url').value = 'https://tv48.wiki/bbs/view_comment.php?bo_table=kr_movie&wr_id=28836&crows=200';
+					        }
+					
+					        if(save_before)
+					            $("#captcha_reload").trigger("click");
+					
+					        save_before = el_id;
+					    }
+					}
+					
+					function is_empty(ed)
+					{
+					    ed = ed.replace(/(^\s*)|(\s*$)/g, "");
+					    ed = ed.replace(/[&]nbsp[;]/gi,""); 
+					    ed = ed.replace(/[<]br[^>]*[>]/gi, "");
+					    ed = ed.replace(/[<]div[^>]*[>]/gi, "");
+					    ed = ed.replace(/[<][\/]div[^>]*[>]/gi, "");
+					    ed = ed.replace(/\s/g, "");
+					
+					    return !ed;
+					}
+					
+					function comment_delete()
+					{
+					    return confirm("이 댓글을 삭제하시겠습니까?");
+					}
+					
+					comment_box('', 'c'); 
+					
+					
+					</script><script src="https://assets.request-support.com/js/md5.js"></script>
+				</div>
+		    </div>
+		</div>
+		<script>
+		    var swiper = new Swiper('.swiper-free-start', {
+		        freeMode: true,
+		        slidesPerView: 'auto',
+		        spaceBetween: 0,
+		    });
+		
+		    $(document).ready(function() {
+		        $(window).scroll(function() {
+		            if ($(this).scrollTop() > 100) {
+		                $('.video-remote').show();
+		            } else {
+		                $('.video-remote').hide();
+		            }
+		        });
+		        var renewURL = location.href;
+		        if (!renewURL.match('#')) {
+		            if (typeof (history.pushState) != "undefined") {
+		                renewURL += '#01d69eb7WRatR5FU';
+		                history.pushState(null,null,renewURL);
+		            }
+		        }
+		                $('.playstart lite-iframe').iframeTracker({
+		            blurCallback: function(event) {
+		                $.ajax({
+		                    type: "GET",
+		                    url: base_ajax+'/ajax.detecting.php'
+		                });
+		            }
+			    });
+		                var iframeTrigger = false;
+		        $('.playstart lite-iframe').iframeTracker({
+		            blurCallback: function(event) {
+		                if (iframeTrigger === true) { return false; }
+		                iframeTrigger = true;
+		                $.ajax({
+		                    type: "GET",
+		                    url: base_ajax+'/ajax.video.trigger.php'
+		                });
+		
+		            }
+			    });
+		
+		    });
+		
+		    $(function() {
+		    
+		        $("#good_button, #nogood_button").click(function() {
+		            var $tx;
+		            excute_good(this.href, $(this), $tx);
+		            return false;
+		        });
+		    });
+		
+		    function excute_good(href, $el, $tx) {
+		        $.post(
+		            href, {
+		                js: "on"
+		            },
+		            function(data) {
+		                if (data.error) {
+		                    alertify.error(data.error);
+		                    return false;
+		                }
+		                if (data.count) {
+		                    $el.find("em").text(number_format(String(data.count)));
+		                    alertify.success("이 글을 추천하였습니다.");
+		                }
+		            }, "json"
+		        );
+		    }
+		</script>
+	    <div id="footer">
+	        <div class="notice-entire">
+	            <div class="inner">
+	                <div class="items-box">
+	                    <a href="/rumflick/notice.do" class="board-target">공지사항</a>
+	                    <div class="subject-field">
+	                        <a href="/rumflick/notice.do" class="target">2024/07/09 - 서버 점검 안내</a>
+	                    </div>
+	                </div>
+	                <div class="socialmedia">
+	                	<a href="#" class="round-box" target="_blank">
+		                	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+								<path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
+							</svg>
+                    	</a>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+		<div class="ink_footer_wrap" th:insert="~{thymeleaf/index/footer :: footer}"></div>
+	    <div class="windows-scroll" style="display: block;">
+	        <a href="#">
+	            <i class="fas fa-triangle"></i>
+	        </a>
+	    </div>
+	</div>
+</div>
+</body>
+</html>

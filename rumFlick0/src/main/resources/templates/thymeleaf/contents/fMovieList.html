@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>외국 영화</title>
+<link rel="stylesheet" href="https://unpkg.com/minibarjs@latest/dist/minibar.min.css" type="text/css">
+<link rel="stylesheet" href="/css/util.css">
+<link rel="stylesheet" href="/css/default.css">
+<script>
+	if (contents == null) {
+	    logger.warn("contents 객체가 null입니다.");
+	}
+</script>
+</head>
+<body>
+<div id="app">
+	<div th:include="thymeleaf/main/header :: header"></div>
+    <div id="container">
+        <div class="content">
+            <div class="content-banner"></div>
+				<div id="movie-container" th:if="${contents != null}">
+			    	<div class="movie-header">
+						<div class="subject"><h2>외국영화</h2></div>
+						<div class="category ">
+							<div class="multi-nw-dropdown"></div>
+			        	</div>
+			    	</div>
+			    	<ul>
+						<li th:each="list : ${list}, fileList : ${filelist}">
+							<a th:href="@{/rum/contentdetail.do(contentsCode=${list.contentsCode})}" class="thumb">
+								<div class="poster">
+									<img th:src="@{/${filelist.storedFilePath}(filelist.storedFilePath=${list.storedFilePath})}" th:title="${filelist.originalFileName}"> 
+								</div>
+							</a>
+							<div class="title">
+								<a href="#"><strong>경찰서를 털어라</strong></a>
+							</div>
+						</li>
+						
+						<li th:each="list : ${contents.fileList}">
+							<a href="/noonoo/program_view.php?id=119146" class="thumb">
+								<div class="poster">
+									<img src="https://nunu2.tv/data/noonoo/program/2407/05bbc6dbc7914cb71bea4eb610308f8816245f988ff31a0f36c26078ba299f50"> 
+								</div>
+							</a>
+							<div class="title">
+								<a href="/noonoo/program_view.php?id=119146"><strong>범죄도시 4</strong></a>
+							</div>
+							<div class="star">
+								<span>평점</span><strong>0</strong>
+							</div>
+						</li>
+						<li>
+							<a href="/noonoo/program_view.php?id=119011" class="thumb">
+								<div class="poster">
+									<img src="https://nunu2.tv/data/noonoo/program/2407/85860245d3a97e7511b9d687977f8751faf2c3db35924e266045d646b8f06ee7"> 
+								</div>
+							</a>
+							<div class="title">
+								<a href="/noonoo/program_view.php?id=119011"><strong>강철비 2: 정상회담 감독판</strong></a>
+							</div>
+							<div class="star">
+								<span>평점</span><strong>0</strong>
+							</div>
+						</li>						
+						<li>
+							<a href="/noonoo/program_view.php?id=118894" class="thumb">
+								<div class="poster">
+									<img src="https://nunu2.tv/data/noonoo/program/2407/cb5db557d16343f5f5df1e0c530c852a83350a8f874b80d6a6f71a25ce082004"> 
+								</div>
+							</a>
+							<div class="title">
+								<a href="/noonoo/program_view.php?id=118894"><strong>설계자</strong></a>
+							</div>
+							<div class="star">
+								<span>평점</span><strong>0</strong>
+							</div>
+						</li>
+						<li>
+							<a href="/noonoo/program_view.php?id=118867" class="thumb">
+								<div class="poster">
+									<img src="https://nunu2.tv/data/noonoo/program/2407/5673a89fbc83808ae6e025235451f01d2b2e09a11b2209a7f4f5fe370b9bf1fd"> 
+								</div>
+							</a>
+							<div class="title">
+								<a href="/noonoo/program_view.php?id=118867"><strong>지옥화</strong></a>
+							</div>
+							<div class="star">
+								<span>평점</span><strong>0</strong>
+							</div>
+						</li>
+						
+					</ul>
+				    <div class="paging">
+				        <nav class="pg_wrap"><span class="pg"><span class="sound_only">열린</span><strong class="pg_current">1</strong><span class="sound_only">페이지</span>
+							<a href="program_list.php?section=kr_movie&amp;page=2" class="pg_page">2<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=3" class="pg_page">3<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=4" class="pg_page">4<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=5" class="pg_page">5<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=6" class="pg_page">6<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=7" class="pg_page">7<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=8" class="pg_page">8<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=9" class="pg_page">9<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=10" class="pg_page">10<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=11" class="pg_page pg_next">다음</a>
+							<a href="program_list.php?section=kr_movie&amp;page=415" class="pg_page pg_end">맨끝</a>
+							</span>
+						</nav>
+					</div>
+				</div>
+				<div th:if="${contents == null}">
+				    <p>해당 내용이 없습니다.</p>
+				</div>
+			</div>
+        	<div th:include="thymeleaf/main/footer :: footer"></div>
+		<button class="ink_bt_top" style="display: block;"><i class="fas fa-angle-up"></i></button>						
+    </div>
+</div>
+</body>
+</html>

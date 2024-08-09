@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RumFlick</title>
+  <link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+  <div id="container">    
+    <header>
+      <div id="logo"class="logo">
+		<a href="/" title="RumFlick">
+			<img src="/images/logo/cooltext.png" alt="RumFlick" style="margin-top: 5px;">
+		</a>
+      </div>
+      <nav>
+        <ul id="topMenu">
+          <li><a href="#">Category <span>▼</span></a>
+            <ul>
+              <li><a href="/rum/movie.do">Film/Theatre</a></li>
+              <li><a href="/rum/drama.do">Drama</a></li>
+              <li><a href="/rum/ani.do">Animation</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Community <span>▼</span></a>
+            <ul>
+              <li><a th:href="@{/notice/openNotice.do(sessionId=${sessionId})}">Notice</a></li>
+              <li><a th:href="@{/board/openBoardList.do}">it수다</a></li>
+            </ul>
+          </li>
+          <li><a href="/leaflet/leaflet.do">갤러리</a></li>
+          <li><a href="/rumflick/login.do">로그인</a></li>
+        </ul>
+      </nav>
+    </header>
+    <div id="slideShow">
+      <div id="slides">
+		<a href="https://www.festival-cannes.com/"><img src="../images/slide/festival_de_cannes.png" alt=""></a>
+		<a href="https://www.berlinale.de/"><img src="/images/slide/berlin.png" alt=""></a>
+		<a href="https://www.labiennale.org/"><img src="/images/slide/venice_file_festival.png" alt=""></a>
+		<a href="https://www.biff.kr/"><img src="/images/slide/biff.jpg" alt=""></a>
+		<a href="https://www.jeonjufest.kr/"><img src="/images/slide/jiff.png" alt=""></a>
+		<a href="https://www.kmdb.or.kr/"><img src="/images/slide/film_festival.jpg" alt=""></a>
+		<script src="/js/autoslideshow.js"></script>
+      </div>
+    </div>
+    <div id="contents">
+      <div id="tabMenu">
+        <input type="radio" id="tab1" name="tabs" checked>
+        <label for="tab1">공지사항</label>
+        <input type="radio" id="tab2" name="tabs">
+        <label for="tab2">갤러리</label>      
+        <div id="notice" class="tabContent">
+          <h2>공지사항 내용입니다.</h2>
+          <ul>            
+            <li>
+            	<a href="https://www.safekorea.go.kr/idsiSFK/neo/sfk/cs/contents/prevent/SDIJKM5101.jsp?menuSeq=374" class="sec-1">
+            	&emsp;대피 관련
+				</a>
+			</li>
+            <li  th:text="'Session ID: ' + ${sessionId}"></li>
+            <li>[참가 모집] 여름 방학 기간, 오름 체험단을 모집합니다.</li>
+            <li>겨울, 추천 여행지</li>
+            <li>가을, 추천 여행지</li>            
+          </ul>
+        </div>
+        <div id="gallery" class="tabContent">
+          <h2>갤러리 내용입니다.</h2>
+          <ul>
+            <li><img th:src="@{/images/viewimg/man from earth.jpg}"></li>
+            <li><img th:src="@{/images/viewimg/Night_Of_The_Living_Dead.jpg}"></li>
+            <li><img th:src="@{/images/viewimg/casablanca.jpg}"></li>                 
+          </ul>
+        </div>        
+      </div>
+      <div id="links">
+		<ul>
+			<li>
+				<a href="https://www.netflix.com/">
+					<span id="quick-icon1"></span>
+					<!-- <p>넷플릭스</p> -->
+				</a>
+			</li>
+			<li>
+				<a href="https://www.wavve.com/">
+					<span id="quick-icon2"></span>
+					<!-- <p>웨이브</p> -->
+				</a>
+			</li>
+			<li>
+				<a href="https://www.coupangplay.com/">
+					<span id="quick-icon3"></span>
+					<!-- <p>쿠팡플레이</p> -->
+				</a>
+			</li>
+		</ul>
+	</div>
+    </div>  
+    <footer>    
+      <div id="bottomMenu">
+   		<a href="https://extmovie.com" rel="home">
+   			<img src="/images/logo/SulJeokPen.png" alt="술적펜">
+		</a>
+        <ul>
+          <li><a href="#" class="liner"><span>사이트 소개</span></a></li>
+          <li><a href="#" class="liner"><span>이용약관</span></a></li>
+          <li><a href="#" class="liner"><span>개인정보 취급방침</span></a></li>
+          <li><a href="#" class="liner"><span>고객센터</span></a></li>
+          <li><a href="#" rel="modal:open nofollow" class="liner"><span>자료요청</span></a></li>
+		  <li><a href="/?device=mobile" class="liner" rel="nofollow"><span>모바일 버전</span></a></li>
+		  <li><a href="#" class="liner" rel="nofollow"><span>저작권 보호센터</span></a></li>
+        </ul>
+        <div id="sns">
+          <ul>
+            <li><a href="https://www.facebook.com/"><img th:src="@{/images/sns-1.png}"></a></li>
+            <li><a href="https://www.youtube.com/"><img th:src="@{/images/sns-2.png}"></a></li>
+            <li><a href="https://www.instagram.com/"><img th:src="@{/images/sns-3.png}"></a></li>
+          </ul>
+        </div>
+      </div>
+      <div id="company" class="company">
+        <p>Copyright© <a href="https://exit.com">RumFlick</a> All rights reserved.</p>
+        <p>럼플릭 2024년 레이아웃, 만드는 중</p> 
+      </div>     
+    </footer>  
+  </div> 
+</body>
+</html>

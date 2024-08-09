@@ -4,8 +4,22 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인</title>
+<script>
+	var mNo = "";
+	var mId = "";
+// 	var sessionId = "";
+	
+	if(session.getAttribute("mId") != null) {
+		mNo = session.getAttribute("mNo");
+		mId = session.getAttribute("mId");
+	}
+// 	if(session.getId() != null) {
+// 		sessionId = session.getId();
+// 	}
+</script>
 </head>
 <body>
+<!-- <input type="hidden" name="sessionId" value="sessionId">	 -->
 	<%
 		String mNo = "";
 		String mId = "";
@@ -31,6 +45,7 @@
 		else if(!mId.equals("")) {
 	%>
 			<h3><%=mId%>님, 환영합니다.</h3>
+<%-- 			<a href="/rum/main.do?sessionId=<%=session.getId()%>">메인 페이지</a> --%>
 			<a href="/rum/main.do">메인 페이지</a>
 			<br>
 			<a href="/rum/edit.do?no=<%=mNo%>">회원정보수정</a>
@@ -47,7 +62,7 @@
 			아이디 : <input type="text" name="mId"><br>
 			비밀번호 : <input type="password" name="mPasswd"><br>
 			<input type="submit" value="로그인">
-			<input type="reset" value="취소">
+			<input type="reset" value="취소" onclick="history.back()">
 			<input type="button" value="회원가입" onclick="location.href='/rum/member.do'">
 		</form>
 	<%		

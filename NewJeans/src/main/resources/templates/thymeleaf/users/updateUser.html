@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 정보 수정</title>
+    <link rel="stylesheet" href="../resources/css/bootstrap.min.css" />
+</head>
+<body onload="init()">
+<div class="container py-4">
+	<div class="p-5 mb-4 bg-body-tertiary rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">회원 수정</h1>
+            <p class="col-md-8 fs-4">Membership Updating</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <form name="user" th:action="@{/rum/updateUsers.do}" method="post" onsubmit="return checkForm()">
+             <div class="mb-3 row">
+                <label class="col-sm-2">아이디</label>
+                <div class="col-sm-3">
+                    <input name="id" type="text" class="form-control" th:value="${user.userId}" readonly>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2">비밀번호</label>
+                <div class="col-sm-3">
+                    <input name="password" type="password" class="form-control" th:value="${user.userPassword}">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2">비밀번호확인</label>
+                <div class="col-sm-3">
+                    <input name="password_confirm" type="password" class="form-control">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2">성명</label>
+                <div class="col-sm-3">
+                    <input name="name" type="text" class="form-control" th:value="${user.userName}">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2">생일</label>
+                <div class="col-sm-10">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <input type="text" name="birthyy" maxlength="4" class="form-control" th:value="${user.userBirth.split('/')[0]}" placeholder="년(4자)" size="6">
+                        </div>
+                        <div class="col-sm-2">
+                            <select name="birthmm" id="birthmm" class="form-select">
+                                <option value="">월</option>
+                                <option value="01" th:selected="${user.userBirth.split('/')[1] == '01'}">1</option>
+                                <option value="02" th:selected="${user.userBirth.split('/')[1] == '02'}">2</option>
+                                <option value="03" th:selected="${user.userBirth.split('/')[1] == '03'}">3</option>
+                                <option value="04" th:selected="${user.userBirth.split('/')[1] == '04'}">4</option>
+                                <option value="05" th:selected="${user.userBirth.split('/')[1] == '05'}">5</option>
+                                <option value="06" th:selected="${user.userBirth.split('/')[1] == '06'}">6</option>
+                                <option value="07" th:selected="${user.userBirth.split('/')[1] == '07'}">7</option>
+                                <option value="08" th:selected="${user.userBirth.split('/')[1] == '08'}">8</option>
+                                <option value="09" th:selected="${user.userBirth.split('/')[1] == '09'}">9</option>
+                                <option value="10" th:selected="${user.userBirth.split('/')[1] == '10'}">10</option>
+                                <option value="11" th:selected="${user.userBirth.split('/')[1] == '11'}">11</option>
+                                <option value="12" th:selected="${user.userBirth.split('/')[1] == '12'}">12</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" name="birthdd" maxlength="2" class="form-control" th:value="${user.userBirth.split('/')[2]}" placeholder="일" size="4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label class="col-sm-2">성별</label>
+                <div class="col-sm-10">
+                    <input name="gender" type="radio" value="남" th:checked="${user.userGender == '남'}"> 남
+                    <input name="gender" type="radio" value="여" th:checked="${user.userGender == '여'}"> 여
+                </div>
+            </div>
+			<div class="mb-3 row">
+				<label class="col-sm-2">전화번호</label>
+				<div class="col-sm-3">
+					<input name="phone" type="text" class="form-control" th:value="${user.userPhone}">
+				</div>
+			</div>
+	        <div  class="mb-3 row">
+    	        <label class="col-sm-2">닉네임</label>
+    	        <div class="col-sm-3">
+					<input name="nick" type="text" class="form-control" th:value="${user.userNick}" placeholder="사용하실 활동명을 입력해주세요">
+				</div>
+        	</div>
+			<div class="mb-3 row">
+				<label class="col-sm-2">주소</label>
+<!-- 				<div class="col-sm-5"></div> -->
+<!--      			<div class="col-sm-5"></div> -->
+       			<div class="col-sm-10">
+       				<input name="addr" type="text" class="form-control d-inline-block w-25" placeholder="address" th:value="${user.userAddr}">
+       				<input name="addrDetail" type="text" class="form-select d-inline-block w-25" placeholder="addressDetail" th:value="${user.userAddrDetail}">
+				</div>
+			</div>
+            <div class="mb-3 row">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="submit" class="btn btn-primary" value="수정하기">
+                    <a th:href="@{/rum/deleteusers.do}" class="btn btn-primary">회원탈퇴</a>
+                    <input type="reset" value="취소" onclick=history.back()>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<!--     <h2>회원 정보 수정</h2> -->
+<!--     <form name="user" th:action="@{/rum/editcomplete.do}" method="post"> -->
+<!--         아이디 : <input type="text" name="userId" th:value="${userId}" readonly><br> -->
+<!--         <p></p> -->
+<!--         비밀번호 : <input type="password" name="userPw"><br> -->
+<!--         <p></p> -->
+<!--         이름 : <input type="text" name="name" th:value="${userName}"><br> -->
+<!--         <p></p> -->
+<!--         전화번호 : <select name="userPhone"> -->
+<!--             <option value="010" th:selected="${#users.startsWith(userPhone, '010')}">010</option> -->
+<!--         </select> -->
+<!--         - <input type="text" name="userPhone" th:value="${#strings.substring(userPhone, 4, 8)}"> -->
+<!--         - <input type="text" name="userPhone" th:value="${#strings.substring(userPhone, 9)}"><br> -->
+<!--         <p></p> -->
+<!--         우편번호 : <input type="text" name="zipcode" th:value="${member.zipcode}"> <input type="button" value="우편번호검색" name="zipbtn"><br> -->
+<!--         <p></p> -->
+<!--         주소 : <input type="text" name="userAddr" th:value="${userAddr}"><br> -->
+<!--         <p></p> -->
+<!--         상세주소 : <input type="text" name="userAddrDetail" th:value="${userAddrDetail}"><br> -->
+<!--         <p></p> -->
+<!--         <input type="submit" value="수정하기"> -->
+<!--         <input type="reset" value="취소"> -->
+<!--     </form> -->
+    <script type="text/javascript">
+	    function init() {
+	        setComboBirthValue('[[${user.birth.split('/')[1]}]]');
+	    }
+	
+	    function setComboMailValue(val) {
+	        var selectMail = document.getElementById('mail2');
+	        for (var i = 0, j = selectMail.length; i < j; i++) {
+	            if (selectMail.options[i].value == val) {
+	                selectMail.options[i].selected = true;
+	                break;
+	            }
+	        }
+	    }
+	
+	    function setComboBirthValue(val) {
+	        var selectBirth = document.getElementById('birthmm');
+	        for (var i = 0, j = selectBirth.length; i < j; i++) {
+	            if (selectBirth.options[i].value == val) {
+	                selectBirth.options[i].selected = true;
+	                break;
+	            }
+	        }
+	    }
+	
+	    function checkForm() {
+		    var form = document.querySelector('form[name="user"]');
+		    
+		    if (!form.userId.value) {
+		        alert("아이디를 입력하세요.");
+		        return false;
+		    }
+		
+		    if (!form.userPw.value) {
+		        alert("비밀번호를 입력하세요.");
+		        return false;
+		    }
+		
+		    if (form.userPw.value != form.userPwCheck.value) {
+		        alert("비밀번호를 동일하게 입력하세요.");
+		        return false;
+		    }
+		
+		    return true; // 폼 검증이 성공적일 경우 true를 반환하여 폼이 제출되도록 합니다.
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리뷰 작성</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/newMember.css}">
+</head>
+<body>
+<header th:replace="~{thymeleaf/main/main :: header}"></header>
+<main class="container mt-4" id="reviewWritePage">
+    <h2>리뷰 작성</h2>
+
+    <!-- 리뷰 작성 폼 -->
+     <form th:action="@{/reviews/save}" method="post">
+        <div class="form-group">
+            <label for="reviewTitle">제목</label>
+            <input type="text" class="form-control" id="reviewTitle" name="reviewTitle" required>
+        </div>
+        <div class="form-group">
+            <label for="reviewContent">내용</label>
+            <textarea class="form-control" id="reviewContent" name="reviewContent" rows="10" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="orderNo">주문 번호</label>
+            <input type="text" class="form-control" id="orderNo" name="orderNo" th:value="${review.orderNo}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="kind">종류</label>
+            <input type="text" class="form-control" id="kind" name="kind" th:value="${review.kind}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="color">색상</label>
+            <input type="text" class="form-control" id="color" name="color" th:value="${review.color}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="options">옵션</label>
+            <input type="text" class="form-control" id="options" name="options" th:value="${review.options}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="totalPrice">총 가격</label>
+            <input type="text" class="form-control" id="totalPrice" name="totalPrice" th:value="${review.totalPrice}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="userId">작성자</label>
+            <input type="text" class="form-control" id="userId" name="userId" th:value="${review.userId}" readonly>
+        </div>
+        <button type="submit" class="btn btn-primary">작성</button>
+    </form>
+</main>
+<footer th:replace="~{thymeleaf/main/main :: footer}"></footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

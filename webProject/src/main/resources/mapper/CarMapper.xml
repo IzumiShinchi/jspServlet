@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.big.prj.mapper.CarMapper">
+
+   <insert id="insertCar" parameterType="org.big.prj.dto.CarDTO">
+        INSERT INTO car (car_id, kind_id, color_id, option_ids, total_price)
+        VALUES (car_seq.NEXTVAL, #{kindId}, #{colorId}, #{optionIds}, #{totalPrice})
+    </insert>
+
+    <select id="getCarById" parameterType="String" resultType="org.big.prj.dto.CarDTO">
+        SELECT * FROM car WHERE car_id = #{carId}
+    </select>
+    
+     <select id="getLastInsertedCarId" resultType="String">
+        SELECT car_id FROM car WHERE rownum = 1 ORDER BY car_id DESC
+    </select>
+    
+</mapper>

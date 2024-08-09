@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>주소 입력</title>
+</head>
+<script type="text/javascript">
+    function init() {
+        var url = window.location.href;
+        var confmKey = "devU01TX0FVVEgyMDI0MDcwNDA5MTYxNDExNDg4NjE=";
+        var resultType = "4"; // 도로명주소 검색결과 화면 출력내용, 1 : 도로명, 2 : 도로명+지번+상세보기(관련지번, 관할주민센터), 3 : 도로명+상세보기(상세건물명), 4 : 도로명+지번+상세보기(관련지번, 관할주민센터, 상세건물명)
+        var inputYn = /*[[${inputYn}]]*/ 'N'; // Thymeleaf 변수
+
+        if (inputYn !== "Y") {
+            document.getElementById("confmKey").value = confmKey;
+            document.getElementById("returnUrl").value = encodeURIComponent(url); // URL 인코딩
+            document.getElementById("resultType").value = resultType;
+            document.getElementById("form").action = "https://business.juso.go.kr/addrlink/addrLinkUrl.do"; // 인터넷망
+            document.getElementById("form").submit();
+        } else {
+            var userAddr = /*[[${userAddr}]]*/ '';
+            var userAddrDetail = /*[[${userAddrDetail}]]*/ '';
+            var zipNo = /*[[${zipNo}]]*/ '';
+            opener.jusoCallBack(
+                encodeURIComponent(userAddr), // URL 인코딩
+                encodeURIComponent(userAddrDetail),   // URL 인코딩
+                encodeURIComponent(zipNo)         // URL 인코딩
+            );
+            window.close();
+        }
+    }
+</script>
+<body onload="init()">
+    <form id="form" name="form" method="post">
+        <input type="hidden" id="confmKey" name="confmKey" value=""/>
+        <input type="hidden" id="returnUrl" name="returnUrl" value=""/>
+        <input type="hidden" id="resultType" name="resultType" value=""/>
+    </form>
+</body>
+</html>

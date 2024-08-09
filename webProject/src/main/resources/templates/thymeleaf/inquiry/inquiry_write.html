@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1:1 문의 작성</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <style>
+        .form-group label {
+            font-weight: bold;
+        }
+        .container {
+            max-width: 600px;
+        }
+        .form-control[readonly] {
+            background-color: #e9ecef;
+        }
+        .btn-primary {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{thymeleaf/main/main :: header}"></header>
+<main class="container mt-4">
+    <h2>1:1 문의 작성</h2>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+    <form id="inquiryForm" th:action="@{/inquiry/save}" method="post">
+        <div class="form-group">
+            <label for="inquiryTitle">제목</label>
+            <input type="text" class="form-control" id="inquiryTitle" name="inquiryTitle" th:value="${inquiry.inquiryTitle}" required>
+        </div>
+        <div class="form-group">
+            <label for="inquiryContent">내용</label>
+            <textarea class="form-control" id="inquiryContent" name="inquiryContent" rows="5" th:text="${inquiry.inquiryContent}" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="inquiryName">작성자</label>
+            <input type="text" class="form-control" id="inquiryName" name="inquiryName" th:value="${inquiry.inquiryName}" required>
+        </div>
+            <div class="form-group">
+                <label for="inquiryPasswd">비밀번호</label>
+                <input type="password" class="form-control" id="inquiryPasswd" name="inquiryPasswd"  required>
+            </div>
+            <button type="submit" class="btn btn-primary">작성</button>
+        </form>
+ 
+</main>
+<footer th:replace="~{thymeleaf/main/main :: footer}"></footer>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+document.getElementById("inquiryForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // 기본 폼 제출 방지
+
+    const title = document.getElementById("inquiryTitle").value;
+    const content = document.getElementById("inquiryContent").value;
+    const name = document.getElementById("inquiryName").value;
+    const password = document.getElementById("inquiryPasswd").value;
+
+    // 비밀번호 정규화 검사: 4-8자리, 영어 대소문자+숫자 (숫자 단독, 영어 단독도 가능)
+    const passwordPattern = /^[A-Za-z\d]{4,8}$/;
+    if (!passwordPattern.test(password)) {
+        alert("비밀번호는 4자리 이상 8자리 이하이어야 하며, 특수문자는 입력할 수 없습니다.");
+        return;
+    }
+
+    if (!title || !content || !name || !password) {
+        alert("모든 필드를 입력해주세요.");
+        return;
+    }
+
+    fetch("/inquiry/save", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ inquiryTitle: title, inquiryContent: content, inquiryName: name, inquiryPasswd: password })
+    }).then(response => {
+        if (response.ok) {
+            alert("문의글이 작성되었습니다.");
+            window.location.href = "/inquiry/list";
+        } else {
+            alert("문의글 작성에 실패했습니다.");
+        }
+    }).catch(error => console.error("Error:", error));
+});
+</script>
+</body>
+</html>

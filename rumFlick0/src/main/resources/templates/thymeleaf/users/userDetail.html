@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 정보</title>
+</head>
+<body>
+    <h2>회원 정보</h2>
+    <table border="1" width="700">
+        <tr>
+            <th>아이디</th>
+            <th>비밀번호</th>
+            <th>이름</th>
+			<th>생년월일</th>
+			<th>성별</th>
+            <th>연락처</th>
+            <th>닉네임</th>
+            <th>주소</th>
+            <th>상세주소</th>
+            <th>회원정보수정/회원탈퇴</th>
+        </tr>
+        <tr th:each="user : ${users}">
+            <td th:text="${users.userId}"></td>
+            <td th:text="${users.userPw}"></td>
+            <td th:text="${users.userName}"></td>
+            <td th:text="${users.userBirth}"></td>
+            <td th:text="${users.userGender}"></td>
+            <td th:text="${users.userPhone}"></td>
+            <td th:text="${users.userNick}"></td>
+            <td th:text="${users.userAddr}"></td>
+            <td th:text="${users.userAddrDetail}"></td>
+            <td>
+                <a th:href="@{/rum/updateUsers.do}">회원정보수정</a>/
+                <a th:href="@{/rum/deleteUsers.do}">회원탈퇴</a>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

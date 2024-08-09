@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.big.prj.mapper.InquiryMapper">
+
+   <!-- 새로운 문의글 작성 -->
+    <insert id="insertInquiry" parameterType="org.big.prj.dto.InquiryDTO">
+        INSERT INTO Inquiry (inquiry_id, inquiry_name, inquiry_title, inquiry_content, created_date, inquiry_passwd)
+        VALUES (inquiry_seq.NEXTVAL, #{inquiryName, jdbcType=VARCHAR}, #{inquiryTitle, jdbcType=VARCHAR}, #{inquiryContent, jdbcType=VARCHAR}, SYSDATE, #{inquiryPasswd, jdbcType=VARCHAR})
+    </insert>
+
+    <!-- 특정 문의글 조회 -->
+    <select id="selectInquiryById" parameterType="long" resultType="org.big.prj.dto.InquiryDTO">
+        SELECT inquiry_id, inquiry_name, inquiry_title,
+               inquiry_content, created_date,
+               comment_title, comment_content, comment_date,
+               inquiry_passwd
+        FROM Inquiry
+        WHERE inquiry_id = #{inquiryId, jdbcType=BIGINT}
+    </select>
+
+    <!-- 모든 문의글 조회 -->
+    <select id="selectAllInquiries" resultType="org.big.prj.dto.InquiryDTO">
+        SELECT inquiry_id, inquiry_name, inquiry_title,
+               inquiry_content, created_date,
+               comment_title, comment_content, comment_date,
+               inquiry_passwd
+        FROM Inquiry
+        ORDER BY created_at DESC
+    </select>
+    
+<!-- 전체 Inquiry 페이징 및 검색 기능 -->
+    <select id="getAllInquiries" resultType="org.big.prj.dto.InquiryDTO">
+        SELECT * FROM (
+            SELECT i.*, ROW_NUMBER() OVER (ORDER BY i.inquiry_id) AS rn
+            FROM inquiry i
+            WHERE i.inquiry_name LIKE '%' || #{search} || '%'
+            OR i.inquiry_title LIKE '%' || #{search} || '%'
+            OR i.inquiry_content LIKE '%' || #{search} || '%'
+        ) WHERE rn BETWEEN #{offset} + 1 AND #{offset} + #{limit}
+       ORDER BY created_date DESC
+    </select>
+
+    <!-- 전체 Inquiry 수를 계산 -->
+    <select id="countInquiries" resultType="int">
+        SELECT COUNT(*)
+        FROM inquiry
+        WHERE inquiry_name LIKE '%' || #{search} || '%'
+        OR inquiry_title LIKE '%' || #{search} || '%'
+        OR inquiry_content LIKE '%' || #{search} || '%'
+    </select>
+
+    <!-- 문의글 삭제 -->
+    <delete id="deleteInquiry" parameterType="long">
+        DELETE FROM Inquiry WHERE inquiry_id = #{inquiryId, jdbcType=BIGINT}
+    </delete>
+
+    <!-- 문의글 수정 -->
+    <update id="updateInquiry" parameterType="org.big.prj.dto.InquiryDTO">
+        UPDATE Inquiry
+        SET inquiry_title = #{inquiryTitle, jdbcType=VARCHAR}, inquiry_content = #{inquiryContent, jdbcType=VARCHAR}, inquiry_passwd = #{inquiryPasswd, jdbcType=VARCHAR}
+        WHERE inquiry_id = #{inquiryId, jdbcType=BIGINT}
+    </update>
+
+    <!-- 답글 작성 및 수정 -->
+    <update id="updateInquiryWithComment" parameterType="org.big.prj.dto.InquiryDTO">
+        UPDATE Inquiry
+        SET comment_title = #{commentTitle, jdbcType=VARCHAR}, comment_content = #{commentContent, jdbcType=VARCHAR}, comment_date = SYSDATE
+        WHERE inquiry_id = #{inquiryId, jdbcType=BIGINT}
+    </update>
+
+    <!-- 비밀번호 확인 -->
+    <select id="selectPasswordByInquiryId" parameterType="long" resultType="string">
+        SELECT inquiry_passwd
+        FROM Inquiry
+        WHERE inquiry_id = #{inquiryId, jdbcType=BIGINT}
+    </select>
+</mapper>

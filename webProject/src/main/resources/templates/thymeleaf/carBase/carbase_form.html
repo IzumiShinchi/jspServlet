@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구성 추가/수정</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+      <link rel="stylesheet" th:href="@{/css/newMember.css}">
+</head>
+<body>
+<header th:replace="~{thymeleaf/main/admin_main :: header}"></header>
+<main class="container mt-4">
+    <h2 th:text="${#strings.equals(carBase.baseId, null) ? '구성 추가' : '구성 수정'}"></h2>
+    <form th:action="@{${#strings.equals(carBase.baseId, null) ? '/admin/carbase/save' : '/admin/carbase/update'}}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="baseId">ID</label>
+            <input type="text" id="baseId" name="baseId" class="form-control" th:value="${carBase.baseId}" required>
+        </div>
+        <div class="form-group">
+            <label for="type">종류</label>
+            <input type="text" id="type" name="type" class="form-control" th:value="${carBase.type}" required placeholder="KIND,COLOR,OPTION 중 하나" >
+        </div>
+        <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" class="form-control" th:value="${carBase.name}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">설명</label>
+            <textarea id="description" name="description" class="form-control" th:text="${carBase.description}"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="price">가격</label>
+            <input type="text" id="price" name="price" class="form-control" th:value="${carBase.price}" required placeholder=" , 을 넣어주세요" >
+        </div>
+        <div class="form-group">
+            <label for="baseImage">이미지 파일 이름</label>
+            <input type="text" id="baseImage" name="baseImage" class="form-control" th:value="${carBase.baseImage}" required placeholder="kind: name_icon.jpg/ color: color_색상명.jpg/option:op_옵션명.jpg 형식을 지켜주세요">
+        </div>
+        <div class="form-group">
+            <label for="file">이미지 첨부</label>
+            <input type="file" id="file" name="file" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-success">저장</button>
+        <a href="#" th:href="@{/admin/carbase/list}" class="btn btn-secondary">취소</a>
+    </form>
+</main>
+<footer th:replace="~{thymeleaf/main/main :: footer}"></footer>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

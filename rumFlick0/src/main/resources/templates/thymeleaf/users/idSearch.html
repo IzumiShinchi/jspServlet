@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>아이디 중복조회</title>
+	<script>
+		function handleResult(isAvailable, userId) {
+		       if (isAvailable) {
+		           alert(userId + "는 사용할 수 있는 아이디입니다.");
+		           location.href = "/rum/idCheck.do?userId=" + encodeURIComponent(userId);
+		       } else {
+		           alert(userId + "는 누군가 사용하는 아이디입니다.\n다시 생각해주세요~");
+		           history.back();
+		       }
+		   }
+        function closewin(userId) {
+            if (window.opener && window.opener.document.getElementsByName("userId")[0]) {
+                window.opener.document.getElementsByName("userId")[0].value = userId;
+            }
+            window.close();
+        }
+    </script>
+</head>
+<body>
+	 <script th:inline="javascript">
+		 /*<![CDATA[*/
+	     var isAvailable = /*[[${isAvailable}]]*/ false;
+	     var userId = /*[[${userId}]]*/ '';
+	     handleResult(isAvailable, userId);
+	     /*]]>*/
+    </script>
+<!--     <div th:if="${!isAvailable}"> -->
+<!--         <script> -->
+<!-- //             alert(/*[[${userId}]]*/ + "는 누군가 사용하는 아이디입니다.\n다시 생각해주세요~"); -->
+<!-- //             history.back(); -->
+<!--         </script> -->
+<!--     </div> -->
+<!--     <div th:if="${isAvailable}"> -->
+<!--         <script> -->
+<!-- //             alert(/*[[${userId}]]*/ + "는 사용할 수 있는 아이디입니다."); -->
+<!-- //             closewin(/*[[${userId}]]*/); -->
+<!--         </script> -->
+<!--     </div> -->
+</body>
+</html>

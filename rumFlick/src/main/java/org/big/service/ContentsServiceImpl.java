@@ -24,7 +24,14 @@ public class ContentsServiceImpl implements ContentsService {
 	
 	@Override
 	public List<ContentsDTO> contentsList() throws Exception {
-		return contentsMapper.contentsList();
+		try {
+            List<ContentsDTO> list = contentsMapper.contentsList();
+            log.info("Contents retrieved: {}", list);
+            return list;
+        } catch (Exception e) {
+            log.error("Error retrieving contents", e);
+            throw e; // 또는 적절한 예외 처리
+        }
 	}
 	
 	@Override
@@ -79,13 +86,13 @@ public class ContentsServiceImpl implements ContentsService {
 	@Override
 	public ContentsDTO contentDetail(String contentsCode) throws Exception {
 		ContentsDTO contents = contentsMapper.contentDetail(contentsCode);
-		List<ContentsFileDTO> fileList = contentsMapper.contentsFileList(contentsCode);
-		contents.setFileList(fileList);
+		ContentsFileDTO fileInfo = contentsMapper.contentsFileInformation(contentsCode);
+		contents.setFileInfo(fileInfo);
 		return contents;
 	}
 	
 	@Override
-	public ContentsFileDTO contentsFileInfomation(int fileIdx, String contentsCode) throws Exception {
-		return contentsMapper.contentsFileInfomation(fileIdx, contentsCode);
+	public List<ContentsFileDTO> contentsFileList() throws Exception {
+		return contentsMapper.contentsFileList();
 	}
 }

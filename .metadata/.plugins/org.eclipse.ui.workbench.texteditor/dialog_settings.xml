@@ -10,25 +10,27 @@
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value=".commu"/>
+		<item key="selection" value="notice"/>
 		<list key="findhistory">
+			<item value="rum"/>
+			<item value="b_"/>
+			<item value="commu"/>
+			<item value="Commu"/>
+			<item value="community"/>
+			<item value="contents"/>
+			<item value="openCommentUpdatePopup"/>
+			<item value="jusopopup.do"/>
+			<item value="/rum/jusopopup.do"/>
+			<item value="juso"/>
 			<item value=".board"/>
 			<item value="board/"/>
 			<item value="detail"/>
 			<item value="board"/>
 			<item value="content"/>
-			<item value="익무힛갤"/>
-			<item value="kmovie"/>
-			<item value="border"/>
-			<item value="한국영화"/>
-			<item value="rum"/>
-			<item value="login"/>
-			<item value="openBoardList"/>
-			<item value="list"/>
-			<item value="flag"/>
-			<item value="javax"/>
 		</list>
 		<list key="replacehistory">
+			<item value="notice"/>
+			<item value="Notice"/>
 			<item value=".commu"/>
 			<item value="rum/"/>
 			<item value="board"/>

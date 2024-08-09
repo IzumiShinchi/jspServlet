@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.big.prj.mapper.CartMapper">
+
+<select id="getCartByUserId" resultType="org.big.prj.dto.CartDTO">
+        SELECT * FROM cart WHERE user_id = #{userId}
+    </select>
+
+    <insert id="insertCart" parameterType="org.big.prj.dto.CartDTO">
+        INSERT INTO cart (cart_no, user_id, car_id, created_date, quantity, total_price)
+        VALUES (cart_seq.NEXTVAL, #{userId}, #{carId}, SYSDATE, #{quantity}, #{totalPrice})
+    </insert>
+<update id="updateCart" parameterType="org.big.prj.dto.CartDTO">
+        UPDATE cart SET quantity = #{quantity} WHERE cart_no = #{cartNo}
+    </update>
+    
+<update id="updateCartStatus">
+    UPDATE cart
+    SET status = #{status}
+    WHERE user_id = #{userId}
+</update>
+
+    <select id="getCartItems" parameterType="String" resultType="org.big.prj.dto.CartDTO">
+        SELECT c.cart_no, c.user_id, c.car_id, c.created_date, c.quantity, c.total_price, 
+               k.name AS kind, cl.name AS color, 
+               LISTAGG(o.name, ', ') WITHIN GROUP (ORDER BY o.name) AS options
+        FROM cart c
+        JOIN car ca ON c.car_id = ca.car_id
+        JOIN carbase k ON ca.kind_id = k.base_id
+        JOIN carbase cl ON ca.color_id = cl.base_id
+        JOIN carbase o ON INSTR(',' || ca.option_ids || ',', ',' || o.base_id || ',') > 0
+        WHERE c.user_id = #{userId} AND c.status = 'active'
+        GROUP BY c.cart_no, c.user_id, c.car_id, c.created_date, c.quantity, c.total_price, k.name, cl.name
+    </select>
+<!-- Get a specific cart item by cart number -->
+    <select id="getCartItem" parameterType="string" resultType="org.big.prj.dto.CartDTO">
+        SELECT c.cart_no, c.user_id, c.car_id, c.created_date, c.quantity, c.total_price, 
+               k.name AS kind, cl.name AS color, 
+               LISTAGG(o.name, ', ') WITHIN GROUP (ORDER BY o.name) AS options
+        FROM cart c
+        JOIN car ca ON c.car_id = ca.car_id
+        JOIN carbase k ON ca.kind_id = k.base_id
+        JOIN carbase cl ON ca.color_id = cl.base_id
+        JOIN carbase o ON INSTR(',' || ca.option_ids || ',', ',' || o.base_id || ',') > 0
+        WHERE c.cart_no = #{cartNo}
+        GROUP BY c.cart_no, c.user_id, c.car_id, c.created_date, c.quantity, c.total_price, k.name, cl.name
+    </select>
+    
+      
+</mapper>

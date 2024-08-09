@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Add Content</title>
+<link rel="stylesheet" href="../css/register/regist.css">
+<link rel="stylesheet" href="../css/register/default.css">
+</head>
+<body>
+	<div id="register">
+		<div class="register-header">
+			<div class="logo">
+				<a href="/"><img src="../images/logo/Register.png" title="럼플릭"></a>
+			</div>
+		</div>
+		<div class="register-content">
+			<form id="RegisterForm" name="registerform" action="/rum/registComplete.do" method="post" enctype="multipart/form-data" autocomplete="off">
+				<fieldset>
+					<input type="radio" name="asset" value="F">영화
+					<input type="radio" name="asset" value="D">드라마
+					<input type="radio" name="asset" value="A">애니메이션
+					<div class="form-row">
+						<input class="input-text" type="text" name="cCode" value="" id="cCode" minlength="3" maxlength="10" required="" placeholder="등록할 코드를 입력해주세요">
+					</div>
+	                <div class="form-row">
+	                    <input class="input-text" type="text" name="cCategory" id="cCategory" maxlength="10" required="" placeholder="카테고리를 입력해주세요.    영화,드라마,애니">
+	                </div>
+	                <div class="form-row">
+	                    <input class="input-text" type="text" name="cTitle" id="cTitle" required="" size="50" maxlength="100" placeholder="작품명을 입력해주세요">
+	                </div>
+	                <div class="form-row">
+	                    <input class="input-text" type="text" name="cDirector" id="cDirector" maxlength="20" required="" placeholder="감독의 이름을 입력해주세요">
+	                </div>
+	                <div class="form-row">
+	                    <input class="input-text" type="text" name="cGenre" id="cGenre" maxlength="20" required="" placeholder="작품의 장르를 입력해주세요">
+	                </div>
+	                <div class="form-row">
+	                    <input class="input-text" type="text" name="cNation" id="cNation" maxlength="30" required="" placeholder="작품의 제작 국가를 입력해주세요">
+	                </div>
+	                <div class="form-row">
+	                    <input class="input-text" type="text" name="cRate" id="cRate" required="" maxlength="3" placeholder="시청 등급을 입력해주세요.        ALL,12,15,19">
+	                </div>
+	                <div class="form-row">
+	                    <input class="input-text" type="text" name="cSynopsis" value="" id="cSynopsis" required="" size="50" maxlength="500" placeholder="시놉시스를 입력해주세요">
+	                </div>
+	                <div class="form-row">
+	                	<br>
+	                    <input class="input-text" type="file" name="cPoster" id="cPoster" multiple="multiple" placeholder="포스터로 등록할 파일">
+	                </div>
+                	<div class="submit">
+                    	<button class="btn-submit" type="submit"> 등록 <i class="far fa-spinner-third fa-spin" id="loading_lor"></i></button>
+                	</div>
+            	</fieldset>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

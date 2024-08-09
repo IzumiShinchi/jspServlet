@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>차량 구성하기</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gothic+A1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Gothic+A1&display=swap');
+
+body {
+   /* background-color: rgb(78,78,78); */
+    background-color:black;
+    color: white; /* 텍스트 색상을 흰색으로 설정 */
+    text-align: center; /* 텍스트를 중앙 정렬 */
+    font-family: 'Gothic A1', sans-serif; /* 폰트를 'Gothic A1'로 설정 */
+}
+
+.intro-text {
+    font-size: 2rem; /* 텍스트 크기를 2rem으로 설정 */
+    margin: 30px 0; /* 위아래 마진을 30px로 설정 */
+}
+
+.car-option, .color-option, .option-option {
+    width: calc(25% - 20px); /* 각 옵션의 너비를 25%에서 20px를 뺀 값으로 설정 */
+    margin: 10px; /* 모든 방향에 10px 마진을 설정 */
+    box-sizing: border-box; /* 박스 크기 계산을 경계와 패딩을 포함하도록 설정 */
+}
+
+.car-option img, .color-option img, .option-option img {
+    width: 100px; /* 이미지 너비를 100px로 설정 */
+    height: 100px; /* 이미지 높이를 100px로 설정 */
+    cursor: pointer; /* 마우스를 올리면 커서가 포인터로 변경 */
+}
+
+.selected-image {
+    width: 700px; /* 선택된 이미지의 너비를 400px로 설정 */
+    height: 500px; /* 선택된 이미지의 높이를 300px로 설정 */
+    margin: 20px 0; /* 위아래 마진을 20px로 설정 */
+}
+
+.option-detail {
+    display: none; /* 기본적으로 옵션 상세 정보를 숨김 */
+    background-color: #333; /* 배경 색상을 어두운 회색으로 설정 */
+    padding: 10px; /* 모든 방향에 10px 패딩을 설정 */
+    border-radius: 5px; /* 모서리를 둥글게 설정 */
+}
+
+.left-panel {
+    position: fixed; /* 고정 위치로 설정 */
+    width: 50%; /* 너비를 50%로 설정 */
+    height: 100%; /* 높이를 100%로 설정 */
+    overflow-y: auto; /* 세로 스크롤이 가능하도록 설정 */
+    padding-right: 150px; /* 오른쪽 패딩을 150px로 설정 */
+}
+
+.right-panel {
+    margin-left: 70%; /* 왼쪽 마진을 50%로 설정하여 오른쪽으로 이동 */
+    width: 50%; /* 너비를 50%로 설정 */
+    height: 100%; /* 높이를 100%로 설정 */
+    overflow-y: auto; /* 세로 스크롤이 가능하도록 설정 */
+    padding-left: 15px; /* 왼쪽 패딩을 15px로 설정 */
+}
+
+.divider {
+    width: 100%; /* 너비를 100%로 설정 */
+    height: 2px; /* 높이를 2px로 설정 */
+    background-color: #fff; /* 배경 색상을 흰색으로 설정 */
+    margin: 20px 0; /* 위아래 마진을 20px로 설정 */
+}
+.selectedCarDetails, .selectedColorDetails, .selectedOptionDetails {
+font-size: 30px;
+}
+    </style>
+</head>
+<body>
+<header th:replace="~{thymeleaf/main/main :: header}"></header>
+<main class="container mt-4">
+    <div th:if="${errorMessage}">
+        <p style="color: red;" th:text="${errorMessage}"></p>
+    </div>
+    <div class="intro-text" id="introText">나만의 자동차를 구성해 볼까요?</div>
+    <div class="row">
+        <div class="col-md-6 left-panel">
+            <img id="selectedCarImage" class="selected-image" th:src="@{/image/default.jpg}" alt="선택된 차량">
+            <div id="selectedCarDetails"></div>
+            <div id="selectedColorDetails"></div>
+            <div id="selectedOptionDetails"></div>
+        </div>
+        <div class="col-md-6 right-panel">
+            <div class="intro-text">종류</div>
+            <div class="car-options d-flex flex-wrap justify-content-center" id="carKind"></div>
+            <div class="divider"></div>
+            <div class="intro-text">색상</div>
+            <div class="color-options d-flex flex-wrap justify-content-center" id="carColor"></div>
+            <div class="divider"></div>
+            <div class="intro-text">옵션</div>
+            <div class="option-options d-flex flex-wrap justify-content-center" id="carOption"></div>
+            <button id="completeButton" class="btn btn-success mt-3">완성하기</button>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{thymeleaf/main/main :: footer}"></footer>
+
+<!-- Option Detail Modal -->
+<div class="modal fade" id="optionDetailModal" tabindex="-1" role="dialog" aria-labelledby="optionDetailModalLabel" aria-hidden="true" style="color:black">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="optionDetailModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="optionDetailImage" src="" class="img-fluid" alt="Option Image">
+                <p id="optionDetailDescription"></p>
+                <p id="optionDetailPrice"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" id="userNo" value="<!-- 서버에서 가져온 사용자 번호 -->">
+ <script>
+$(document).ready(function() {
+    let selectedCar = null;
+    let selectedColor = null;
+    let selectedOptions = [];
+
+    init();
+
+    setTimeout(function() {
+        $("#introText").fadeOut(1000, function() {
+            $("#introText").text("원하시는 항목을 선택 해 주세요.").fadeIn(1000);
+        });
+    }, 2000);
+
+    function updateCarImage(selectedCar, selectedColor) {
+        if (selectedCar && selectedColor) {
+            const imagePath = `/image/${selectedCar.baseImagePath}_${selectedColor.color}.jpg`;
+            $('#selectedCarImage').attr('src', imagePath);
+        } else {
+            console.error("selectedColor가 설정되지 않았습니다.");
+        }
+    }
+
+    $('#completeButton').click(function() {
+        if (selectedCar && selectedColor) {
+            const requestData = {
+                carId: new Date().getTime().toString(),
+                kindId: selectedCar.idx,
+                kindName: selectedCar.name,
+                colorId: selectedColor.idx,
+                colorName: selectedColor.color,
+                optionIds: selectedOptions.map(o => o.idx).join(','),
+                optionNames: selectedOptions.map(o => o.name).join(','),
+                totalPrice: calculateTotalPrice()
+            };
+
+            console.log("Sending request data:", requestData);
+
+            $.ajax({
+                url: '/carbase/save-configuration',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(requestData),
+                success: function(response) {
+                    if(response.message == 'error') alert("에러가 발생");
+                    else {
+                        alert("정상적으로 저장되었습니다.");
+                        window.location.href = '/carbase/confirmation?carId=' + response.car.carId + '&kind=' + response.car.kindName + '&color=' + response.car.colorName + '&option=' + response.car.optionNames + '&totalPrice=' + response.car.totalPrice;
+                    }
+                },
+                error: function(xhr) {
+                    let errorMessage = '차량 구성 정보를 저장하는 중 에러가 발생했습니다.\n';
+                    errorMessage += '상태 코드: ' + xhr.status + '\n';
+                    errorMessage += '응답 텍스트: ' + xhr.responseText + '\n';
+                    console.log(errorMessage);
+                    alert(errorMessage);
+                }
+            });
+        } else {
+            alert('종류와 색상을 선택해 주세요.');
+        }
+    });
+
+    function calculateTotalPrice() {
+        let total = parseInt(selectedCar.price.replace(/[^0-9]/g, ''));
+        selectedOptions.forEach(option => {
+            total += parseInt(option.price.replace(/[^0-9]/g, ''));
+        });
+        return `${total.toLocaleString()}원`;
+    }
+
+    function init(){
+        $.ajax({
+            url: '/carbase/carSetting',
+            method: 'POST',
+            contentType: 'application/json',
+            success: function(response) {
+                let message = response.message;
+                if(message == "error") alert("정보를 불러오는 데에 실패했습니다.");
+                else {
+                    let kind = response.map.KIND;
+                    let color = response.map.COLOR;
+                    let option = response.map.OPTION;
+                    
+                    let innerHtml = '';
+                    let innerHtml2 = '';
+                    let innerHtml3 = '';
+                    
+                    for(var i = 0; i < kind.length; i++){
+                        let baseImage2 = kind[i].baseImage.split("_")[0] + '_white.jpg';
+                        innerHtml += '<div class="car-option mx-2" data-idx="' + kind[i].baseId + '" data-name="' + kind[i].name + '" data-price="' + kind[i].price + '" data-image="' + kind[i].baseImage + '" data-base-image="' + baseImage2 + '">' +
+                                        '<img src="/image/' + kind[i].baseImage + '" alt="' + kind[i].name + '">' + 
+                                        '<p>' + kind[i].name + '</p></div>';
+                    }
+                    
+                    $("#carKind").empty();
+                    $("#carKind").append(innerHtml);
+                    
+                    for(var i = 0; i < color.length; i++){
+                        innerHtml2 += '<div class="color-option mx-2" data-idx="' + color[i].baseId + '" data-color="' + color[i].name + '" data-image="' + color[i].baseImage + '" >' +
+                                        '<img src="/image/' + color[i].baseImage + '" alt="' + color[i].name + '">' + 
+                                        '<p>' + color[i].name + '</p></div>';
+                    }
+                    
+                    $("#carColor").empty();
+                    $("#carColor").append(innerHtml2);
+                    
+                    for(var i = 0; i < option.length; i++){
+                        innerHtml3 += '<div class="option-option mx-2" data-idx="' + option[i].baseId + '" data-name="' + option[i].name + '" data-price="' + option[i].price + '" data-image="' + option[i].baseImage + '" >' +
+                                        '<img src="/image/' + option[i].baseImage + '" alt="' + option[i].name + '">' +  
+                                        '<p>' + option[i].name + '</p></div>' +
+                                        '<i class="fas fa-info-circle" data-toggle="modal" data-target="#optionDetailModal" data-name="' + option[i].description + '"></i>'
+                    }
+                    
+                    $("#carOption").empty();
+                    $("#carOption").append(innerHtml3);
+                    
+                    fn_changeOption();
+                }
+            },
+            error: function(xhr) {
+                let errorMessage = '차량 구성 정보를 저장하는 중 에러가 발생했습니다.\n';
+                errorMessage += '상태 코드: ' + xhr.status + '\n';
+                errorMessage += '응답 텍스트: ' + xhr.responseText + '\n';
+                alert(errorMessage);
+            }
+        });
+    }
+
+    function fn_changeOption(){
+        $('.car-option').click(function() {
+            selectedCar = $(this).data();
+            $('#selectedCarImage').attr('src', `/image/${selectedCar.baseImage}`);
+            $('#selectedCarDetails').text(`${selectedCar.name} - ${selectedCar.price}`);
+            selectedCar.baseImagePath = selectedCar.baseImage.split('_')[0];
+            selectedColor = $(".color-option").data();
+            selectedColor.color = 'white';
+            updateCarImage(selectedCar, selectedColor);
+        });
+
+        $('.color-option').click(function() {
+            selectedColor = $(this).data();
+            $('#selectedColorDetails').text(`색상: ${selectedColor.color}`);
+            updateCarImage(selectedCar, selectedColor);
+        });
+        
+        $('.option-option').click(function() {
+            const option = $(this).data();
+            const index = selectedOptions.findIndex(o => o.name === option.name);
+
+            if (index === -1) {
+                selectedOptions.push(option);
+            } else {
+                selectedOptions.splice(index, 1);
+            }
+
+            $('#selectedOptionDetails').html(selectedOptions.map(o => `옵션: ${o.name} - ${o.price}`).join('<br>'));
+        });
+        
+        $('.fa-info-circle').click(function() {
+            const optionName = $(this).prev('div.option-option').data('name');
+            const optionImage = $(this).prev('div.option-option').data('image');
+            const optionDescription = $(this).data('name');
+            const optionPrice = $(this).prev('div.option-option').data('price');
+            
+            $('#optionDetailModalLabel').text(optionName);
+            $('#optionDetailImage').attr('src', `/image/${optionImage}`);
+            $('#optionDetailDescription').text(optionDescription);
+            $('#optionDetailPrice').text(optionPrice);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var totalPriceElement = document.getElementById('totalPrice');
+        
+        // Ensure totalPriceElement exists before accessing its innerText
+        if (!totalPriceElement) {
+            console.error("Total price element not found.");
+            return;
+        }
+        
+        var totalPrice = totalPriceElement.innerText;
+
+        // Retrieve userNo from a hidden field or session storage
+        var userNo = document.getElementById('userNo').value || sessionStorage.getItem('userNo');
+        
+        if (!userNo) {
+            console.error("UserNo is not found.");
+            return;
+        }
+
+        document.getElementById('addToCartButton').onclick = function() {
+            var carId = this.getAttribute('data-car-id');
+            var quantity = 1;  // Default quantity
+
+            // Sending POST request to add the car to the cart
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/cart-and-order/cart/add';
+
+            var userNoInput = document.createElement('input');
+            userNoInput.type = 'hidden';
+            userNoInput.name = 'userNo';
+            userNoInput.value = userNo;
+            form.appendChild(userNoInput);
+
+            var carIdInput = document.createElement('input');
+            carIdInput.type = 'hidden';
+            carIdInput.name = 'carId';
+            carIdInput.value = carId;
+            form.appendChild(carIdInput);
+
+            var quantityInput = document.createElement('input');
+            quantityInput.type = 'hidden';
+            quantityInput.name = 'quantity';
+            quantityInput.value = quantity;
+            form.appendChild(quantityInput);
+
+            var totalPriceInput = document.createElement('input');
+            totalPriceInput.type = 'hidden';
+            totalPriceInput.name = 'totalPrice';
+            totalPriceInput.value = totalPrice;
+            form.appendChild(totalPriceInput);
+
+            document.body.appendChild(form);
+            form.submit();
+        };
+
+        document.getElementById('orderButton').onclick = function() {
+            var carId = this.getAttribute('data-car-id');
+            var quantity = 1;  // Default quantity
+
+            // Sending POST request to place the order
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/cart-and-order/order/place';
+
+            var userNoInput = document.createElement('input');
+            userNoInput.type = 'hidden';
+            userNoInput.name = 'userNo';
+            userNoInput.value = userNo;
+            form.appendChild(userNoInput);
+
+            var carIdInput = document.createElement('input');
+            carIdInput.type = 'hidden';
+            carIdInput.name = 'carId';
+            carIdInput.value = carId;
+            form.appendChild(carIdInput);
+
+            var quantityInput = document.createElement('input');
+            quantityInput.type = 'hidden';
+            quantityInput.name = 'quantity';
+            quantityInput.value = quantity;
+            form.appendChild(quantityInput);
+
+            var totalPriceInput = document.createElement('input');
+            totalPriceInput.type = 'hidden';
+            totalPriceInput.name = 'totalPrice';
+            totalPriceInput.value = totalPrice;
+            form.appendChild(totalPriceInput);
+
+            document.body.appendChild(form);
+            form.submit();
+        };
+    });
+});
+</script>
+    <footer th:replace="~{thymeleaf/main/main :: footer}"></footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

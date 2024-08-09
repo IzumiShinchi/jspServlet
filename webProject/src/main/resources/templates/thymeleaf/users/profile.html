@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나의 정보 확인</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+            <link rel="stylesheet" th:href="@{/css/newMember.css}">
+    <!-- Daum 주소 API 스크립트 -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+    <header th:replace="~{thymeleaf/main/main :: header}"></header>
+    <div class="container mt-4">
+        <h1 class="text-center">나의 정보 확인</h1>
+    <!-- 에러 메시지를 표시하는 부분 -->
+        <div th:if="${param.error == 'password'}" class="alert alert-danger" role="alert">
+            비밀번호가 틀립니다.
+        </div>
+        
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <p th:text="${error}"></p>
+        </div>
+        <form id="profileUpdateForm" th:action="@{/profile/update}" method="post" onsubmit="return checkForm();">
+            <div class="form-group">
+                <label for="userId">아이디</label>
+                <div class="input-group">
+                    <input type="text" id="userId" name="userId" class="form-control" th:value="${usersDTO.userId}" readonly onclick="alertReadOnly()">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="userName">이름</label>
+                <input type="text" id="userName" name="userName" class="form-control" th:value="${usersDTO.userName}" readonly onclick="alertReadOnly()">
+            </div>
+            <div class="form-group">
+                <label for="userPasswd">비밀번호</label>
+               <input type="password" id="userPasswd" name="userPasswd" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="confirmUserPasswd">비밀번호 확인</label>
+                <input type="password" id="confirmUserPasswd" name="confirmUserPasswd" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="userMobile">휴대폰 번호</label>
+                <div class="input-group">
+                    <input type="text" id="userMobilePart1" name="userMobilePart1" class="form-control" value="010" readonly>
+                    <input type="text" id="userMobilePart2" name="userMobilePart2" class="form-control" th:value="${usersDTO.userMobilePart2}" readonly>
+                    <input type="text" id="userMobilePart3" name="userMobilePart3" class="form-control" th:value="${usersDTO.userMobilePart3}" readonly>
+                    <!-- <button type="button" class="btn btn-primary" onclick="checkUserMobile()">휴대폰 번호 중복 확인</button> -->
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="userPost">우편번호</label>
+                <div class="input-group">
+                    <input type="text" id="userPost" name="userPost" class="form-control" th:value="${usersDTO.userPost}">
+                    <button type="button" class="btn btn-primary" onclick="goPopup()">우편번호 검색</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="userAd">주소</label>
+                <input type="text" id="userAd" name="userAd" class="form-control" th:value="${usersDTO.userAd}" >
+            </div>
+            <div class="form-group">
+                <label for="userAdd">상세주소</label>
+                <input type="text" id="userAdd" name="userAdd" class="form-control" th:value="${usersDTO.userAdd}">
+            </div>
+            <div class="form-group">
+                <label for="userEmail">이메일</label>
+                <div class="input-group">
+                    <input type="text" id="userEmailPart1" name="userEmailPart1" class="form-control" th:value="${usersDTO.userEmailPart1}"readonly>
+                    <div class="input-group-prepend input-group-append">
+                        <span class="input-group-text">@</span>
+                    </div>
+                    <select id="emailDomain" name="emailDomain" class="form-control" onchange="toggleEmailDomainOther()" readonly>
+                        <option value="naver.com" th:selected="${usersDTO.emailDomain == 'naver.com'}">naver.com</option>
+                        <option value="gmail.com" th:selected="${usersDTO.emailDomain == 'gmail.com'}">gmail.com</option>
+                        <option value="daum.net" th:selected="${usersDTO.emailDomain == 'daum.net'}">daum.net</option>
+                        <option value="other" th:selected="${usersDTO.emailDomainOther != null}">직접 입력</option>
+                    </select>
+                    <input type="text" id="emailDomainOther" name="emailDomainOther" class="form-control" th:if="${usersDTO.emailDomainOther != null}" th:value="${usersDTO.emailDomainOther}">
+                 <!-- <button type="button" class="btn btn-primary" onclick="checkUserEmail()">이메일 중복 확인</button> -->
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="userG">성별</label>
+                <div>
+                    <label class="radio-inline"><input type="radio" name="userG" value="남자" th:checked="${usersDTO.userG == '남자'}"> 남자</label>
+                    <label class="radio-inline"><input type="radio" name="userG" value="여자" th:checked="${usersDTO.userG == '여자'}"> 여자</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="userBirth">생년월일</label>
+                <input type="date" id="userBirth" name="userBirth" class="form-control" placeholder="yyyy-mm-dd" th:value="${usersDTO.userBirth}">
+            </div>
+            <div class="form-group text-center">
+                <input type="submit" value="수정하기" class="btn btn-success">
+                <input type="reset" value="초기화" class="btn btn-danger">
+            </div>
+<!-- Hidden fields to check if validations have been performed -->
+<input type="hidden" id="userMobileChecked" value="">
+<input type="hidden" id="originalUserMobile" name="originalUserMobile" th:value="${usersDTO.userMobile}">
+<input type="hidden" id="userEmailChecked" value="">
+<input type="hidden" id="originalUserEmail" name="originalUserEmail" th:value="${usersDTO.userEmail}">
+         </form>
+        <form onsubmit="return confirmDelete();">
+            <div class="form-group text-center">
+                <input type="submit" value="탈퇴하기" class="btn btn-danger">
+            </div>
+        </form>
+        <div>
+        	<h5> 안전한 정보관리를 위해 성함, 휴대폰번호, 이메일주소 변경은 <br>관리자 이메일(admin@runus.com) 으로 문의 주시기 바랍니다. </h5>
+        </div>
+    </div>
+    <footer th:replace="~{thymeleaf/main/main :: footer}"></footer>
+
+<!-- 비밀번호 입력 팝업 모달 -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">탈퇴 확인</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="deleteForm" th:action="@{/profile/delete}" method="post">
+                    <div class="form-group">
+                        <label for="deleteUserPasswd">비밀번호</label>
+                        <input type="password" id="deleteUserPasswd" name="userPasswd" class="form-control" required placeholder="탈퇴를 원하시면 비밀번호를 입력 해 주세요.">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소하기</button>
+                <button type="button" class="btn btn-danger" onclick="submitDeleteForm()">탈퇴하기</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+
+function alertReadOnly() {
+    alert("해당 정보는 수정할 수 없습니다.");
+}
+
+
+
+
+function confirmDelete() {
+    $('#deleteModal').modal('show');
+    return false; // 폼이 실제로 제출되지 않도록 함
+}
+
+function submitDeleteForm() {
+    document.getElementById('deleteForm').submit();
+}
+
+function handleProfileUpdateFormSubmit(event) {
+    event.preventDefault();
+    if (checkForm()) {
+        var form = event.target;
+        var formData = new FormData(form);
+
+        fetch(form.action, {
+            method: form.method,
+            body: formData
+        }).then(handleProfileUpdate)
+        .catch(error => console.error('Error:', error));
+    }
+}
+
+function handleProfileUpdate(response) {
+    if (response.ok) {
+        alert("변경 완료 되었습니다. 다시 로그인 해주세요.");
+        window.location.href = '/login?update=true';
+    } else {
+        response.text().then(text => {
+            alert("업데이트 실패: " + text);
+        });
+    }
+}
+
+function checkForm() {
+    var password = document.getElementById('userPasswd');
+    var confirmPassword = document.getElementById('confirmUserPasswd');
+    var userPost = document.getElementById('userPost');
+    var userAd = document.getElementById('userAd');
+    var userAdd = document.getElementById('userAdd');
+    var userG = document.querySelector('input[name="userG"]:checked');
+    var userBirth = document.getElementById('userBirth');
+
+    var missingFields = [];
+
+    if (!password.value) missingFields.push("비밀번호");
+    if (!confirmPassword.value) missingFields.push("비밀번호 확인");
+    if (!userPost.value) missingFields.push("우편번호");
+    if (!userAd.value) missingFields.push("주소");
+    if (!userAdd.value) missingFields.push("상세 주소");
+    if (!userG) missingFields.push("성별");
+    if (!userBirth.value) missingFields.push("생년월일");
+
+    if (missingFields.length > 0) {
+        alert("해당 항목이 입력되지 않았습니다: " + missingFields.join(", "));
+        return false;
+    }
+
+    if (password.value !== confirmPassword.value) {
+        alert("비밀번호가 일치하지 않습니다.");
+        password.value = '';
+        confirmPassword.value = '';
+        password.focus();
+        return false;
+    }
+
+    return true;
+}
+
+$(document).ready(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('deleted') === 'true') {
+        alert('탈퇴 처리가 완료되었습니다. 감사합니다.');
+    } else if (urlParams.get('update') === 'true') {
+        alert('변경 완료 되었습니다. 다시 로그인 해주세요.');
+    } else if (urlParams.get('error') === 'true') {
+        alert('비밀번호가 일치하지 않습니다.');
+    }
+
+    // 프로필 업데이트 폼 제출 처리
+    document.getElementById('profileUpdateForm').addEventListener('submit', handleProfileUpdateFormSubmit);
+});
+
+</script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

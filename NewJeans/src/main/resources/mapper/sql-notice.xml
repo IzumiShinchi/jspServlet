@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="org.big.mapper.NoticeMapper">
+	
+	<select id="NoticeList" resultType="org.big.dto.NoticeDTO">	<!--  메소드 이름과 id는 같아야 한다.  -->
+		<![CDATA[ 
+			SELECT * FROM notice ORDER BY n_code DESC 
+		]]>
+	</select>
+	
+	<insert id="insertNotice" parameterType="org.big.dto.NoticeDTO" useGeneratedKeys="true">
+		<selectKey keyProperty="nCode" resultType="int" order="AFTER"> 
+			SELECT notice_seq.currval FROM dual 
+		</selectKey>
+		<![CDATA[ 
+			INSERT INTO notice ( 
+				n_code, n_title, n_content, n_created, u_id 
+			) VALUES ( 
+				notice_seq.nextval, #{nTitle}, #{nContent}, sysdate, #{uId} 
+			) 
+		]]>
+	</insert>
+	
+	<update id="updateReadCnt" parameterType="int">
+		<![CDATA[ 
+			UPDATE notice 
+			SET n_readcnt = n_readcnt + 1 
+			WHERE n_code = #{noticeCode} 
+		]]>
+	</update>
+	
+	<select id="NoticeDetail" parameterType="int" resultType="org.big.dto.NoticeDTO">
+		<![CDATA[ 
+			SELECT 
+				n_code, n_title, n_content, n_readcnt, n_created, u_id 
+			FROM 
+				notice 
+			WHERE 
+				n_code = #{noticeCode} 
+		]]>
+	</select>
+	
+	<update id="updateNotice" parameterType="org.big.dto.NoticeDTO">
+		<![CDATA[ 
+			UPDATE notice 
+			SET n_title = #{nTitle}, n_content = #{nContent}, n_created = sysdate, u_id = #{uId} 
+			WHERE n_code = #{noticeCode} 
+		]]>
+	</update>
+	
+	<update id="deleteNotice" parameterType="int">
+		<![CDATA[ DELETE FROM notice WHERE n_code = #{noticeCode} ]]>
+	</update>
+</mapper>

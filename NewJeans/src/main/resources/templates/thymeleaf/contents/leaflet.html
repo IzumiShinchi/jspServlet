@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- META -->
+<meta charset="UTF-8">
+<meta name="generator" content="Rhymix">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="">
+<meta name="csrf-token" content="">
+<!-- TITLE -->
+<title>영화전단지</title>
+<!-- CSS -->
+<link rel="stylesheet" href="/css/ext/layout.css">
+<link rel="stylesheet" href="/css/ext/layout_pc.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@1.2.2/dist/web/static/pretendard-dynamic-subset.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css">
+<link rel="stylesheet" href="/css/ext/board.css">
+<link rel="stylesheet" href="/css/ext/board_pc.css">
+<link rel="stylesheet" href="/css/css_color/b_grey.css">
+<link rel="stylesheet" href="/css/css_color/b_grey_pc.css">
+<link rel="stylesheet" href="/css/css_color/c_redBlack.css">
+<link rel="stylesheet" href="/css/css_color/c_redBlack_pc.css">
+<style>
+#popup_menu_area	{outline: none !important; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0, 0.15) !important;}
+</style>
+<style>
+body, table, input, button, .ink_wrap .xe_content, .text_en {
+	font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+	font-weight: 400;
+}
+#popup_menu_area	{padding: 12px 15px 5px;}
+#popup_menu_area li	{margin-bottom: 7px;}
+#popup_menu_area a	{padding: 0 !important; color: #999; transition-property: color; transition-duration: 0.2s; transition-timing-function: ease-in;}
+#popup_menu_area a:hover	{color: #333; background-color: transparent !important;}
+.ink_container,
+.ink_banner_top,
+.ink_footer	{width: 1200px;}
+.ink_footer_wrap	{min-width: 1200px;}
+.nav_wrap.fixed	{width: 1200px; margin-left: -600px;}
+.ink_content	{width: 930px;}
+.ink_sidebar.right_sidebar	{width: 220px;}
+.ink_sidebar.left_sidebar	{width: 250px;}
+.ink_sidebar.right_sidebar::after	{right: 245px}
+.ink_sidebar.left_sidebar::after	{left: 275px;}
+.containerB .ink_content	{width: 905px;}
+.containerB.sidebar_typeN .ink_content	{width: 100%;}
+.containerB .ink_sidebar.right_sidebar	{width: 195px;}
+.containerB .ink_sidebar.left_sidebar	{width: 225px;}
+.normal_mode .ink_gnb .menu_1depth	{line-height: 70px;}
+.nav_wrap.view_mode,
+.normal_mode .gnb_space .menu_1depth	{height: 70px;}
+.ink_header	{margin-top: 25px;}.nav_wrap.color_nav, 
+.view_mode.color_nav .ink_gnb, 
+.normal_mode.color_nav .menu_1depth, 
+.nav_wrap .mymenu_title, 
+.nav_wrap.color_nav.fixed	{background-color: #c14c3d !important;}
+.nav_wrap.color_nav .menu_1depth,
+.color_nav.view_mode a,
+.nav_wrap.color_nav .nav_buttons button	{color: rgba(255,255,255,0.7);}
+.nav_wrap.color_nav .menu_1depth:hover,
+.color_nav.view_mode a:hover,
+.nav_wrap.color_nav .nav_buttons button:hover,
+.nav_wrap.color_nav .active>a.menu_1depth	{color: #FFF;}
+.view_mode.color_nav .ink_gnb>ul>li	{border-color: rgba(255,255,255,0.3);}
+.view_mode.color_nav .ink_gnb .menu_1depth	{border-color: rgba(255,255,255,0.5);}
+.ink_header .logo,
+.ink_header .header_side	{height: 72px;}
+.header_typeB3	{padding-top: -18px;}
+body	{background-color: #e6e6e6;}
+.ink_sidebar.left_sidebar::after,
+.ink_sidebar.right_sidebar::after	{background-color: rgba(0,0,0,0.05);}
+</style>
+<style>
+.ldd>ul>li,
+.ldn td	{padding-top: 13px; padding-bottom: 13px;}
+.list_wrap .title_link,
+.ldf header h1	{font-size: 13px;font-size:15px;}
+.ldn .list_author	{font-size: 13px;font-size:13px;}
+</style>
+<style>
+.ldg.has_notice>ul	{margin-top: 25px;}
+.ldg .list_unit	{margin-right: 21px; margin-bottom: 25px; vertical-align: top;}
+.ldg .list_unit:nth-child(4n)	{margin-right: 0;}
+.ldg>ul	{margin-bottom: -25px;}
+.ldg .list_thumb	{padding-bottom: 100%;}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&amp;display=swap">
+</head>
+<!-- BODY START -->
+<body class="color_scheme_light">
+	
+<!-- COMMON JS VARIABLES -->
+<script>
+	var default_url = "#";
+	var current_url = "#";
+	var request_uri = "#";
+	var current_lang = xe.current_lang = "ko";
+	var current_mid = "#";
+	var http_port = null;
+	var https_port = null;
+	var enforce_ssl = true;
+	var cookies_ssl = true;
+	var rewrite_level = 2;
+	if (detectColorScheme) detectColorScheme();
+</script>
+<!-- PAGE CONTENT -->
+
+<!-- PC -->
+
+<div class="ink_wrap lightmode" style="padding-bottom: 189px;">
+	<div id="container" class="ink_container header_typeB3 containerN">
+		<div id="header" class="ink_header has_navbox" role="banner">
+			<div id="gnb" class="nav_wrap normal_mode color_nav">
+				<div class="logo">
+					<div>
+						<a href="/rumflick/openIndex.do" rel="home"><img src="/images/logo/Room-logo.png" alt="EXIT"></a>
+					</div>
+				</div>
+				<nav class="ink_gnb" role="navigation">
+					<ul>
+						<li class="gnb_space"><span class="menu_1depth"></span></li>
+						<li><a class="menu_1depth" href="/notice/openNotice.do">알립니다 </a></li>
+						<li><a class="menu_1depth" href="/rum/movie.do">영화 </a>
+							<ul>
+								<li><a class="menu_2depth" href="/contents/kmovie.do">한국영화 </a></li>
+								<li><a class="menu_2depth" href="/contents/fmovie.do">해외영화 </a></li>
+								<li><a class="menu_2depth" href="/contents/tani.do">[극장판] 에니메이션 </a></li>
+							</ul>
+						</li>
+						<li><a class="menu_1depth" href="/rum/drama.do">드라마 </a>
+							<ul>
+								<li><a class="menu_2depth" href="/contents/kdrama.do">한국드라마 </a></li>
+								<li><a class="menu_2depth" href="/contents/fdrama.do">해외드라마 </a></li>
+							</ul>
+						</li>
+						<li><a class="menu_1depth" href="/rum/ani.do">애니메이션 </a></li>
+						<li><a class="menu_1depth" href="/board/openBoardList.do">끄적끄적 </a></li>
+						<li><a class="menu_1depth" href="/movietalk">..ing </a></li>
+						<li><a class="menu_1depth" href=""> </a></li>
+						<li class="gnb_space"><span class="menu_1depth"></span></li>
+					</ul>
+				</nav>
+				<div class="nav_buttons font_grey1 closed">
+					<form class="globalsearch" action="https://extmovie.com/" method="post">
+						<input type="hidden" name="error_return_url" value="/mposter">
+						<input type="hidden" name="vid" value="">
+						<input type="hidden" name="mid" value="mposter">
+						<input type="hidden" name="act" value="IS">
+						<input type="hidden" name="search_target" value="title_content">
+						<button class="bt_globalsearch" type="button">
+							<i class="fas fa-search" title="search"></i>
+						</button>
+						<input class="ii ii2" value="" name="is_keyword">
+					</form>
+				</div>
+			</div>
+		</div>
+		<div id="ink_wrapper" class="ink_wrapper clearfix">
+			<aside class="ink_sidebar right_sidebar">
+				<div class="ink_login is_unlogged bt_half">
+					<a href="javascript:void(0)" class="ib ib_color bt_login" onclick="inkPop('ink_login2')">로그인</a><a href="/mposter/signup" class="ib ib_mono3 bt_signup">회원가입</a>
+				</div>
+			</aside>
+			<div id="content" class="ink_content" role="main">
+<!-- 갤러리 설정 -->
+<!-- 갤러리 설정 -->
+			<section class="ink_board guest_mode">
+				<div class="bd_header">
+					<h2 class="bd_title">
+						<i class="far fa-list-alt big-icon"></i>
+						<a href="/mposter">영화전단지</a>
+					</h2>
+				</div>
+				<div class="list_header clearfix"></div>
+					<div class="list_wrap">
+						<div class="list_buttons">
+							<div class="">
+								<ul>
+									<li>
+										<a class="has_bubble" href="javascript:void(0);" onclick="switchMode('dark')"><i class="fas fa-moon"></i></a><span class="ink_bubble bubble_left">다크모드</span>
+									</li>
+									<li>
+										<a class="has_bubble" href="/mposter/write"><i class="fas fa-pen"></i></a><span class="ink_bubble bubble_left">쓰기</span></li>		<li><a class="has_bubble" href="javascript:void(0)" onclick="inkPop('list_search')"><i class="fas fa-search"></i></a><span class="ink_bubble bubble_left">검색</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="ink_gallery ldg hided_info">
+							<ul th:if="${!#lists.isEmpty(list)}">
+								<li class="list_unit" th:each="filelist:${filelist}" style="width: calc(25% - 18.75px);">
+									<a class="list_link" th:href="@{/rum/contentdetail.do(cCode=${filelist.cCode})}" th:title="${filelist.originalFileName}">뭐야뭐야</a>
+									<a class="list_thumb" th:href="@{/rum/contentdetail.do(cCode=${filelist.cCode})}">
+										<img th:src="${#strings.substring(filelist.storedFilePath, 6)}" th:title="${filelist.originalFileName}" alt="콘텐츠1">
+<!-- 										<th:block th:text="${#strings.substring(filelist.storedFilePath, 6)}" /> -->
+									</a> <!-- th:each="list : ${list}"를 사용할 수 있고, th:each인만큼 리스트가 계속 반복한다. -->
+									<a th:href="@{/rum/contentdetail.do(cCode=${filelist.cCode})}" th:title="${filelist.originalFileName}"><!-- <span th:text="${filelist.cCode}"></span> --></a>
+<!-- 									<div class="list_body" th:each="list : ${list}"> -->
+<!-- 										<a class="title_link" th:href="@{/rum/contentdetail.do(cCode=${list.cCode})}" th:title="${list.cTitle}" th:text="${list.cTitle}"></a> -->
+<!-- 										<div class="list_info"> -->
+<!-- 											<span class="list_nickname" th:text="${list.cTitle}"> </span> -->
+<!-- 											<span class="msover_date text_en"></span> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+								</li>
+							</ul>
+						</div>
+						<div th:unless="${!#lists.isEmpty(list)}">
+						    <p>해당 내용이 없습니다.</p>
+						</div>
+						<div class="list_footer">
+							<div class="bt_area bt_left clearfix">
+								<span class="ink_bubble_wrap"><button class="ib ib2 ib_mono2 has_bubble" type="button" onclick="inkPop('list_search')"><i class="fas fa-search only" title="검색"></i></button><span class="ink_bubble">검색</span></span>
+								<a class="ib ib2 ib_color bt_write" href="/mposter/write"><i class="fas fa-pen"></i><span>쓰기</span></a>	
+							</div>
+							<div class="paging text_en font_grey1">
+								<span class="bt_page"><a class="bt_prev" href="/mposter/page/1" title="prev"><i class="fas fa-angle-left"></i></a></span>
+								<div class="page_num_wrap">
+									<span class="bt_page"><a class="page_num active">1</a></span><span class="bt_page"><a href="/mposter/page/2" class="page_num">2</a></span><span class="bt_page"><a href="/mposter/page/3" class="page_num">3</a></span><span class="bt_page"><a href="/mposter/page/4" class="page_num">4</a></span><span class="bt_page"><a href="/mposter/page/5" class="page_num">5</a></span><span class="bt_page"><a href="/mposter/page/6" class="page_num">6</a></span><span class="bt_page"><a href="/mposter/page/7" class="page_num">7</a></span><span class="bt_page"><a href="/mposter/page/8" class="page_num">8</a></span><span class="bt_page"><a href="/mposter/page/9" class="page_num">9</a></span><span class="bt_page"><a href="/mposter/page/10" class="page_num">10</a></span>		
+								</div>
+								<span class="bt_page"><a class="bt_prev bt_next" href="/mposter/page/2" title="next"><i class="fas fa-angle-right"></i></a></span>
+								<span class="ink_bubble_wrap bt_page"><a class="bt_last has_bubble" href="/mposter/page/435" title="끝 페이지"><i class="fas fa-angle-double-right"></i></a><span class="ink_bubble">끝 페이지</span></span>
+							</div>
+						</div>
+					</div>
+					<div class="ink_message ink_message2 list_search">
+						<div><h3>검색</h3><button class="bt_close bt_xclose" type="button"><svg viewBox="0 0 1024 1024"><title>close</title><path class="path1" d="M548.203 537.6l289.099-289.098c9.998-9.998 9.998-26.206 0-36.205-9.997-9.997-26.206-9.997-36.203 0l-289.099 289.099-289.098-289.099c-9.998-9.997-26.206-9.997-36.205 0-9.997 9.998-9.997 26.206 0 36.205l289.099 289.098-289.099 289.099c-9.997 9.997-9.997 26.206 0 36.203 5 4.998 11.55 7.498 18.102 7.498s13.102-2.499 18.102-7.499l289.098-289.098 289.099 289.099c4.998 4.998 11.549 7.498 18.101 7.498s13.102-2.499 18.101-7.499c9.998-9.997 9.998-26.206 0-36.203l-289.098-289.098z"></path></svg></button>
+							<form action="https://extmovie.com/" method="get" onsubmit="return procFilter(this, search)" name="list_search"><input type="hidden" name="act" value="">
+								<div class="inner">
+									<input type="hidden" name="vid" value="">
+									<input type="hidden" name="mid" value="mposter">
+									<input type="hidden" name="category" value="">
+									<div>
+										<select name="search_target" class="ink_custom_select" sb="40906072" style="display: none;">
+											<option value="title_content">제목+내용</option><option value="title">제목</option><option value="content">내용</option><option value="tag">태그</option>				
+										</select>
+										<div id="sbHolder_40906072" class="sbHolder">
+											<a id="sbToggle_40906072" href="#" class="sbToggle"></a>
+											<a id="sbSelector_40906072" href="#" class="sbSelector">제목+내용</a>
+											<ul id="sbOptions_40906072" class="sbOptions" style="display: none;">
+												<li><a href="#title_content" rel="title_content" class="sbFocus">제목+내용</a></li>
+												<li><a href="#title" rel="title">제목</a></li>
+												<li><a href="#content" rel="content">내용</a></li>
+												<li><a href="#tag" rel="tag">태그</a></li>
+											</ul>
+										</div>
+									</div>
+									<input class="ii focused" type="text" name="search_keyword" value="" title="검색" placeholder="검색어를 입력하세요.">	
+								</div>
+								<div class="bt_area bt_duo">
+									<button class="ib ib_mono bt_close" type="button">취소</button><button class="ib ib_color" type="submit">검색		</button>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="ink_align_center"></div>
+				</section>
+			</div>
+		</div>
+	</div>
+	
+	<button class="ink_bt_top" style="display: none;"><i class="fas fa-angle-up"></i></button>
+		<div class="ink_message ink_message2 ink_login2">
+			<div>
+				<h3>로그인</h3>
+				<button class="bt_close bt_xclose" type="button"><svg viewBox="0 0 1024 1024"><title>close</title><path class="path1" d="M548.203 537.6l289.099-289.098c9.998-9.998 9.998-26.206 0-36.205-9.997-9.997-26.206-9.997-36.203 0l-289.099 289.099-289.098-289.099c-9.998-9.997-26.206-9.997-36.205 0-9.997 9.998-9.997 26.206 0 36.205l289.099 289.098-289.099 289.099c-9.997 9.997-9.997 26.206 0 36.203 5 4.998 11.55 7.498 18.102 7.498s13.102-2.499 18.102-7.499l289.098-289.098 289.099 289.099c4.998 4.998 11.549 7.498 18.101 7.498s13.102-2.499 18.101-7.499c9.998-9.997 9.998-26.206 0-36.203l-289.098-289.098z"></path></svg></button>
+				<form action="/" method="post" name="memberLogin"><input type="hidden" name="error_return_url" value="/mposter"><input type="hidden" name="mid" value="mposter"><input type="hidden" name="ruleset" value="@login">
+					<input type="hidden" name="success_return_url" value="/mposter">
+					<input type="hidden" name="act" value="procMemberLogin">
+					<div class="inner">
+						<input class="ii focused" name="user_id" type="text" placeholder="아이디" required="">				<input class="ii" name="password" type="password" placeholder="비밀번호" required="">
+						<div class="ex clearfix">
+							<label class="ink_check"><input type="checkbox" class="keep_signed" name="keep_signed" value="Y"><span><i class="fas fa-check"></i></span>로그인 유지</label>
+							<div class="keep_desc bg_grey1">브라우저를 닫더라도 로그인이 계속 유지될 수 있습니다. 로그인 유지 기능을 사용할 경우 다음 접속부터는 로그인할 필요가 없습니다. 단, PC방, 학교, 도서관 등 공공장소에서 이용 시 개인정보가 유출될 수 있으니 꼭 로그아웃을 해주세요.</div>					<a href="/mposter/dispMemberFindAccount" class="a_underline">ID/PW 찾기</a>
+						</div>
+					</div>
+					<div class="bt_area bt_half">
+						<button class="ib ib_mono" type="button" onclick="location.href='/rumflick/login.do'">회원가입</button><button class="ib ib_color bt_login" type="submit">로그인</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div id="ink_dummy" class="ink_dummy"></div>
+		<div id="ink_loading" class="ink_loading">
+		  <svg width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+		    <rect x="0" y="10" width="4" height="10">
+		      <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0s" dur="0.6s" repeatCount="indefinite"></animate>
+		      <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0s" dur="0.6s" repeatCount="indefinite"></animate>
+		      <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0s" dur="0.6s" repeatCount="indefinite"></animate>
+		    </rect>
+		    <rect x="8" y="10" width="4" height="10">
+		      <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.15s" dur="0.6s" repeatCount="indefinite"></animate>
+		      <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite"></animate>
+		      <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite"></animate>
+		    </rect>
+		    <rect x="16" y="10" width="4" height="10">
+		      <animate attributeName="opacity" attributeType="XML" values="0.2; 1; .2" begin="0.3s" dur="0.6s" repeatCount="indefinite"></animate>
+		      <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite"></animate>
+		      <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite"></animate>
+		    </rect>
+		  </svg>
+		</div>
+		<div id="ink_done" class="ink_done"><i class="fas fa-check"></i></div>
+	</div>
+	
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-BL8KSSJ27S"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
+  gtag('config', 'G-BL8KSSJ27S');
+</script>
+<style>.pswp__caption__center {  display:none }</style><!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+	<!-- Background of PhotoSwipe. 
+		 It's a separate element as animating opacity is faster than rgba(). -->
+	<div class="pswp__bg"></div>
+
+	<!-- Slides wrapper with overflow:hidden. -->
+	<div class="pswp__scroll-wrap">
+
+		<!-- Container that holds slides. 
+			PhotoSwipe keeps only 3 of them in the DOM to save memory.
+			Don't modify these 3 pswp__item elements, data is added later on. -->
+		<div class="pswp__container">
+			<div class="pswp__item"></div>
+			<div class="pswp__item"></div>
+			<div class="pswp__item"></div>
+		</div>
+
+		<!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+		<div class="pswp__ui pswp__ui--hidden">
+
+			<div class="pswp__top-bar">
+
+				<!--  Controls are self-explanatory. Order can be changed. -->
+
+				<div class="pswp__counter"></div>
+
+				<button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+				<button class="pswp__button pswp__button--share" title="Share"></button>
+
+				<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+				<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+				<!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+				<!-- element will get class pswp__preloader - active when preloader is running -->
+				<div class="pswp__preloader">
+					<div class="pswp__preloader__icn">
+					  <div class="pswp__preloader__cut">
+						<div class="pswp__preloader__donut"></div>
+					  </div>
+					</div>
+				</div>
+			</div>
+
+			<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+				<div class="pswp__share-tooltip"></div> 
+			</div>
+
+			<button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+			</button>
+
+			<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+			</button>
+
+			<div class="pswp__caption">
+				<div class="pswp__caption__center"></div>
+			</div>
+
+		</div>
+
+	</div>
+
+</div><!-- ETC -->
+<div id="rhymix_waiting" class="wfsr" data-message="서버에 요청 중입니다. 잠시만 기다려 주십시오...">서버에 요청 중입니다. 잠시만 기다려 주십시오...</div><div id="rhymix_alert"></div>
+<div id="rhymix_debug_panel"></div>
+<div id="rhymix_debug_button"></div>
+<!-- BODY JS -->
+<script src="/files/cache/js_filter_compiled/3157a1c68d2103b9c934bafab59f0699.ko.compiled.js?20240505192742"></script>
+<script src="/files/cache/js_filter_compiled/115e2215f16c4dcdf8ad0a32a3506721.ko.compiled.js?20240505192742"></script>
+<script src="/files/cache/js_filter_compiled/ee6803ef8b364b28494ac36ba83aeb82.ko.compiled.js?20240505192740"></script>
+<script src="/addons/autolink/autolink.js?20200918095508"></script>
+<script src="/addons/photoswipe/PhotoSwipe/photoswipe.js?20190112221344"></script>
+<script src="/addons/photoswipe/PhotoSwipe/photoswipe-ui-default.js?20190112221344"></script>
+<script src="/addons/photoswipe/rx_photoswipe.js?20220704093658"></script>
+
+<div id="popup_menu_area" tabindex="0" style="display:none;"></div>
+</html>

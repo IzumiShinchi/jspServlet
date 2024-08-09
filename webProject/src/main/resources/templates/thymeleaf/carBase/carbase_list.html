@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>구성 목록</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    
+</head>
+<body>
+<header th:replace="~{thymeleaf/main/admin_main :: header}"></header>
+<main class="container mt-4">
+    <h2>구성 목록</h2>
+    <a href="#" th:href="@{/admin/carbase/new}" class="btn btn-primary mb-3">구성 추가</a>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>종류</th>
+                <th>이름</th>
+                <th>가격</th>
+                <th>변경</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="carBase : ${carBases}">
+                <td th:text="${carBase.baseId}"></td>
+                <td th:text="${carBase.type}"></td>
+                <td th:text="${carBase.name}"></td>
+                <td th:text="${carBase.price}"></td>
+                <td>
+                    <a th:href="@{'/admin/carbase/edit/' + ${carBase.baseId}}" class="btn btn-info btn-sm">수정</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</main>
+<footer th:replace="~{thymeleaf/main/main :: footer}"></footer>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

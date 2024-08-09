@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>애니메이션</title>
+<link rel="stylesheet" href="https://unpkg.com/minibarjs@latest/dist/minibar.min.css" type="text/css">
+<link rel="stylesheet" href="/css/util.css">
+<link rel="stylesheet" href="/css/default.css">
+<link rel="stylesheet" href="/css/ext/layout.css">
+<link rel="stylesheet" href="/css/ext/layout_pc.css">
+<link rel="stylesheet" href="/css/ext/widget.css">
+<link rel="stylesheet" href="/css/ext/widget_pc.css">
+<link rel="stylesheet" href="/css/css_color/b_grey.css">
+<link rel="stylesheet" href="/css/css_color/b_grey_pc.css">
+<link rel="stylesheet" href="/css/css_color/c_redBlack.css">
+<link rel="stylesheet" href="/css/css_color/c_redBlack_pc.css">
+<link rel="stylesheet" href="/css/layoutline.css">
+<script>
+	if (contents == null) {
+	    logger.warn("contents 객체가 null입니다.");
+	}
+</script>
+</head>
+<body>
+<div id="app">
+	<div th:insert="~{thymeleaf/index/header :: header}"></div>
+    <div id="container">
+        <div class="content">
+            <div class="content-banner"></div>
+				<div id="movie-container">
+			    	<div class="movie-header">
+						<div class="subject"><h2>애니메이션</h2></div>
+						<div class="category ">
+							<div class="multi-nw-dropdown"></div>
+			        	</div>
+			    	</div>
+			    	<div th:if="${#lists.isEmpty(filelist)}">
+				    	<p>해당 내용이 없습니다.</p>
+					</div>
+			    	<ul class="movie-list" th:if="${!#lists.isEmpty(filelist)}">
+						<li th:each="filelist : ${filelist}">
+							<a th:href="@{/rum/contentdetail.do(cCode=${filelist.cCode})}" class="thumb">
+								<div class="poster">
+									<img th:src="${#strings.substring(filelist.storedFilePath, 6)}" th:title="${filelist.originalFileName}" alt="콘텐츠1">
+								</div>
+							</a>
+							<div class="title">
+								<a href="#"><strong></strong></a>
+							</div>
+						</li>
+					</ul>
+				    <div class="paging">
+				        <nav class="pg_wrap"><span class="pg"><span class="sound_only">열린</span><strong class="pg_current">1</strong><span class="sound_only">페이지</span>
+							<a href="program_list.php?section=kr_movie&amp;page=2" class="pg_page">2<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=3" class="pg_page">3<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=4" class="pg_page">4<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=5" class="pg_page">5<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=6" class="pg_page">6<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=7" class="pg_page">7<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=8" class="pg_page">8<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=9" class="pg_page">9<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=10" class="pg_page">10<span class="sound_only">페이지</span></a>
+							<a href="program_list.php?section=kr_movie&amp;page=11" class="pg_page pg_next">다음</a>
+							<a href="program_list.php?section=kr_movie&amp;page=415" class="pg_page pg_end">맨끝</a>
+							</span>
+						</nav>
+					</div>
+				</div>
+			</div>
+			<div class="ink_footer_wrap" th:insert="~{thymeleaf/index/footer :: footer}"></div>
+		<button class="ink_bt_top" style="display: block;"><i class="fas fa-angle-up"></i></button>						
+    </div>
+</div>
+</body>
+</html>

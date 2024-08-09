@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 목록</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    
+    <style>
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .search-container {
+            margin-left: 20px;
+        }
+
+        .search-container input {
+            width: 200px; /* Adjust the width as needed */
+            display: inline-block;
+        }
+
+        .search-container button {
+            display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            .search-container {
+                margin-top: 10px;
+                margin-left: 0;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{thymeleaf/main/admin_main :: header}"></header>
+<main class="container mt-4">
+    <h2>사용자 목록</h2>
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <table class="table table-hover mt-3">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>아이디</th>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>휴대폰 번호</th>
+                <th>성별</th>
+                <th>생년월일</th>
+                <th>변경</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.userNo}"></td>
+                <td th:text="${user.userId}"></td>
+                <td th:text="${user.userName}"></td>
+                <td th:text="${user.userEmail}"></td>
+                <td th:text="${user.userMobile}"></td>
+                <td th:text="${user.userG}"></td>
+                <td th:text="${user.userBirth}"></td>
+                <td>
+                    <a th:href="@{'/admin/users/view/' + ${user.userId}}" class="btn btn-info btn-sm">보기</a>
+                    <form th:action="@{'/admin/users/delete/' + ${user.userId}}" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-danger btn-sm">삭제</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="pagination-container">
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{|/admin/users/list?page=${currentPage - 1}&size=${size}&search=${search}|}">이전</a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"
+                    th:classappend="${i == currentPage} ? 'active'">
+                    <a class="page-link" th:text="${i}"
+                       th:href="@{|/admin/users/list?page=${i}&size=${size}&search=${search}|}"></a>
+                </li>
+                <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                    <a class="page-link" th:href="@{|/admin/users/list?page=${currentPage + 1}&size=${size}&search=${search}|}">다음</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="search-container">
+            <form th:action="@{/admin/users/list}" method="get">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="검색" th:value="${search}">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">검색</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{thymeleaf/main/main :: footer}"></footer>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

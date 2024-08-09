@@ -39,7 +39,7 @@
 		else {
 	%>
 		<h3>로그인</h3>
-			<form action="login_ok.jsp" name="login" method="post">
+		<form action="login_ok.jsp" name="login" method="post">
 			아이디 : <input type="text" name="mId"><br>
 			비밀번호 : <input type="password" name="mPasswd"><br>
 			<input type="submit" value="로그인">

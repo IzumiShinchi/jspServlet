@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Notice</title>
+<link rel="stylesheet" th:href="@{/css/commu/noticeStyle.css}"></link>
+</head>
+<body>
+	<div class="container">
+		<h2>수다 공지</h2>
+		<table class="notice_list">
+			<colgroup>
+				<col width="10%">
+				<col width="*">
+				<col width="10%">
+				<col width="10%">
+				<col width="20%">
+			</colgroup>
+			<thead>
+				<tr>
+					<th scope="col">글번호</th>
+					<th scope="col">제목</th>
+					<th scope="col">작성자</th>
+					<th scope="col">조회수</th>
+					<th scope="col">작성일</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${list != null} and ${#lists.size(list)} > 0" th:each="list : ${list}">
+					<td th:text="${list.nCode}"></td>
+					<td class="title">
+						<a th:href="@{/notice/noticeDetail.do(nCode=${list.nCode})}"
+							th:text="${list.nTitle}"></a></td>
+					<td th:text="${list.uId}"></td>
+					<td th:text="${list.nReadCnt}"></td>
+					<td th:text="${#dates.format(list.nCreated, 'yyyy.MM.dd HH:mm:ss')}"></td>
+				</tr>
+				<tr th:unless="${list != null} and ${#lists.size(list)} > 0">
+					<td colspan="5">조회된 결과가 없습니다.</td>
+				</tr>
+			</tbody>
+		</table>
+<!-- 		<input type="hidden" name="sessionId" th:value=sessionId> -->
+		<a th:if="${sessionId == null}" href="/rumflick/login.do" class="btn">로그인 후 사용 가능합니다</a>
+		<a th:if="${sessionId != null}" th:href="@{/notice/noticeWrite.do}" class="btn">글 쓰기</a>
+	</div>
+</body>
+</html>

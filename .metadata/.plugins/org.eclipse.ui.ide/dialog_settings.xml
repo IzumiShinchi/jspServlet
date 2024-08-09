@@ -7,6 +7,10 @@
 		<item key="WizardProjectsImportPage.STORE_CLOSE_CREATED_PROJECTS_ID" value="false"/>
 		<item key="WizardProjectsImportPage.STORE_HIDE_CONFLICTING_PROJECTS_ID" value="false"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="D:\JSP\zrumFlick"/>
+			<item value="D:\JSP\NewRum"/>
+			<item value="D:\JSP\NewRumFlick"/>
+			<item value="D:\JSP\webProject"/>
 			<item value="D:\JSP\board2"/>
 			<item value="D:\JSP\board"/>
 			<item value="D:\JSP\testController"/>

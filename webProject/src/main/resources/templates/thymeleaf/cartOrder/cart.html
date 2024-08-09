@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>장바구니</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+          <link rel="stylesheet" th:href="@{/css/newMember.css}">
+    <style>
+         @import url('https://fonts.googleapis.com/css2?family=Gothic+A1&display=swap');
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+            font-family: 'Gothic A1', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header, .footer {
+            width: 100%;
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .cart-container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .cart-text {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #343a40;
+        }
+        .table {
+            background-color: #ffffff;
+            color: #212529;
+        }
+        .table th {
+            background-color: #e9ecef;
+            color: #212529;
+        }
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        .form-control.quantity-input {
+            width: 70px; /* 가로폭을 줄이기 위해 설정 */
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .buttons .btn {
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header" th:replace="~{thymeleaf/main/main :: header}"></header>
+    <main class="container">
+    <div id="errorAlert" class="alert alert-danger" style="display:none;" role="alert"></div>
+        <div class="cart-container">
+            <div class="cart-text">장바구니</div>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="selectAll"></th>
+                                <th>종류</th>
+                                <th>색상</th>
+                                <th>옵션</th>
+                                <th>수량</th>
+                                <th>총 가격</th>
+                                <th>변경</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="cartItem : ${cartItems}">
+                                <td><input type="checkbox" class="cart-select" th:data-cart-no="${cartItem.cartNo}"></td>
+                                <td th:text="${cartItem.kind}">종류</td>
+                                <td th:text="${cartItem.color}">색상</td>
+                                <td th:text="${cartItem.options}">옵션</td>
+                                <td>
+                                    <input type="number" th:value="${cartItem.quantity}" min="1" class="form-control quantity-input">
+                                </td>
+                                <td th:text="${cartItem.totalPrice}">가격</td>
+                                <td>
+                                    <button class="btn btn-primary update-quantity" th:data-cart-no="${cartItem.cartNo}">수량변경</button>
+                                    <button class="btn btn-danger" th:data-cart-no="${cartItem.cartNo}">삭제</button>
+                                </td>
+                            </tr>
+                           <tr th:if="${#lists.isEmpty(notices)}">
+               				 <td colspan="7" class="text-center">조회된 결과가 없습니다.</td>
+           					 </tr>
+                        </tbody>
+                    </table>
+                    <div class="buttons">
+                        <button class="btn btn-success" id="orderSelectedButton">선택주문</button>
+                        <button class="btn btn-success" id="orderAllButton">전체주문</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer" th:replace="~{thymeleaf/main/main :: footer}"></footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.btn-danger').forEach(button => {
+            button.onclick = function() {
+                var cartNo = this.getAttribute('data-cart-no');
+                window.location.href = '/cart-and-order/cart/delete/' + cartNo;
+            };
+        });
+
+        document.querySelectorAll('.update-quantity').forEach(button => {
+            button.onclick = function() {
+                var cartNo = this.getAttribute('data-cart-no');
+                var quantity = $(this).closest('tr').find('.quantity-input').val();
+                $.post('/cart-and-order/cart/update', { cartNo: cartNo, quantity: quantity }, function(response) {
+                    alert('수량이 업데이트되었습니다.');
+                    window.location.reload();
+                });
+            };
+        });
+
+        document.getElementById('orderAllButton').onclick = function() {
+            window.location.href = '/cart-and-order/order/checkout';
+        };
+
+        document.getElementById('orderSelectedButton').onclick = function() {
+            var selectedCartNos = [];
+            document.querySelectorAll('.cart-select:checked').forEach(checkbox => {
+                selectedCartNos.push(checkbox.getAttribute('data-cart-no'));
+            });
+            if (selectedCartNos.length > 0) {
+                window.location.href = '/cart-and-order/order/checkout?selected=' + selectedCartNos.join(',');
+            } else {
+                alert('주문할 항목을 선택하세요.');
+            }
+        };
+
+        document.getElementById('selectAll').onclick = function() {
+            var isChecked = this.checked;
+            document.querySelectorAll('.cart-select').forEach(checkbox => {
+                checkbox.checked = isChecked;
+            });
+        };
+    });
+    </script>
+</body>
+</html> 

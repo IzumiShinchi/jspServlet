@@ -22,23 +22,26 @@
 <link rel="stylesheet" href="/css/layoutline.css">
 <link rel="stylesheet" href="/css/swiper.min.css">
 <title>Main Page</title>
+<script>
+	var mNo = "";
+	var mId = "";
+	var sessionId = "";
+	
+	if(session.getAttribute("mId") != null) {
+		mNo = session.getAttribute("mNo");
+		mId = session.getAttribute("mId");
+	}
+	if(session.getId() != null) {
+		sessionId = session.getId();
+	}
+</script>
 </head>
 <body>
+<input type="hidden" name="sessionId" value="sessionId">
 	<div id="app">
-		<div th:include="~{thymeleaf/main/header :: header}"></div>
-		<div id="container" class="ink_container header_typeB3 containerN">
+		<div th:insert="~{thymeleaf/main/header :: header}"></div>
+		<div id="container" class="ink_container header_typeB3 containerN"  style="padding-bottom: 192px;">
 			<div id="ink_wrapper" class="ink_wrapper clearfix">
-				<div id="slideShow">
-		        	<div id="slides">
-		        		<a href="#"><img src="../images/slide/festival_de_cannes.png" alt=""></a>
-						<a href="https://www.naver.com"><img src="/images/slide/berlin.png" alt=""></a>
-						<a href="#"><img src="/images/slide/venice_file_festival.png" alt=""></a>
-		        		<a href="https://www.google.com"><img src="/images/slide/biff.jpg" alt=""></a>
-		        		<a href="#"><img src="/images/slide/jiff.png" alt=""></a>
-		        		<a href="https://map.kakao.com"><img src="/images/slide/film_festival.jpg" alt=""></a>
-		        		<script src="/js/autoslideshow.js"></script>
-		        	</div>
-		        </div>
 				<aside class="ink_sidebar right_sidebar">
 					<div id="links">
 						<ul>
@@ -63,6 +66,17 @@
 						</ul>
 					</div>
 				</aside>
+				<div id="slideShow">
+		        	<div id="slides">
+		        		<a href="#"><img src="../images/slide/festival_de_cannes.png" alt=""></a>
+						<a href="https://www.naver.com"><img src="/images/slide/berlin.png" alt=""></a>
+						<a href="#"><img src="/images/slide/venice_file_festival.png" alt=""></a>
+		        		<a href="https://www.google.com"><img src="/images/slide/biff.jpg" alt=""></a>
+		        		<a href="#"><img src="/images/slide/jiff.png" alt=""></a>
+		        		<a href="https://map.kakao.com"><img src="/images/slide/film_festival.jpg" alt=""></a>
+		        		<script src="/js/autoslideshow.js"></script>
+		        	</div>
+		        </div>
 				<div id="content" class="ink_content" role="main">
 					<div class="xe-widget-wrapper "
 						style="float: right; width: 49%; border-width: 0px; border-style: solid; border-color: rgb(34, 34, 34); margin: 0px 0px 18px; background-image: none; background-repeat: repeat; background-position: 0% 0%;">
@@ -171,7 +185,7 @@
 	
 									<div class="w_title">
 										<h3>
-											<a href="/bestboard">익무힛갤</a>
+											<a href="/bestboard">힛더갤럽</a>
 										</h3>
 									</div>
 									<div class="w_list wn">
@@ -271,9 +285,9 @@
 						</div>
 					</div>
 				</div>
-				<div th:include="~{thymeleaf/main/footer :: footer}"></div>
-				</div>
-			</div>	
+			</div>
+		</div>
+		<div class="ink_footer_wrap" th:insert="~{thymeleaf/main/footer :: footer}"></div>
 
 			<div id="window-scroll" class="window-scroll">
 		    <a href="#">

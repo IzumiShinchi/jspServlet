@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.big.prj.mapper.NoticeMapper">
+
+    <!-- 새로운 공지사항 작성 -->
+    <insert id="insertNotice" parameterType="org.big.prj.dto.NoticeDTO">
+        INSERT INTO Notice (notice_id, notice_title, notice_content, created_at)
+        VALUES (notice_seq.NEXTVAL, #{noticeTitle}, #{noticeContent}, SYSDATE)
+    </insert>
+
+    <!-- 모든 공지사항 조회 -->
+    <select id="selectAllNotices" resultType="org.big.prj.dto.NoticeDTO">
+        SELECT notice_id AS noticeId, notice_title AS noticeTitle, notice_content AS noticeContent, created_at AS createdAt
+        FROM Notice
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- 전체 Notice 페이징 및 검색 기능 -->
+    <select id="getAllNotices" resultType="org.big.prj.dto.NoticeDTO">
+        SELECT * FROM (
+            SELECT n.*, ROW_NUMBER() OVER (ORDER BY n.notice_id) AS rn
+            FROM notice n
+            WHERE n.notice_title LIKE '%' || #{search} || '%'
+            OR n.notice_content LIKE '%' || #{search} || '%'
+        ) WHERE rn BETWEEN #{offset} + 1 AND #{offset} + #{limit}
+        	ORDER BY created_at DESC
+    </select>
+
+    <!-- 전체 Notice 수를 계산 -->
+    <select id="countNotices" resultType="int">
+        SELECT COUNT(*)
+        FROM notice
+        WHERE notice_title LIKE '%' || #{search} || '%'
+        OR notice_content LIKE '%' || #{search} || '%'
+    </select>
+    
+    <!-- 공지사항 삭제 -->
+    <delete id="deleteNotice" parameterType="long">
+        DELETE FROM Notice WHERE notice_id = #{noticeId}
+    </delete>
+
+    <!-- 공지사항 수정 -->
+    <update id="updateNotice" parameterType="org.big.prj.dto.NoticeDTO">
+        UPDATE Notice
+        SET notice_title = #{noticeTitle}, notice_content = #{noticeContent}
+        WHERE notice_id = #{noticeId}
+    </update>
+        <!-- 공지사항 조회 by ID -->
+    <select id="selectNoticeById" parameterType="long" resultType="org.big.prj.dto.NoticeDTO">
+        SELECT notice_id AS noticeId, notice_title AS noticeTitle, notice_content AS noticeContent, created_at AS createdAt
+        FROM Notice
+        WHERE notice_id = #{noticeId}
+    </select>
+</mapper>

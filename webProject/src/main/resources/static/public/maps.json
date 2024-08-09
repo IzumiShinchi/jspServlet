@@ -1,0 +1,13 @@
+{
+    "kindMap": {
+        "경차": "smallcar",
+        "세단": "sedan",
+        "SUV": "SUV",
+        "트럭": "truck"
+    },
+    "colorMap": {
+        "WHITE": "white",
+        "RED": "red",
+        "BLUE": "blue"
+    }
+}

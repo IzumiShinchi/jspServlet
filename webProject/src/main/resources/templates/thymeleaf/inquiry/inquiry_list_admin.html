@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 1:1 문의 리스트</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <style>
+        .inquiry-table td {
+            vertical-align: middle;
+        }
+        .search-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .search-container .input-group {
+            flex-grow: 1;
+            display: flex;
+            max-width: 500px;
+        }
+        .search-container .form-control {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+        .search-container .btn {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{thymeleaf/main/admin_main:: header}"></header>
+<main class="container mt-4" id="inquiryListPage">
+    <h2>Q&A</h2>
+
+    <!-- 문의 리스트 -->
+    <table class="table table-striped inquiry-table">
+        <thead>
+            <tr>
+                <th scope="col">글번호</th>
+                <th scope="col">제목</th>
+                <th scope="col">작성자</th>
+                <th scope="col">작성일</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="inquiry : ${inquiries}">
+                <td th:text="${inquiry.inquiryId}"></td>
+                <td>
+                    <a th:href="@{/admin/inquiry/view/{id}(id=${inquiry.inquiryId})}" th:text="${inquiry.inquiryTitle}"></a>
+                      <div th:if="${inquiry.commentTitle != null}"  th:text="'↳ [답글]'+${ inquiry.inquiryTitle}"></div>
+                </td>
+                <td th:text="${inquiry.inquiryName}"></td>
+                <td th:text="${#dates.format(inquiry.createdDate, 'yyyy-MM-dd')}"></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(inquiries)}">
+                <td colspan="5" class="text-center">조회된 결과가 없습니다.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 검색 폼 및 글쓰기 버튼 -->
+    <div class="search-container mt-4">
+      <div class="search-container">
+                <form th:action="@{/admin/inquiry/list}" method="get">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="검색" th:value="${search}">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">검색</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+     </div>
+    <!-- 페이징 처리 -->
+    <nav>
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${page == 0} ? 'disabled'">
+                <a class="page-link" th:href="@{|/admin/inquiry/list?page=${page > 0 ? page - 1 : 0}&size=${size}&search=${search}|}">이전</a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i - 1 == page} ? 'active'">
+                <a class="page-link" th:text="${i}" th:href="@{|/admin/inquiry/list?page=${i - 1}&size=${size}&search=${search}|}"></a>
+            </li>
+            <li class="page-item" th:classappend="${page == totalPages - 1} ? 'disabled'">
+                <a class="page-link" th:href="@{|/admin/inquiry/list?page=${page + 1 < totalPages ? page + 1 : page}&size=${size}&search=${search}|}">다음</a>
+            </li>
+        </ul>
+    </nav>
+</main>
+<footer th:replace="~{thymeleaf/main/admin_main:: footer}"></footer>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script th:inline="javascript">
+
+    // 문의글 리스트 초기화
+    function initializeInquiryList() {
+        const inquiryItems = document.querySelectorAll(".inquiry-item");
+        inquiryItems.forEach(item => {
+            item.addEventListener("click", function(event) {
+                event.preventDefault();
+                const inquiryId = this.getAttribute("data-inquiry-id");
+                checkPasswordAndLoadInquiry(inquiryId);
+            });
+        });
+    }
+
+    // 페이지 로드 시 초기화 함수 호출
+    document.addEventListener("DOMContentLoaded", function() {
+        if (document.getElementById("inquiryListPage")) {
+            initializeInquiryList();
+        }
+    });
+
+    // 게시글 검색
+    $(document).ready(function() {
+        // 검색 버튼 클릭 이벤트
+        $('#searchButton').on('click', function() {
+            searchInquiries();
+        });
+
+        // 검색 함수
+        function searchInquiries() {
+            var keyword = $('#searchKeyword').val();
+            var searchType = $('#searchType').val();
+
+            $.ajax({
+                url: '/inquiry/search',
+                type: 'GET',
+                data: {
+                    keyword: keyword,
+                    searchType: searchType
+                },
+                success: function(response) {
+                    // 검색 결과를 목록에 반영
+                    updateInquiryList(response);
+                },
+                error: function() {
+                    alert('검색 중 오류가 발생했습니다.');
+                }
+            });
+        }
+
+        // 검색 결과를 목록에 업데이트하는 함수
+        function updateInquiryList(inquiries) {
+            var $inquiryList = $('#inquiryList');
+            $inquiryList.empty();
+
+            if (inquiries.length > 0) {
+                inquiries.forEach(function(inquiry) {
+                    var $tr = $('<tr></tr>');
+                    $tr.append('<td>' + inquiry.inquiryId + '</td>');
+                    $tr.append('<td><a href="#" data-inquiry-id="' + inquiry.inquiryId + '" class="inquiry-item">' + inquiry.inquiryTitle + '</a></td>');
+                    $tr.append('<td>' + inquiry.inquiryName + '</td>');
+                    $tr.append('<td>' + inquiry.createdDate + '</td>');
+                    $tr.append('<td>' + (inquiry.commentTitle ? '답글 완료' : '미완료') + '</td>');
+                    $inquiryList.append($tr);
+                });
+            } else {
+                $inquiryList.append('<tr><td colspan="5" class="text-center">조회된 결과가 없습니다.</td></tr>');
+            }
+        }
+    });
+</script>
+</body>
+</html>

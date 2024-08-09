@@ -1,21 +1,27 @@
 @charset "UTF-8";
 /* 이미지 슬라이드 쇼 */
 #slideShow {   
-  clear:both;   /* 플로팅 해제 */
-  width:1092px;    /* 너비 */ 
-  height:429px;   /* 높이 */ 
+/*   clear:both;   플로팅 해제 */
+  width:80%;    /* 너비 */ 
+  height:600px;   /* 높이 */ 
   overflow:hidden;   /* 영역 넘치면 감춤 */ 
   position: relative;
-  margin: 35px 425px 35px auto;
+  margin: 25px;
 }
 #slides {
-  position: relative;
-  width:1092px;
-  height:429px;
+/*   position: relative; */
+/*   width:1092px; */
+  height:100%;
+}
+#slides > a {
+    flex: 0 0 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 #slides >a >img {
-  width:1092px;  /* 너비 */
-  height:429px;
+  max-width:100%;  /* 너비 */
+  max-height:100%;
   float:left;  /* 가로로 배치 */
   object-fit: contain;
 }
@@ -23,7 +29,7 @@
 #links{  
   
   width:250px;   /* 너비 */
-  height:100%;   /* 높이 */
+  height:600px;   /* 높이 */
   margin-top:20px;  /* 마진 추가 */
 }
 #links ul{

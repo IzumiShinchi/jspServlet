@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.big.prj.mapper.OrderMapper">
+
+    <!-- Insert Order -->
+  <insert id="insertOrder" parameterType="org.big.prj.dto.OrderDTO">
+        INSERT INTO orders (order_no, user_id, car_id, cart_no, order_date, quantity, total_price)
+        VALUES (#{orderNo}, #{userId}, #{carId}, #{cartNo}, SYSDATE, #{quantity}, #{totalPrice})
+    </insert>
+    
+       <!-- Count Orders By User ID -->
+    <select id="countOrdersByUserId" resultType="long">
+        SELECT COUNT(*)
+        FROM orders
+        WHERE user_id = #{userId}
+    </select>
+
+<!-- Place Order -->
+    <insert id="placeOrder" parameterType="org.big.prj.dto.OrderDTO">
+        INSERT INTO orders (order_no, user_id, car_id, cart_no, order_date, quantity, total_price)
+        VALUES (#{orderNo, jdbcType=VARCHAR}, #{userId, jdbcType=VARCHAR}, #{carId, jdbcType=VARCHAR}, 
+                #{cartNo, jdbcType=VARCHAR}, SYSDATE, #{quantity, jdbcType=INTEGER}, #{totalPrice, jdbcType=VARCHAR})
+    </insert>
+
+<!-- 모든 주문 조회 (기본 검색과 페이징 기능 포함) -->
+    <select id="getAllOrders" resultType="org.big.prj.dto.OrderDTO">
+        SELECT *
+        FROM (
+            SELECT o.order_no, o.user_id, o.car_id, o.cart_no, o.order_date, o.quantity,
+                   o.total_price, k.name AS kind, c.name AS color,
+                   LISTAGG(op.name, ', ') WITHIN GROUP (ORDER BY op.name) AS options,
+                   ROW_NUMBER() OVER (ORDER BY o.order_date DESC) AS row_num
+            FROM orders o
+            JOIN car ca ON o.car_id = ca.car_id
+            JOIN carbase k ON ca.kind_id = k.base_id
+            JOIN carbase c ON ca.color_id = c.base_id
+            JOIN carbase op ON INSTR(',' || ca.option_ids || ',', ',' || op.base_id || ',') > 0
+            WHERE o.user_id LIKE '%' || #{search} || '%'
+               OR o.order_no LIKE '%' || #{search} || '%'
+               OR k.name LIKE '%' || #{search} || '%'
+               OR c.name LIKE '%' || #{search} || '%'
+            GROUP BY o.order_no, o.user_id, o.car_id, o.cart_no, o.order_date,
+                     o.quantity, o.total_price, k.name, c.name
+        )
+        WHERE row_num BETWEEN #{offset} + 1 AND #{offset} + #{size}
+    </select>
+
+
+<!-- Get Order Details -->
+    <select id="getOrderDetails" parameterType="String" resultType="org.big.prj.dto.OrderDTO">
+        SELECT o.order_no, o.user_id, o.car_id, o.cart_no, o.order_date, o.quantity, o.total_price,
+               k.name AS kind, c.name AS color,
+               LISTAGG(op.name, ', ') WITHIN GROUP (ORDER BY op.name) AS options
+        FROM orders o
+        JOIN car ca ON o.car_id = ca.car_id
+        JOIN carbase k ON ca.kind_id = k.base_id
+        JOIN carbase c ON ca.color_id = c.base_id
+        JOIN carbase op ON INSTR(',' || ca.option_ids || ',', ',' || op.base_id || ',') > 0
+        WHERE o.order_no = #{orderNo}
+        GROUP BY o.order_no, o.user_id, o.car_id, o.cart_no, o.order_date, o.quantity, o.total_price, k.name, c.name
+    </select>
+
+
+    <!-- Get Last Order Number -->
+    <select id="getLastOrderNo" resultType="string">
+        SELECT MAX(order_no) FROM orders
+    </select>
+  
+    
+    <!-- Get All Orders with pagination, sorting, and searching -->
+    <select id="getOrdersByUserId" parameterType="String" resultType="org.big.prj.dto.OrderDTO">
+        SELECT o.order_no, o.user_id, o.car_id, o.cart_no, o.order_date, o.quantity, o.total_price,
+               k.name AS kind, c.name AS color,
+               LISTAGG(op.name, ', ') WITHIN GROUP (ORDER BY op.name) AS options
+        FROM orders o
+        JOIN car ca ON o.car_id = ca.car_id
+        JOIN carbase k ON ca.kind_id = k.base_id
+        JOIN carbase c ON ca.color_id = c.base_id
+        JOIN carbase op ON INSTR(',' || ca.option_ids || ',', ',' || op.base_id || ',') > 0
+        WHERE o.user_id = #{userId}
+        GROUP BY o.order_no, o.user_id, o.car_id, o.cart_no, o.order_date, o.quantity, o.total_price, k.name, c.name
+    </select>
+ <!-- 전체 주문 수를 계산 -->
+    <select id="countOrders" resultType="long">
+        SELECT COUNT(*)
+        FROM orders o
+        JOIN car ca ON o.car_id = ca.car_id
+        JOIN carbase k ON ca.kind_id = k.base_id
+        JOIN carbase c ON ca.color_id = c.base_id
+        WHERE o.user_id LIKE '%' || #{search} || '%'
+           OR o.order_no LIKE '%' || #{search} || '%'
+           OR k.name LIKE '%' || #{search} || '%'
+           OR c.name LIKE '%' || #{search} || '%'
+    </select>
+
+    <!-- Result Map for Order with User -->
+    <resultMap id="OrderWithUserMap" type="org.big.prj.dto.OrderDTO">
+        <result property="orderNo" column="order_no"/>
+        <result property="userId" column="user_id"/>
+        <result property="carId" column="car_id"/>
+        <result property="cartNo" column="cart_no"/>
+        <result property="orderDate" column="order_date"/>
+        <result property="quantity" column="quantity"/>
+        <result property="totalPrice" column="total_price"/>
+        <result property="kind" column="kind"/>
+        <result property="color" column="color"/>
+        <result property="options" column="options"/>
+        <association property="user" javaType="org.big.prj.dto.UsersDTO">
+            <result property="userNo" column="user_no"/>
+            <result property="userId" column="user_id"/>
+            <result property="userName" column="user_name"/>
+            <result property="userEmail" column="user_email"/>
+            <result property="userMobile" column="user_mobile"/>
+            <result property="userG" column="user_g"/>
+            <result property="userBirth" column="user_birth"/>
+            <result property="userAd" column="user_ad"/>
+            <result property="userAdd" column="user_add"/>
+            <result property="userPost" column="user_post"/>
+        </association>
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항 리스트</title>
+       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+ 
+    <style>
+        .inquiry-table td {
+            vertical-align: middle;
+        }
+        .search-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .search-container .input-group {
+            flex-grow: 1;
+            display: flex;
+            max-width: 500px;
+        }
+        .search-container .form-control {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+        .search-container .btn {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{thymeleaf/main/main :: header}"></header>
+<main class="container mt-4" id="noticeListPage">
+    <h2>공지사항</h2>
+
+    <!-- 공지사항 리스트 -->
+    <table class="table table-striped notice-table">
+        <thead>
+            <tr>
+                <th scope="col">번호</th>
+                <th scope="col">제목</th>
+                <th scope="col">작성일</th>
+                 <th scope="col">작성자</th>
+            </tr>
+        </thead>
+        <tbody id="noticeList">
+            <tr th:each="notice : ${notices}">
+                <td th:text="${notice.noticeId}"></td>
+                <td>
+                    <a th:href="@{/notice/view/{id}(id=${notice.noticeId})}" th:text="${notice.noticeTitle}"></a>
+                </td>
+              <td th:text="${#dates.format(notice.createdAt, 'yyyy-MM-dd')}"></td>
+            <td>관리자</td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(notices)}">
+                <td colspan="3" class="text-center">조회된 결과가 없습니다.</td>
+            </tr>
+        </tbody>
+    </table>
+        <div class="search-container" style="width: 300px">
+                <form th:action="@{/notice/list}" method="get">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="검색" th:value="${search}">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">검색</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+            <nav>
+    <!-- 페이지네이션 -->
+    <ul class="pagination">
+        <!-- 이전 페이지 버튼 -->
+        <li class="page-item" th:classappend="${page == 0} ? 'disabled'">
+            <a class="page-link" th:href="@{|/notice/list?page=${page - 1}&size=${size}&search=${search}|}">이전</a>
+        </li>
+        <!-- 페이지 번호 버튼 -->
+        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${i == page} ? 'active'">
+            <a class="page-link" th:text="${i + 1}" th:href="@{|notice/list?page=${i}&size=${size}&search=${search}|}"></a>
+        </li>
+        <!-- 다음 페이지 버튼 -->
+        <li class="page-item" th:classappend="${page == totalPages - 1} ? 'disabled'">
+            <a class="page-link" th:href="@{|/notice/list?page=${page + 1}&size=${size}&search=${search}|}">다음</a>
+        </li>
+    </ul>
+</nav>
+</main>
+<footer th:replace="~{thymeleaf/main/main :: footer}"></footer>
+ <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

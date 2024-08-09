@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문의글 상세보기</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .inquiry-detail-container {
+            width: 100%;
+            max-width: 700px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .inquiry-detail {
+            width: 100%;
+        }
+        .inquiry-detail .form-group input,
+        .inquiry-detail .form-group textarea {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{thymeleaf/main/main :: header}"></header>
+<main class="container">
+    <div class="inquiry-detail-container">
+        <h2>문의글 상세보기</h2>
+        <div class="card">
+            <div class="card-header">
+                <h3 th:text="${inquiry.inquiryTitle}"></h3>
+            </div>
+            <div class="card-body">
+                <p><strong>작성자:</strong> <span th:text="${inquiry.inquiryName}"></span></p>
+                <p><strong>작성일:</strong> <span th:text="${#dates.format(inquiry.createdDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+                <p th:text="${inquiry.inquiryContent}"></p>
+                <div th:if="${inquiry.commentTitle != null}">
+                    <h4>답글</h4> 
+<!--                     <p><strong>제목:</strong> <span th:text="${inquiry.commentTitle}"></span></p> -->
+                    <p><strong>내용:</strong></p>
+                    <p th:text="${inquiry.commentContent}"></p>
+                    <p><strong>답변일:</strong> <span th:text="${#dates.format(inquiry.commentDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a th:href="@{/inquiry/edit/{id}(id=${inquiry.inquiryId})}" class="btn btn-primary">수정</a>
+                <button type="button" class="btn btn-danger" th:attr="onclick='deleteInquiry(' + ${inquiry.inquiryId} + ')'">삭제</button>
+                <a th:href="@{/inquiry/list}" class="btn btn-secondary">목록으로</a>
+            </div>
+        </div>
+    </div>
+</main>
+<footer th:replace="~{thymeleaf/main/main :: footer}"></footer>
+
+<script>
+function deleteInquiry(inquiryId) {
+    if (confirm("정말 삭제하시겠습니까?")) {
+        fetch(`/inquiry/delete/${inquiryId}`, {
+            method: "POST"
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("문의글이 성공적으로 삭제되었습니다.");
+                window.location.href = "/inquiry/list";
+            } else {
+                throw new Error("삭제 중 오류가 발생했습니다.");
+            }
+        })
+        .catch(error => alert(error.message));
+    }
+}
+</script>
+
+<!-- jQuery and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

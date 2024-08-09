@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.big.prj.mapper.UsersMapper">
+
+    <!-- 사용자 정보를 데이터베이스에 삽입 -->
+    <insert id="insertUser" parameterType="org.big.prj.dto.UsersDTO">
+        INSERT INTO users (user_no, user_id, user_name, user_passwd, user_ad, user_add, user_post, user_mobile, user_email, user_g, user_birth)
+        VALUES (user_seq.nextval, #{userId, jdbcType=VARCHAR}, #{userName, jdbcType=VARCHAR}, 
+                #{userPasswd, jdbcType=VARCHAR}, #{userAd, jdbcType=VARCHAR}, 
+                #{userAdd, jdbcType=VARCHAR}, #{userPost, jdbcType=VARCHAR}, 
+                #{userMobile, jdbcType=VARCHAR}, #{userEmail, jdbcType=VARCHAR}, 
+                #{userG, jdbcType=VARCHAR}, #{userBirth, jdbcType=VARCHAR})
+    </insert>
+    
+    <!-- 주어진 아이디로 사용자 수를 확인하여 아이디 중복 여부를 확인 -->
+    <select id="countByUserId" resultType="int" parameterType="string">
+        SELECT COUNT(*) FROM users WHERE user_id = #{userId, jdbcType=VARCHAR}
+    </select>
+
+    <!-- 주어진 이메일로 사용자 수를 확인하여 이메일 중복 여부를 확인 -->
+    <select id="countByEmail" resultType="int" parameterType="string">
+        SELECT COUNT(*) FROM users WHERE user_email = #{userEmail, jdbcType=VARCHAR}
+    </select>
+
+    <!-- 주어진 휴대폰 번호로 사용자 수를 확인하여 휴대폰 번호 중복 여부를 확인 -->
+  <select id="countByUserMobile" resultType="int" parameterType="string">
+        SELECT COUNT(*) FROM users WHERE user_mobile = #{userMobile, jdbcType=VARCHAR}
+    </select>
+
+    <!-- 사용자 아이디와 비밀번호를 확인하여 사용자가 존재하는지 검증 -->
+    <select id="validateUser" resultType="org.big.prj.dto.UsersDTO" parameterType="map">
+        SELECT * FROM users WHERE user_id = #{userId, jdbcType=VARCHAR} 
+                             AND user_passwd = #{userPasswd, jdbcType=VARCHAR}
+    </select>
+
+    <!-- 이름과 생년월일로 아이디 찾기 -->
+    <select id="findUserId" resultType="string" parameterType="map">
+        SELECT user_id FROM users WHERE user_name = #{userName, jdbcType=VARCHAR} 
+                                   AND user_birth = #{userBirth, jdbcType=VARCHAR}
+    </select>
+
+    <!-- 아이디와 이메일로 비밀번호 찾기 -->
+    <select id="findUserPassword" resultType="string" parameterType="map">
+        SELECT user_passwd FROM users WHERE user_id = #{userId, jdbcType=VARCHAR} 
+                                      AND user_email = #{userEmail, jdbcType=VARCHAR}
+    </select>
+
+    <!-- 주어진 아이디로 사용자 정보 찾기 -->
+    <select id="getUserById" parameterType="string" resultType="org.big.prj.dto.UsersDTO">
+        SELECT * FROM users WHERE user_id = #{userId, jdbcType=VARCHAR}
+    </select>
+
+    <!-- 사용자 정보 업데이트 -->
+    <update id="updateUser" parameterType="org.big.prj.dto.UsersDTO">
+        UPDATE users
+        SET user_name = #{userName, jdbcType=VARCHAR},
+            user_mobile = #{userMobile, jdbcType=VARCHAR},
+            user_post = #{userPost, jdbcType=VARCHAR},
+            user_ad = #{userAd, jdbcType=VARCHAR},
+            user_add = #{userAdd, jdbcType=VARCHAR},
+            user_email = #{userEmail, jdbcType=VARCHAR},
+            user_g = #{userG, jdbcType=VARCHAR},
+            user_birth = #{userBirth, jdbcType=VARCHAR}
+        WHERE user_id = #{userId, jdbcType=VARCHAR}
+    </update>
+    
+    <!-- 사용자 탈퇴 -->
+    <delete id="deleteUser" parameterType="string">
+        DELETE FROM users WHERE user_id = #{userId, jdbcType=VARCHAR}
+    </delete>
+
+    <!-- 사용자 비밀번호 검증 -->
+    <select id="countValidUserPassword" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM users WHERE user_id = #{userId, jdbcType=VARCHAR} 
+                                   AND user_passwd = #{userPasswd, jdbcType=VARCHAR}
+    </select>
+
+    <!-- 사용자 삭제 (관리자) -->
+    <delete id="deleteUserByAdmin" parameterType="string">
+        DELETE FROM users WHERE user_id = #{userId, jdbcType=VARCHAR}
+    </delete>
+    
+     <!-- 전체 유저 페이징 및 검색 기능 -->
+    <select id="getAllUsers" resultType="org.big.prj.dto.UsersDTO">
+        SELECT * FROM (
+            SELECT u.*, ROW_NUMBER() OVER (ORDER BY u.user_no) AS rn
+            FROM users u
+            WHERE u.user_name LIKE #{search}
+            OR u.user_email LIKE #{search}
+            OR u.user_mobile LIKE #{search}
+            OR u.user_ad LIKE #{search}
+        ) WHERE rn BETWEEN #{offset} + 1 AND #{offset} + #{limit}
+    </select>
+    
+     <select id="countUsers" resultType="int">
+        SELECT COUNT(*)
+        FROM users
+        WHERE user_name LIKE #{search}
+        OR user_email LIKE #{search}
+        OR user_mobile LIKE #{search}
+        OR user_ad LIKE #{search}
+    </select>
+</mapper>

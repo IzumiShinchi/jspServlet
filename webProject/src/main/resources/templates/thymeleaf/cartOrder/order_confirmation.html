@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문 확인</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gothic+A1&display=swap');
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+            font-family: 'Gothic A1', sans-serif;
+        }
+        .header, .footer {
+            width: 100%;
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .confirmation-container {
+            width: 100%;
+            max-width: 700px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .confirmation-text {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #343a40;
+        }
+        .order-details h4 {
+            margin-bottom: 15px;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .buttons .btn {
+            width: 150px;
+        }
+    </style>
+</head>
+<body>
+<header class="header" th:replace="~{thymeleaf/main/main :: header}"></header>
+<main class="container">
+    <div class="confirmation-container">
+        <div class="confirmation-text">주문이 완료되었습니다!</div>
+        <div class="order-details">
+            <h4>주문 번호: <span th:text="${orderNo}"></span></h4>
+            <h4>종류: <span th:text="${kind}"></span></h4>
+            <h4>색상: <span th:text="${color}"></span></h4>
+            <h4>옵션: <span th:text="${option}"></span></h4>
+            <h4>총 가격: <span th:text="${totalPrice}"></span></h4>
+        </div>
+        <div class="buttons">
+            <button class="btn btn-primary" id="printButton">프린트</button>
+            <button class="btn btn-success" onclick="window.location.href='/'">메인페이지로</button>
+        </div>
+    </div>
+</main>
+<footer class="footer" th:replace="~{thymeleaf/main/main :: footer}"></footer>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('printButton').onclick = function() {
+        window.print();
+    };
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ID 중복조회</title>
+    <script>
+        function idCheck(userId) {
+            if (userId === "") {
+                alert("사용할 아이디를 입력하세요!");
+                document.getElementById("idInput").focus();
+                return false;
+            }
+            //encodeURIComponent(userId)는 아이디 값에 특수 문자가 포함된 경우에도 URL에서 안전하게 사용할 수 있도록 인코딩하는 역할
+            location.href = "/rum/idSearch.do?userId=" + encodeURIComponent(userId);
+//             location.href = "/rum/idsearch.do?userId=" + userId;
+        }
+        
+        function closewin() {
+            if (window.opener && !window.opener.closed) {
+                window.opener.document.getElementsByName("userId")[0].value = /*[[${userId}]]*/ "";
+            }
+            window.close();
+        }
+    </script>
+</head>
+<body onload="document.getElementById('idInput').focus()">
+    <h3>ID 중복조회</h3>
+    <form name="users" method="post" action="#">
+        <div th:if="${userId == null}">
+            아이디 : <input type="text" name="userId" id="idInput">
+            <input type="button" value="아이디 중복 조회" onclick="idCheck(document.getElementById('idInput').value)">
+        </div>
+        <div th:if="${userId != null}">
+            <h4 th:text="${userId} + '는 ' + (${isAvailable} ? '사용할 수 있는' : '사용할 수 없는') + ' 아이디입니다.'"></h4>
+            <input type="button" value="닫기" onclick="closewin()">
+        </div>
+    </form>
+</body>
+</html>

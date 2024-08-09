@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리뷰 보기</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    
+     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gothic+A1&display=swap');
+        
+        
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+            font-family: 'Gothic A1', sans-serif;
+        }
+        .header, .footer {
+            width: 100%;
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        .review-detail, .comment-section, .comment-form {
+            width: 100%;
+            max-width: 800px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .review-detail h2, .comment-section h3 {
+            margin-bottom: 20px;
+            color: #343a40;
+        }
+        .review-detail p, .comment p {
+            margin-bottom: 10px;
+        }
+        .btn-secondary, .btn-primary, .btn-danger {
+            margin-top: 20px;
+        }
+        .comment-section {
+            margin-top: 30px;
+        }
+        .comment {
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .comment p {
+            margin: 5px 0;
+        }
+        .comment-form {
+            margin-top: 20px;
+        }
+        .comment-form .form-group {
+            margin-bottom: 15px;
+        }
+        .reply-button {
+            margin-left: 10px;
+            font-size: 0.875rem;
+        }
+        .reply-form {
+            margin-top: 10px;
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+<header th:replace="~{thymeleaf/main/main :: header}" class="header"></header>
+<main class="container mt-4">
+    <div class="review-detail">
+        <h2>구매 후기</h2>
+        <p><strong>제목:</strong> <span th:text="${review.reviewTitle}"></span></p>
+        <p><strong>작성자:</strong> <span th:text="${review.userId}"></span></p>
+        <p><strong>작성일:</strong> <span th:text="${#dates.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></span></p>
+        <p><strong>내용:</strong> <span th:text="${review.reviewContent}"></span></p>
+        <h4>주문 정보</h4>
+        <p><strong>종류:</strong> <span th:text="${review.kind}"></span></p>
+        <p><strong>색상:</strong> <span th:text="${review.color}"></span></p>
+        <p><strong>옵션:</strong> <span th:text="${review.options}"></span></p>
+        <p><strong>총 가격:</strong> <span th:text="${review.totalPrice}"></span></p>
+        <a th:href="@{/reviews/list}" class="btn btn-secondary">목록으로</a>
+        <button th:if="${userId == review.userId}" th:onclick="'deleteReview(' + ${review.reviewId} + ');'" class="btn btn-danger">삭제</button>
+         <button th:if="${userId == 'admin'}" th:onclick="'adminDeleteReview(' + ${review.reviewId} + ');'" class="btn btn-danger btn-sm">관리자권한 삭제</button>
+    </div>
+    
+<div class="comment-section">
+    <h3>댓글</h3>
+    <div class="comments-list">
+        <div th:each="comment : ${comments}" class="comment" th:style="'margin-left: ' + (${comment.commentLevel} * 20) + 'px;'">
+            <p><strong th:text="${comment.commentUserId}"></strong> <span th:text="${#dates.format(comment.commentDate, 'yyyy-MM-dd HH:mm')}"></span></p>
+            <p th:text="${comment.commentContent}"></p>
+            <button th:if="${userId == comment.commentUserId}" th:onclick="'deleteComment(' + ${comment.reviewId} + ');'" class="btn btn-danger btn-sm">삭제</button>
+           <button th:if="${userId == 'admin'}" th:onclick="'adminDeleteComment(' + ${comment.reviewId} + ');'" class="btn btn-danger btn-sm">관리자권한 삭제</button>
+<!--             <button class="btn btn-link btn-sm reply-button" th:onclick="'showReplyForm(' + ${comment.reviewId} + ');'">답글</button> -->
+            <div th:id="'reply-form-' + ${comment.reviewId}" class="reply-form" style="display: none;">
+                <form th:action="@{/reviews/comment/save}" method="post">
+                    <input type="hidden" name="reviewId" th:value="${review.reviewId}">
+                    <input type="hidden" name="commentReview" th:value="${comment.reviewId}">
+                    <input type="hidden" name="commentLevel" th:value="${comment.commentLevel + 1}">
+                    <input type="hidden" name="userId" th:value="${userId}">
+                    <div class="form-group">
+                        <label for="replyContent">답글 내용:</label>
+                        <textarea id="replyContent" name="commentContent" class="form-control" rows="2" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">답글 작성</button>
+                </form>
+            </div>
+            <div th:if="${comment.replies != null}" th:each="reply : ${comment.replies}">
+                <div th:replace="this :: commentsList(${comment.replies}, ${userId})"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="comment-form">
+        <h3>댓글 작성</h3>
+        <form th:action="@{/reviews/comment/save}" method="post">
+            <input type="hidden" name="reviewId" th:value="${review.reviewId}">
+            <input type="hidden" name="userId" th:value="${userId}"> <!-- userId 추가 -->
+            <input type="hidden" name="commentLevel" value="1">
+            <div class="form-group">
+                <label for="commentContent">댓글 내용:</label>
+                <textarea id="commentContent" name="commentContent" class="form-control" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">댓글 작성</button>
+        </form>
+    </div>
+</main>
+<footer th:replace="~{thymeleaf/main/main :: footer}" class="footer"></footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+function deleteReview(reviewId) {
+    if (confirm("정말 삭제하시겠습니까?")) {
+        fetch(`/reviews/delete/${reviewId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("성공적으로 삭제되었습니다.");
+                window.location.href = "/reviews/list"; 
+            } else {
+                throw new Error("삭제 권한이 없습니다.");
+            }
+        })
+        .catch(error => alert(error.message));
+    }
+}
+
+function deleteComment(commentId) {
+    if (confirm("정말 삭제하시겠습니까?")) {
+        fetch(`/reviews/comment/delete/${commentId}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("성공적으로 삭제되었습니다.");
+                location.reload();
+            } else {
+                throw new Error("삭제 중 오류가 발생했습니다.");
+            }
+        })
+        .catch(error => alert(error.message));
+    }
+}
+
+function adminDeleteReview(reviewId) {
+    if (confirm("정말 삭제하시겠습니까?")) {
+        fetch(`/admin/review/delete/${reviewId}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("성공적으로 삭제되었습니다.");
+                window.location.href = "/reviews/list"; 
+            } else {
+                throw new Error("삭제 중 오류가 발생했습니다.");
+            }
+        })
+        .catch(error => alert(error.message));
+    }
+}
+
+function adminDeleteComment(reviewId) {
+    if (confirm("정말 삭제하시겠습니까?")) {
+        fetch(`/admin/review/delete/${reviewId}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("댓글이 성공적으로 삭제되었습니다.");
+                location.reload();
+            } else {
+                throw new Error("삭제 중 오류가 발생했습니다.");
+            }
+        })
+        .catch(error => alert(error.message));
+    }
+}
+
+function showReplyForm(commentId) {
+    var replyForm = document.getElementById('reply-form-' + commentId);
+    if (replyForm.style.display === 'none') {
+        replyForm.style.display = 'block';
+    } else {
+        replyForm.style.display = 'none';
+    }
+}
+</script>
+</body>
+</html>

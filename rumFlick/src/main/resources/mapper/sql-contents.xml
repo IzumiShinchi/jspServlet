@@ -7,7 +7,7 @@
 	<select id="contentsList" resultType="org.big.dto.ContentsDTO">
 		<![CDATA[
 			SELECT
-
+				c_code,
 				c_title
 			FROM
 				contents
@@ -18,7 +18,7 @@
 	<select id="kMovieList" resultType="org.big.dto.ContentsDTO">
 		<![CDATA[
 			SELECT
-				
+				c_code,
 				c_title
 			FROM
 				contents
@@ -30,7 +30,7 @@
 	<select id="fMovieList" resultType="org.big.dto.ContentsDTO">
 		<![CDATA[
 			SELECT
-			
+				c_code,
 				c_title
 			FROM
 				contents
@@ -42,7 +42,7 @@
 	<select id="tAniList" resultType="org.big.dto.ContentsDTO">
 		<![CDATA[
 			SELECT
-
+				c_code,
 				c_title
 			FROM
 				contents
@@ -54,7 +54,7 @@
 	<select id="kDramaList" resultType="org.big.dto.ContentsDTO">
 		<![CDATA[
 			SELECT
-
+				c_code,
 				c_title
 			FROM
 				contents
@@ -66,7 +66,7 @@
 	<select id="fDramaList" resultType="org.big.dto.ContentsDTO">
 		<![CDATA[
 			SELECT
-				
+				c_code,
 				c_title
 			FROM
 				contents
@@ -78,7 +78,7 @@
 	<select id="aniList" resultType="org.big.dto.ContentsDTO">
 		<![CDATA[
 			SELECT
-				
+				c_code,
 				c_title
 			FROM
 				contents
@@ -90,7 +90,7 @@
 	<select id="contentDetail" parameterType="String" resultType="org.big.dto.ContentsDTO">
 		<![CDATA[
 			SELECT
-				
+				c_code,
 				c_title,
 				c_director,
 				c_genre,
@@ -103,15 +103,25 @@
 				c_code = #{contentsCode}
 		]]>
 	</select>
-	<select id="contentsFileList" parameterType="String" resultType="org.big.dto.ContentsFileDTO">
-	<![CDATA[
-		SELECT
-			f_index, c_code, original_file_name, round(file_size/1024, 0) as file_size
-		FROM
-			contentsfile
-		WHERE
-			c_code = #{contentsCode}
-	]]>
+	<select id="contentsFileInformation" parameterType="String" resultType="org.big.dto.ContentsFileDTO">	<!-- 상세 페이지 1개 -->
+		<![CDATA[
+			SELECT
+				c_code,
+				original_file_name,
+				stored_file_path
+			FROM
+				contentsfile
+			WHERE
+				c_code = #{contentsCode}
+		]]>
+	</select>
+	<select id="contentsFileList" resultType="org.big.dto.ContentsFileDTO">		<!-- 목록 페이지 여러개 -->
+		<![CDATA[
+			SELECT
+				c_code, original_file_name, stored_file_path
+			FROM
+				contentsfile
+		]]>
 	</select>
 	<insert id="registContent" parameterType="org.big.dto.ContentsDTO" useGeneratedKeys="true">
 		<![CDATA[

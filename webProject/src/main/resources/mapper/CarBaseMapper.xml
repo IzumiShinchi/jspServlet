@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.big.prj.mapper.CarBaseMapper">
+
+    <select id="getAllCarBases" resultType="org.big.prj.dto.CarBaseDTO">
+        SELECT * FROM carbase
+    </select>
+
+
+    <select id="getCarBaseById" parameterType="String" resultType="org.big.prj.dto.CarBaseDTO">
+        SELECT * FROM carbase WHERE base_id = #{baseId}
+    </select>
+
+   <insert id="insertCarBase" parameterType="org.big.prj.dto.CarBaseDTO">
+    INSERT INTO carbase (base_id, name, type, price, description, base_image)
+    VALUES (#{baseId}, #{name}, #{type}, #{price}, #{description}, #{baseImage})
+</insert>
+
+<update id="updateCarBase" parameterType="org.big.prj.dto.CarBaseDTO">
+    UPDATE carbase
+    SET name = #{name}, type = #{type}, price = #{price}, description = #{description}, base_image = #{baseImage}
+    WHERE base_id = #{baseId}
+</update>
+    <delete id="deleteCarBase" parameterType="String">
+        DELETE FROM carbase WHERE base_id=#{baseId}
+    </delete>
+
+   <select id="getCarBaseByNameAndType" parameterType="map" resultType="org.big.prj.dto.CarBaseDTO">
+        SELECT * FROM carbase WHERE TYPE=#{type} AND NAME=#{name}
+            </select>
+
+    <select id="getAllCarBasesByType" parameterType="string" resultType="org.big.prj.dto.CarBaseDTO">
+        SELECT * FROM carbase WHERE TYPE=#{type}
+    </select>
+    
+ 
+
+</mapper>

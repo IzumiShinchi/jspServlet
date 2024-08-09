@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Contents Detail</title>
+</head>
+<body>
+<div id="app">
+	<div id="header">
+		<div class="col-logo">
+			<div class="logo-inner">
+				<div class="folding-menu">
+					<button class="folding">
+						<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 24 24" data-icon="ic:round-menu" class="iconify iconify--ic">
+							<path fill="currentColor" d="M4 18h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1m0-5h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1M3 7c0 .55.45 1 1 1h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1"></path>
+						</svg>
+					</button>
+				</div>
+				<div class="logo">
+					<h1>
+						<a href="/" title="RumFlick"><img src="/images/logo/MainLogo.png" alt="RumFlick"></a>
+					</h1>
+				</div>
+			</div>
+		</div>
+		<div class="col-search">
+			<div class="search-inner">
+				<form name="fSearchBox" id="search" method="get" action="/noonoo/search.php">
+					<div class="search-form">
+						<input type="text" name="stx" class="search-input" placeholder="검색어를 입력해주세요" autocomplete="off" value="">
+						<div class="search-res">
+							<button class="submit" type="submit">
+								<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 24 24" data-icon="material-symbols:search" class="iconify iconify--material-symbols">
+									<path fill="currentColor" d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14"></path>
+								</svg>
+								<span class="blind">검색</span>
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="col-extra">
+			<div class="extra-inner">
+				<div class="member-action">
+					<a href="/bbs/login.php">로그인</a> <a href="/bbs/register_form.php">회원가입</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="aside">
+		<div id="scrolling-box" class="scrolling-box mb-container" style="position: relative;">
+			<div class="mb-track mb-track-x">
+				<div class="mb-bar" style="width: 210px;"></div>
+			</div>
+			<div class="mb-track mb-track-y">
+				<div class="mb-bar" style="height: 797px; top: 0px;"></div>
+			</div>
+			<div class="mb-content"
+				style="overflow-y: auto; margin-right: -17px;">
+				<div class="home-menu">
+					<div class="rows">
+						<a href="/" target="_self">
+							<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 24 24" data-icon="material-symbols:home-outline" class="iconify iconify--material-symbols">
+								<path fill="currentColor" d="M6 19h3v-6h6v6h3v-9l-6-4.5L6 10zm-2 2V9l8-6l8 6v12h-7v-6h-2v6zm8-8.75"></path>
+							</svg>
+							<strong>홈</strong>
+						</a>
+					</div>
+					<div class="rows">
+						<a href="/all/program_list.php" target="_self">
+							<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 24 24" data-icon="ic:round-list-alt" class="iconify iconify--ic">
+								<path fill="currentColor" d="M12 9h4c.55 0 1-.45 1-1s-.45-1-1-1h-4c-.55 0-1 .45-1 1s.45 1 1 1m0 4h4c.55 0 1-.45 1-1s-.45-1-1-1h-4c-.55 0-1 .45-1 1s.45 1 1 1m0 4h4c.55 0 1-.45 1-1s-.45-1-1-1h-4c-.55 0-1 .45-1 1s.45 1 1 1M7 7h2v2H7zm0 4h2v2H7zm0 4h2v2H7zM20 3H4c-.55 0-1 .45-1 1v16c0 .55.45 1 1 1h16c.55 0 1-.45 1-1V4c0-.55-.45-1-1-1m-1 16H5V5h14z"></path>
+							</svg>
+							<strong>전체보기</strong>
+						</a>
+					</div>
+					<div class="rows">
+						<a href="/noonoo/popular_list.php">
+							<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 24 24" data-icon="ic:outline-star-outline" class="iconify iconify--ic">
+								<path fill="currentColor" d="m22 9.24l-7.19-.62L12 2L9.19 8.63L2 9.24l5.46 4.73L5.82 21L12 17.27L18.18 21l-1.63-7.03zM12 15.4l-3.76 2.27l1-4.28l-3.32-2.88l4.38-.38L12 6.1l1.71 4.04l4.38.38l-3.32 2.88l1 4.28z"></path>
+							</svg>
+							<strong>인기영상</strong>
+						</a>
+					</div>
+				</div>
+				<div class="main-menu">
+					<div class="menu-list">
+						<div class="menu">
+							<h2>
+								<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 24 24" data-icon="ic:outline-local-movies" class="iconify iconify--ic">
+									<path fill="currentColor" d="M14 5v14h-4V5zm6-2h-2v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2zm-4 6V7h2v2zM6 9V7h2v2zm10 4v-2h2v2zM6 13v-2h2v2zm10 4v-2h2v2zM6 17v-2h2v2z"></path>
+								</svg>
+								<strong>영화</strong>
+							</h2>
+							<ul>
+								<li class=""><a href="/noonoo/program_list.php?section=kr_movie">한국영화</a></li>
+								<li class=""><a href="/noonoo/program_list.php?section=en_movie">해외영화</a></li>
+								<li class=""><a href="/noonoo/program_list.php?section=ani_movie">[극장판] 에니메이션</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="menu-list">
+						<div class="menu">
+							<h2>
+								<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 24 24" data-icon="material-symbols:tv-gen-outline" class="iconify iconify--material-symbols">
+									<path fill="currentColor" d="M4 21v-2q-.825 0-1.412-.587T2 17V6q0-.825.588-1.412T4 4h16q.825 0 1.413.588T22 6v11q0 .825-.587 1.413T20 19v2h-1l-.65-2H5.675L5 21zm0-4h16V6H4zm8-5.5"></path>
+								</svg>
+								<strong>드라마</strong>
+							</h2>
+							<ul>
+								<li class=""><a href="/noonoo/program_list.php?section=drama">한국드라마</a></li>
+								<li class=""><a href="/noonoo/program_list.php?section=en_drama">해외드라마</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="menu-list">
+						<div class="menu">
+							<h2>
+								<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 24 24" data-icon="mdi:film-star-outline" class="iconify iconify--mdi">
+									<path fill="currentColor" d="M13 19c0 .34.04.67.09 1H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1l2 4h3L8 4h2l2 4h3l-2-4h2l2 4h3l-2-4h4v9.81c-.61-.35-1.28-.59-2-.72V10H5.76L4 6.47V18h9.09c-.05.33-.09.66-.09 1m10-1.11l-2.89-.25L19 15l-1.13 2.64l-2.87.25l2.18 1.88l-.68 2.81l2.5-1.49l2.45 1.49l-.65-2.81z"></path>
+								</svg>
+								<strong>애니메이션</strong>
+							</h2>
+							<ul>
+								<li class=""><a href="/noonoo/program_list.php?section=animation">에니메이션</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="home-menu">
+					<div class="rows">
+						<a href="/noonoo/history_list.php">
+							<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" viewBox="0 0 24 24" data-icon="material-symbols-light:keyboard-command-key" class="iconify iconify--materials-symbols">
+								<path fill="currentColor" d="M6.5 20.5q-1.258 0-2.129-.871T3.5 17.5t.871-2.129T6.5 14.5h2v-5h-2q-1.258 0-2.129-.871T3.5 6.5t.871-2.129T6.5 3.5t2.129.871T9.5 6.5v2h5v-2q0-1.258.871-2.129T17.5 3.5t2.129.871T20.5 6.5t-.871 2.129T17.5 9.5h-2v5h2q1.258 0 2.129.871T20.5 17.5t-.871 2.129t-2.129.871t-2.129-.871T14.5 17.5v-2h-5v2q0 1.258-.871 2.129T6.5 20.5m0-1q.817 0 1.409-.591q.591-.592.591-1.409v-2h-2q-.817 0-1.409.591q-.591.592-.591 1.409t.591 1.409T6.5 19.5m11 0q.817 0 1.409-.591q.591-.592.591-1.409t-.591-1.409T17.5 15.5h-2v2q0 .817.591 1.409q.592.591 1.409.591m-8-5h5v-5h-5zm-3-6h2v-2q0-.817-.591-1.409Q7.317 4.5 6.5 4.5t-1.409.591T4.5 6.5t.591 1.409Q5.683 8.5 6.5 8.5m9 0h2q.817 0 1.409-.591q.591-.592.591-1.409t-.591-1.409T17.5 4.5t-1.409.591Q15.5 5.683 15.5 6.5z" />
+							</svg>
+							<strong>it수다</strong>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="container">
+	    <div class="view-content">
+	        <div class="content">
+	            <div class="player-header">
+	                <div class="share-title">
+	                <h2 id="title" name="contentTitle" th:value="${content.contentTitle}"></h2>
+	                <div class="datetime-hit">
+	                    <span id="rate" name="contentRate" th:value="${content.contentRate}">세 미만 시청 가능등급</span>
+                        <span class="liner" id="director" name="contentDirector" th:value="${content.contentDirector}"></span>
+                        <span class="liner" id="genre" name="contentGenre" th:value="content.contentGenre"></span>
+                        <span class="liner">
+                        	<i class="fal fa-star vote-grade" id="nation" name="contentNation" th:value="content.contentNation"></i>
+						</span>
+	                </div>
+	            </div>
+	            <div class="utility-button">
+<!-- 	                <a href="https://tv48.wiki/bbs/good.php?bo_table=kr_movie&amp;wr_id=28836&amp;good=good&amp;" id="good_button" rel="nofollow"> -->
+<!-- 	                    <i class="fal fa-heart"></i> -->
+<!-- 	                    <span>좋아요 -->
+<!-- 	                        <em>169</em> -->
+<!-- 	                    </span> -->
+<!-- 	                </a> -->
+	                <a href="https://tv48.wiki/bbs/sns_share.php" rel="modal:open nofollow" id="video_sns_share">
+	                    <i class="fal fa-share"></i>
+	                    <span>공유</span>
+	                </a>
+	                <a href="https://tv48.wiki/bbs/singo.php?bo_table=kr_movie&amp;wr_id=28836" rel="modal:open nofollow">
+	                    <i class="fal fa-siren-on"></i>
+	                    <span>신고</span>
+	                    </a>
+	                <a href="javascript:void(0);" onclick="view_scrap('kr_movie' , 28836,1017163,0)" rel="nofollow">
+	                    <i class="fal fa-bookmark"></i>
+	                    <span>스크랩</span>
+	                    </a>
+	                </div>
+	            </div>
+	            <div class="player-posted">
+	                <div class="posted-content">
+	                    <div class="summary">
+	                        <span class="title">줄거리</span>
+	                    </div>
+	                    <div class="overview">
+	                        <p id="synopsis" name="contentSynopsis" th:value="content.contentSynopsis"></p>
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="view-comment-area">
+	                <div class="comment-header">
+	                <span class="title">
+	                    댓글<em>203개</em>
+	                </span>
+	            </div>
+	            <div class="comment-write-item">
+	                <div id="view_comment_write_wrap">
+	                    <form name="fviewcomment" id="fviewcomment" action="https://tv48.wiki/bbs/write_comment_update.php" onsubmit="return fviewcomment_submit(this);" method="post" autocomplete="off">
+	                        <input type="hidden" name="w" value="c" id="w">
+	                        <input type="hidden" name="bo_table" value="kr_movie">
+	                        <input type="hidden" name="wr_id" value="28836">
+	                        <input type="hidden" name="comment_id" value="" id="comment_id">
+	                        <input type="hidden" name="comment_url" value="https://tv48.wiki/bbs/view_comment.php?bo_table=kr_movie&amp;wr_id=28836&amp;crows=200" id="comment_url">
+	                        <input type="hidden" name="crows" value="200">
+	                        <input type="hidden" name="c_page" value="" id="comment_page">
+	                        <input type="hidden" name="sca" value="">
+	                        <input type="hidden" name="sfl" value="">
+	                        <input type="hidden" name="stx" value="">
+	                        <input type="hidden" name="spt" value="">
+	                        <input type="hidden" name="is_good" value="">
+	                        <input type="hidden" name="wr_rate" id="wr_rate" value="0">
+	                        <script src="https://assets.request-support.com/js/now.rate.js"></script>
+	                            <div class="write-form">
+	                                <div class="comment-profile-images-rows">
+	                                    <img src="https://assets.request-support.com/images/no_profile.gif?ver=1" width="40" height="40" alt="profile_image">
+	                                </div>                
+	                                <div class="write-input">
+	                                    <textarea id="comment_write_content" name="wr_content" title="댓글내용 입력" maxlength="10000" placeholder="댓글을 입력해주세요
+	                                    스포성 댓글은 규정 위반이며 무통보 삭제 처리 될 수 있습니다
+	                                    자료요청은 사이트 하단 메뉴를 통해 확인 바라며 타인에게 욕설은 가이드라인 위반에 의거 차단 조치 될 수 있습니다">
+	                                    </textarea>
+	                                </div>
+	                            </div>
+	                            <div class="cmt-rw" style="justify-content:flex-end">
+	                                <div class="comment-write-btn">
+	                                    <button type="button" id="comment_submit_button" class="write-proceed" onclick="ajax_submit_comment('viewcomment');">댓글등록</button>
+	                                    <div id="comment_submit_loading">
+	                                        <i class="far fa-spinner-third fa-spin" id="comment_loading"></i>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <script>
+	                            $(document).on("keyup change", "textarea#comment_write_content[maxlength]", function() {
+	                                var str = $(this).val()
+	                                var mx = parseInt($(this).attr("maxlength"))
+	                                if (str.length > mx) {
+	                                    $(this).val(str.substr(0, mx));
+	                                    return false;
+	                                }
+	                            });
+	                            </script>
+	                        </form>
+	                    </div>
+	                </div>
+	                <div id="viewcomment" class="comment-content">
+	                    <div id="c_29260" class="cmt-rows ">
+	                        <div class="comment-profile-images-rows">
+	                            <img src="https://assets.request-support.com/images/no_profile.gif?ver=1" width="40" height="40" alt="profile_image">
+	                        </div>
+	                        <div class="ncname">
+	                            <div class="nick-date">
+	                                <span>닉퓨리</span>
+	                                <span>2일 전</span>
+	                            </div>
+	                            <div class="mentioned">
+	                                <p>
+	                                <br>명실상부하게 1탄이 가장 잘만들고 빌런으로 나왔던 장첸이 가장 매력있었다. 
+	                                </p>
+	                            </div>
+	                            <div class="other-comment-like">
+	                                <a href="#" onclick="comment_good('kr_movie', '28836', 'good', 'c_good29260', '29260'); return false;">
+	                                    <span>
+	                                        <i class="fal fa-heart"></i>
+	                                        좋아요 <em id="c_good29260" class="good-count">0</em>
+	                                    </span>
+	                                </a>
+	                                <a href="http://tv48.wiki/kr_movie/28836?rewrite=1&amp;c_id=29260&amp;w=c#view_comment_write_wrap" onclick="comment_box('29260', 'c'); return false;">답변</a>
+	                            </div>
+	                        </div>
+	                    </div>
+	                    <div id="pagination" class="xs-pt-40">
+	                        <div class="prev"><a href="javascript:;" onclick="ajax_comment_page('viewcomment', 'https://tv48.wiki/bbs/view_comment.php?bo_table=kr_movie&amp;wr_id=28836&amp;crows=200&amp;c_page=1', '1');">
+	                            <i class="fal fa-angle-double-left"></i></a><a class="previously">
+	                                <i class="fal fa-angle-left"></i></a></div><div class="page-number">
+	                                    <a href="javascript:;" onclick="ajax_comment_page('viewcomment', 'https://tv48.wiki/bbs/view_comment.php?bo_table=kr_movie&amp;wr_id=28836&amp;crows=200&amp;c_page=1', '1');">1</a>
+	                                    <a href="javascript:;" class="active">2</a>
+	                        </div>
+	                        <div class="next">
+	                            <a class="nexton">
+	                                <i class="fal fa-angle-right"></i>
+	                            </a>
+	                            <a class="pageing-item-link">
+	                                <i class="fal fa-angle-double-right"></i>
+	                            </a>
+	                        </div>
+	                    </div>
+	                </div>
+					<script>
+					    var save_before = '';
+					    var save_html = document.getElementById('view_comment_write_wrap').innerHTML;
+					
+					
+					   function good_and_write()
+					   {
+					    var f = document.fviewcomment;
+					    if (fviewcomment_submit(f)) {
+					        f.is_good.value = 1;
+					        f.submit();
+					    } else {
+					        f.is_good.value = 0;
+					    }
+					}
+					
+					function fviewcomment_submit(f)
+					{
+					
+					    var pattern = /(^\s*)|(\s*$)/g; // \s 공백 문자
+					
+					    f.is_good.value = 0;
+					
+					    var subject = "";
+					    var content = "";
+					    $.ajax({
+					        url: base_ajax+"/ajax.filter.php",
+					        type: "POST",
+					        data: {
+					            "subject": "",
+					            "content": f.comment_write_content.value
+					        },
+					        dataType: "json",
+					        async: false,
+					        cache: false,
+					        success: function(data, textStatus) {
+					            subject = data.subject;
+					            content = data.content;
+					        }
+					    });
+					
+					    if (content) {
+					        alert("알수 없는 오류가 발생하였습니다 : Code2 ( 관리자문의 )");
+					        f.comment_write_content.focus();
+					        return false;
+					    }
+					
+					    // 양쪽 공백 없애기
+					    var pattern = /(^\s*)|(\s*$)/g; // \s 공백 문자
+					    document.getElementById('comment_write_content').value = document.getElementById('comment_write_content').value.replace(pattern, "");
+					    if (!document.getElementById("comment_write_content").value) {
+					        alertify.error("댓글 내용을 입력해주세요.");
+					        return false;
+					    } 
+					    set_comment_token(f);
+					    //document.getElementById("comment_submit_button").disabled = "disabled";
+					    
+					
+					    return true;
+					}
+					
+					function comment_box(comment_id, work)
+					{
+					    var el_id,
+					    form_el = 'fviewcomment',
+					    respond = document.getElementById(form_el);
+					
+					    // 댓글 아이디가 넘어오면 답변, 수정
+					    if (comment_id)
+					    {
+					        if (work == 'c')
+					            el_id = 'reply_' + comment_id;
+					        else
+					            el_id = 'edit_' + comment_id;
+					    }
+					    else
+					        el_id = 'view_comment_write_wrap';
+					
+					    if (save_before != el_id)
+					    {
+					        if (save_before)
+					        {
+					            document.getElementById(save_before).style.display = 'none';
+					        }
+					
+					        document.getElementById(el_id).style.display = '';
+					        document.getElementById(el_id).appendChild(respond);
+					        //입력값 초기화
+					        document.getElementById('comment_write_content').value = '';
+					        
+					        // 댓글 수정
+					        if (work == 'cu')
+					        {
+					            document.getElementById('comment_write_content').value = document.getElementById('save_comment_' + comment_id).value;
+					        }
+					        document.getElementById('comment_id').value = comment_id;
+					        document.getElementById('w').value = work;
+					
+					        // 페이지
+					        if (comment_id) {
+					            document.getElementById('comment_page').value = document.getElementById('comment_page_'+comment_id).value;
+					            document.getElementById('comment_url').value = document.getElementById('comment_url_'+comment_id).value;
+					        } else {
+					            document.getElementById('comment_page').value = '';
+					            document.getElementById('comment_url').value = 'https://tv48.wiki/bbs/view_comment.php?bo_table=kr_movie&wr_id=28836&crows=200';
+					        }
+					
+					        if(save_before)
+					            $("#captcha_reload").trigger("click");
+					
+					        save_before = el_id;
+					    }
+					}
+					
+					function is_empty(ed)
+					{
+					    ed = ed.replace(/(^\s*)|(\s*$)/g, "");
+					    ed = ed.replace(/[&]nbsp[;]/gi,""); 
+					    ed = ed.replace(/[<]br[^>]*[>]/gi, "");
+					    ed = ed.replace(/[<]div[^>]*[>]/gi, "");
+					    ed = ed.replace(/[<][\/]div[^>]*[>]/gi, "");
+					    ed = ed.replace(/\s/g, "");
+					
+					    return !ed;
+					}
+					
+					function comment_delete()
+					{
+					    return confirm("이 댓글을 삭제하시겠습니까?");
+					}
+					
+					comment_box('', 'c'); 
+					
+					
+					</script><script src="https://assets.request-support.com/js/md5.js"></script>
+		        </div>
+		    </div>
+		</div>
+		<script>
+		    var swiper = new Swiper('.swiper-free-start', {
+		        freeMode: true,
+		        slidesPerView: 'auto',
+		        spaceBetween: 0,
+		    });
+		
+		    $(document).ready(function() {
+		        $(window).scroll(function() {
+		            if ($(this).scrollTop() > 100) {
+		                $('.video-remote').show();
+		            } else {
+		                $('.video-remote').hide();
+		            }
+		        });
+		        var renewURL = location.href;
+		        if (!renewURL.match('#')) {
+		            if (typeof (history.pushState) != "undefined") {
+		                renewURL += '#01d69eb7WRatR5FU';
+		                history.pushState(null,null,renewURL);
+		            }
+		        }
+		                $('.playstart lite-iframe').iframeTracker({
+		            blurCallback: function(event) {
+		                $.ajax({
+		                    type: "GET",
+		                    url: base_ajax+'/ajax.detecting.php'
+		                });
+		            }
+			    });
+		                var iframeTrigger = false;
+		        $('.playstart lite-iframe').iframeTracker({
+		            blurCallback: function(event) {
+		                if (iframeTrigger === true) { return false; }
+		                iframeTrigger = true;
+		                $.ajax({
+		                    type: "GET",
+		                    url: base_ajax+'/ajax.video.trigger.php'
+		                });
+		
+		            }
+			    });
+		
+		    });
+		
+		    $(function() {
+		    
+		        $("#good_button, #nogood_button").click(function() {
+		            var $tx;
+		            excute_good(this.href, $(this), $tx);
+		            return false;
+		        });
+		    });
+		
+		    function excute_good(href, $el, $tx) {
+		        $.post(
+		            href, {
+		                js: "on"
+		            },
+		            function(data) {
+		                if (data.error) {
+		                    alertify.error(data.error);
+		                    return false;
+		                }
+		                if (data.count) {
+		                    $el.find("em").text(number_format(String(data.count)));
+		                    alertify.success("이 글을 추천하였습니다.");
+		                }
+		            }, "json"
+		        );
+		    }
+		</script>
+	    <div id="footer">
+	        <div class="notice-entire">
+	            <div class="inner">
+	                <div class="items-box">
+	                    <a href="https://tv48.wiki/notice" class="board-target">공지사항</a>
+	                    <div class="subject-field">
+	                        <a href="https://tv48.wiki/notice/27" class="target">2024/07/09 - 서버 점검 안내</a>
+	                    </div>
+	                </div>
+	                <div class="socialmedia">
+	                    <a href="https://t.me/tvwikiurl" class="round-box" target="_blank">
+	                        <i class="fab fa-telegram-plane"></i>
+	                    </a>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="ink_footer_wrap">
+			<footer class="ink_footer">
+				<div class="logo_bottom"><a href="https://extmovie.com" rel="home"><img src="images/logo/SulJeokPen.png" alt="익스트림무비"></a></div>
+					<div class="footer_content">
+						<div class="footer_1st footer_table">
+							<div class="ink_copyright text_en footer_cell">Copyright© <a href="https://extmovie.com">RumFlick</a> All rights reserved.</div>
+							<div class="footer_menu footer_cell">
+							<ul>
+							</ul>
+							</div>				
+						</div>
+					<div class="footer_2nd footer_table">
+						<div class="custom_code footer_text footer_cell">럼플릭 2024년 레이아웃, 만드는 중</div>
+					</div>
+					<div class="footer-content1">
+						<div class="link-list ">
+		                   	<a href="#" class="liner"><span>사이트 소개</span></a>
+		                   	<a href="#" class="liner"><span>이용약관</span></a>
+		                   	<a href="#" class="liner"><span>개인정보 취급방침</span></a>
+		                   	<a href="#" class="liner"><span>고객센터</span></a>
+		                   	<a href="#" rel="modal:open nofollow" class="liner"><span>자료요청</span></a>
+		                   	<a href="/?device=mobile" class="liner" rel="nofollow"><span>모바일 버전</span></a>
+		                   	<a href="#" class="liner" rel="nofollow"><span>저작권 보호센터</span></a>
+		               	</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	    <div class="windows-scroll" style="display: block;">
+	        <a href="#">
+	            <i class="fas fa-triangle"></i>
+	        </a>
+	    </div>
+	</div>
+</div>
+</body>
+</html>

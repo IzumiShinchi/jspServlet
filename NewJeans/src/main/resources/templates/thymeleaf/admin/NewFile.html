@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+ <div class="row">
+        <div class="col-md-6 left-panel">
+            <img id="selectedCarImage" class="selected-image" th:src="@{/image/default.jpg}" alt="선택된 차량">
+            <div id="selectedCarDetails"></div>
+            <div id="selectedColorDetails"></div>
+            <div id="selectedOptionDetails"></div>
+        </div>
+
+ function init(){
+        $.ajax({
+            url: '/carbase/carSetting',
+            method: 'POST',
+            contentType: 'application/json',
+            success: function(response) {
+                let message = response.message;
+                if(message == "error") alert("정보를 불러오는 데에 실패했습니다.");
+                else {
+                    let kind = response.map.KIND;
+                    let color = response.map.COLOR;
+                    let option = response.map.OPTION;
+                    
+                    let innerHtml = '';
+                    let innerHtml2 = '';
+                    let innerHtml3 = '';
+                    
+                    for(var i = 0; i < kind.length; i++){
+                        let baseImage2 = kind[i].baseImage.split("_")[0] + '_white.jpg';
+                        innerHtml += '<div class="car-option mx-2" data-idx="' + kind[i].baseId + '" data-name="' + kind[i].name + '" data-price="' + kind[i].price + '" data-image="' + kind[i].baseImage + '" data-base-image="' + baseImage2 + '">' +
+                                        '<img src="/image/' + kind[i].baseImage + '" alt="' + kind[i].name + '">' + 
+                                        '<p>' + kind[i].name + '</p></div>';
+                    }
+                    
+                    $("#carKind").empty();
+                    $("#carKind").append(innerHtml);
+                    
+                    for(var i = 0; i < color.length; i++){
+                        innerHtml2 += '<div class="color-option mx-2" data-idx="' + color[i].baseId + '" data-color="' + color[i].name + '" data-image="' + color[i].baseImage + '" >' +
+                                        '<img src="/image/' + color[i].baseImage + '" alt="' + color[i].name + '">' + 
+                                        '<p>' + color[i].name + '</p></div>';
+                    }
+                    
+                    $("#carColor").empty();
+                    $("#carColor").append(innerHtml2);
+                    
+                    for(var i = 0; i < option.length; i++){
+                        innerHtml3 += '<div class="option-option mx-2" data-idx="' + option[i].baseId + '" data-name="' + option[i].name + '" data-price="' + option[i].price + '" data-image="' + option[i].baseImage + '" >' +
+                                        '<img src="/image/' + option[i].baseImage + '" alt="' + option[i].name + '">' +  
+                                        '<p>' + option[i].name + '</p></div>' +
+                                        '<i class="fas fa-info-circle" data-toggle="modal" data-target="#optionDetailModal" data-name="' + option[i].description + '"></i>'
+                    }
+                    
+                    $("#carOption").empty();
+                    $("#carOption").append(innerHtml3);
+                    
+                    fn_changeOption();
+                }
+            },
+            error: function(xhr) {
+                let errorMessage = '차량 구성 정보를 저장하는 중 에러가 발생했습니다.\n';
+                errorMessage += '상태 코드: ' + xhr.status + '\n';
+                errorMessage += '응답 텍스트: ' + xhr.responseText + '\n';
+                alert(errorMessage);
+            }
+        });
+    }
+</div>
+
+</body>
+</html>

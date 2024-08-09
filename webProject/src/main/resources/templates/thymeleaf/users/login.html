@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .form-group input[type="submit"],
+        .form-group input[type="button"] {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+
+        .form-group input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            width: 100%;
+        }
+
+        .form-group input[type="button"] {
+            background-color: #6c757d;
+            color: white;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        footer {
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- 헤더 파일 포함 -->
+    <header th:replace="~{thymeleaf/main/main :: header}"></header>
+    <div class="container">
+        <h1>로그인</h1>
+        <!-- 에러 메시지를 표시하기 위한 알림 영역 -->
+        <div id="errorAlert" class="alert alert-danger" style="display:none;" role="alert"></div>
+        <!-- 로그인 폼 -->
+        <form onsubmit="event.preventDefault(); login();">
+            <div class="form-group">
+                <label for="userId">아이디</label>
+                <input type="text" id="userId" name="userId" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="userPasswd">비밀번호</label>
+                <input type="password" id="userPasswd" name="userPasswd" class="form-control" required>
+            </div>
+            <!-- 이전 페이지로 리다이렉트하기 위한 URL -->
+            <input type="hidden" id="redirectUrl" name="redirectUrl" th:value="${redirectUrl}">
+            <div class="form-group">
+                <input type="submit" value="로그인" class="btn btn-primary">
+            </div>
+            <div class="btn-group">
+                <!-- 아이디 찾기 버튼 -->
+                <input type="button" value="아이디 찾기" class="btn btn-secondary" onclick="findUserId()">
+                <!-- 비밀번호 찾기 버튼 -->
+                <input type="button" value="비밀번호 찾기" class="btn btn-secondary" onclick="findUserPassword()">
+                <!-- 로그아웃 버튼 -->
+                <input type="button" value="로그아웃" class="btn btn-secondary" onclick="logout()">
+            </div>
+        </form>
+    </div>
+    <!-- 푸터 파일 포함 -->
+    <footer th:replace="~{thymeleaf/main/main :: footer}"></footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('deleted') === 'true') {
+                alert('탈퇴 처리가 완료되었습니다. 감사합니다.');
+            }
+            if (urlParams.get('update') === 'true') {
+                alert('변경 완료 되었습니다. 다시 로그인 해주세요.');
+            }
+            if (urlParams.get('error') === 'true') {
+                alert('비밀번호가 일치하지 않습니다.');
+            }
+
+            const errorMessage = urlParams.get('error');
+            if (errorMessage) {
+                const errorAlert = document.getElementById('errorAlert');
+                errorAlert.style.display = 'block';
+                errorAlert.innerText = decodeURIComponent(errorMessage);
+            }
+        });
+        
+     // 로그인 함수
+        function login() {
+            const userId = document.getElementById('userId').value;
+            const userPasswd = document.getElementById('userPasswd').value;
+
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId, userPasswd })
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return response.json().then(data => { throw new Error(data.error); });
+                }
+            })
+            .then(data => {
+                alert("로그인 되었습니다.");
+                const redirectUrl = data.redirectUrl || '/'; // 이전 페이지로 리다이렉트하거나 기본적으로 홈으로 리다이렉트
+                window.location.href = redirectUrl;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const errorAlert = document.getElementById('errorAlert');
+                errorAlert.style.display = 'block';
+                errorAlert.innerText = error.message; // 에러 메시지를 알림으로 띄움
+            });
+        }
+
+        // 사용자 아이디 찾기 함수
+        function findUserId() {
+            var userName = prompt("이름을 입력하세요:");
+            var userBirth = prompt("생년월일을 입력하세요 (YYYY-MM-DD):");
+
+            // 사용자 입력 확인
+            if (userName && userBirth) {
+                // 서버에 아이디 찾기 요청
+                fetch(`/findUserId?userName=${encodeURIComponent(userName)}&userBirth=${encodeURIComponent(userBirth)}`)
+                    .then(response => response.text())
+                    .then(data => alert(data)) // 서버 응답 출력
+                    .catch(error => console.error('Error:', error)); // 오류 처리
+            } else {
+                alert("이름과 생년월일을 모두 입력해주세요.");
+            }
+        }
+
+        // 사용자 비밀번호 찾기 함수
+        function findUserPassword() {
+            var userId = prompt("아이디를 입력하세요:");
+            var userEmail = prompt("이메일을 입력하세요:");
+
+            // 사용자 입력 확인
+            if (userId && userEmail) {
+                // 서버에 비밀번호 찾기 요청
+                fetch(`/findUserPassword?userId=${encodeURIComponent(userId)}&userEmail=${encodeURIComponent(userEmail)}`)
+                    .then(response => response.text())
+                    .then(data => alert(data)) // 서버 응답 출력
+                    .catch(error => console.error('Error:', error)); // 오류 처리
+            } else {
+                alert("아이디와 이메일을 모두 입력해주세요.");
+            }
+        }
+
+        // 로그아웃 함수
+        function logout() {
+            // 서버에 로그아웃 요청
+            fetch('/logout')
+                .then(() => {
+                    alert("로그아웃 되었습니다.");
+                    window.location.href = '/'; // 홈 페이지로 이동
+                })
+                .catch(error => console.error('Error:', error)); // 오류 처리
+        }
+
+        // 페이지 로드 시 실행되는 함수
+        window.onload = function() {
+            var sessionExpired = document.getElementById('sessionExpired');
+            if (sessionExpired) {
+                if (confirm("로그인 시간이 만료되었습니다. 연장하시겠습니까?")) {
+                    fetch('/extendSession', {
+                        method: 'POST'
+                    })
+                    .then(response => response.text())
+                    .then(data => alert(data))
+                    .catch(error => console.error('Error:', error));
+                } else {
+                    fetch('/logout')
+                        .then(() => window.location.href = '/login')
+                        .catch(error => console.error('Error:', error));
+                }
+            }
+        };
+
+    </script>
+</body> 
+</html>
